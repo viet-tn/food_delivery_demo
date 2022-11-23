@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "34116200391",
+    "project_id": "food-delivery-bf9dd",
+    "storage_bucket": "food-delivery-bf9dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34116200391:android:af4c3f06ac3bf2eb6b9be2",
+        "android_client_info": {
+          "package_name": "asia.goldenowl.food_delivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34116200391-aeedo8o9jqcq86iq6rb9pl9gjskeka9d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "asia.goldenowl.food_delivery",
+            "certificate_hash": "9401fe6fbe8568fe950a3cfbd89f3bb11bb9b5f2"
+          }
+        },
+        {
+          "client_id": "34116200391-v4uthhgl0bbfs29kvi80tvitnt0kligm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "asia.goldenowl.food_delivery",
+            "certificate_hash": "174ed1bb9eccf984f623d2991097c7cf27bd1607"
+          }
+        },
+        {
+          "client_id": "34116200391-vsm1ht89k3h07ep40l8r455cbrgk7rp6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "asia.goldenowl.food_delivery",
+            "certificate_hash": "775a4364a08ad532dfcf042a4936aa61b8b07d9b"
+          }
+        },
+        {
+          "client_id": "34116200391-jiq7fd8sb7p9t8jiglihq2q7c2ga1jou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkKldLpxZT5RJBgvYIn1WANszM77vmNtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34116200391-jiq7fd8sb7p9t8jiglihq2q7c2ga1jou.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
