@@ -103,9 +103,9 @@ class EditProfileForm extends StatelessWidget {
                   ],
                 ),
                 gapH32,
-                FTextField(
+                const FTextField(
                   labelText: 'Location',
-                  initialValue: state.location,
+                  initialValue: 'Not set location',
                 ),
                 gapH32,
               ],

@@ -30,7 +30,6 @@ class _LoginFormState extends State<LoginForm> {
           previous.password.value != current.password.value,
       builder: (_, state) {
         return Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
           key: _formKey,
           child: Column(
             children: [
@@ -56,7 +55,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               gapH32,
               GradientButton(
-                onPresssed: () {
+                onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     widget.onSubmittedEmailAndPassword
                         ?.call(state.email.value, state.password.value);

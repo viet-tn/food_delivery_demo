@@ -1,7 +1,7 @@
-import '../../../repositories/food/food_model.dart';
-import '../../../repositories/food/food_repository.dart';
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
+import '../../../repositories/food/food_model.dart';
+import '../../../repositories/food/food_repository.dart';
 import '../../cubit/app_cubit.dart';
 
 part 'food_state.dart';

@@ -88,7 +88,7 @@ class _FavoriteCard extends StatelessWidget {
             height: 30,
             width: 70,
             child: GradientButton(
-              onPresssed: () {},
+              onPressed: () {},
               child: const Text(
                 'Buy Again',
                 style: TextStyle(

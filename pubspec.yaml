@@ -59,6 +59,10 @@ dependencies:
   firebase_crashlytics: ^3.0.4
   firebase_storage: ^11.0.5
   algolia_helper_flutter: ^0.2.1
+  google_maps_flutter: ^2.2.1
+  geolocator: ^9.0.2
+  dart_geohash: ^2.0.2
+  http: ^0.13.5
 
 # dependency_overrides:
 #   firebase_core_platform_interface: 4.5.1
@@ -225,6 +229,7 @@ flutter:
     - assets/images/banner/
     - assets/images/restaurants/
     - assets/icons/
+    - assets/mapstyles/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

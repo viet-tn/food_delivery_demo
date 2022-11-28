@@ -1,9 +1,9 @@
+import '../../../base/cubit.dart';
+import '../../../base/state.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../repositories/food/food_repository.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../repositories/restaurants/restaurant_repository.dart';
-import '../../../base/cubit.dart';
-import '../../../base/state.dart';
 
 part 'home_state.dart';
 

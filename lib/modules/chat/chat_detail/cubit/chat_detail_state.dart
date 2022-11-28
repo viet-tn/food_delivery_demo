@@ -1,5 +1,5 @@
-import '../../../../repositories/chat/messages/message_model.dart';
 import '../../../../base/state.dart';
+import '../../../../repositories/chat/messages/message_model.dart';
 
 class ChatDetailState extends FState {
   const ChatDetailState({

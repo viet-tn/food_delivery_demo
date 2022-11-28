@@ -16,12 +16,10 @@ final appThemeData = {
     // fontFamily: GoogleFonts.libreFranklin().fontFamily,
     brightness: Brightness.light,
     indicatorColor: FColors.lightGreen,
+
     inputDecorationTheme: const InputDecorationTheme(
       labelStyle: FTextStyles.label,
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: 20.0,
-        vertical: 24.0,
-      ),
+      contentPadding: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 20.0),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: FColors.stroke,

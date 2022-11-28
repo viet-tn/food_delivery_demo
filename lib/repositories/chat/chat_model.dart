@@ -1,8 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:food_delivery/repositories/chat/messages/message_model.dart';
+
+import 'messages/message_model.dart';
 
 class FChat extends Equatable {
   const FChat({

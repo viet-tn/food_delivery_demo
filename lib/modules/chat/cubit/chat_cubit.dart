@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:get_it/get_it.dart';
 
+import '../../../base/cubit.dart';
+import '../../../base/state.dart';
 import '../../../repositories/chat/chat_model.dart';
 import '../../../repositories/chat/chat_repository.dart';
 import '../../../repositories/chat/messages/message_model.dart';
-import '../../../base/cubit.dart';
-import '../../../base/state.dart';
 import '../../login/cubit/login_cubit.dart';
 
 part 'chat_state.dart';

@@ -1,4 +1,6 @@
 import '../../../repositories/cart/mutable_cart.dart';
+import '../../base/cubit.dart';
+import '../../base/state.dart';
 import '../../repositories/cart/cart_model.dart';
 import '../../repositories/cart/cart_repository.dart';
 import '../../repositories/cart/item_model.dart';
@@ -8,8 +10,6 @@ import '../../repositories/favorite/favorite_list_repository.dart';
 import '../../repositories/food/food_model.dart';
 import '../../repositories/food/food_repository.dart';
 import '../../repositories/users/user_model.dart';
-import '../../base/cubit.dart';
-import '../../base/state.dart';
 
 part 'app_state.dart';
 

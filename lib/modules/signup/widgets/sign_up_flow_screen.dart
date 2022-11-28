@@ -58,7 +58,7 @@ class SignUpFlowScreen extends StatelessWidget {
               ),
             ),
             centerBottomButton: GradientButton(
-              onPresssed: onNextPressed,
+              onPressed: onNextPressed,
               child: const Text(
                 'Next',
                 style: FTextStyles.button,

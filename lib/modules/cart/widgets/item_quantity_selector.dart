@@ -22,7 +22,7 @@ class ItemQuantitySelector extends StatelessWidget {
     return Row(
       children: [
         GradientButton(
-          onPresssed: () => quantity == 1
+          onPressed: () => quantity == 1
               ? onDeleteItem?.call()
               : onQuantityChanged?.call(quantity - 1),
           gradient: FColors.linearGradient.scale(.2),
@@ -42,7 +42,7 @@ class ItemQuantitySelector extends StatelessWidget {
         ),
         gapW16,
         GradientButton(
-          onPresssed: () => onQuantityChanged?.call(quantity + 1),
+          onPressed: () => onQuantityChanged?.call(quantity + 1),
           height: 30.0,
           width: 30.0,
           borderRadius: 8.0,

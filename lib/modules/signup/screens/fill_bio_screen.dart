@@ -38,24 +38,27 @@ class _FillBioScreenState extends State<FillBioScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListenError<SignUpCubit>(
-      child: SignUpFlowScreen(
-        onNextPressed: () async {
-          if (_formKey.currentState!.validate()) {
-            await context
-                .read<SignUpCubit>()
-                .onBioSubmitted(_firstName, _lastName, _phoneNumber);
-          }
-        },
-        showBackButton: false,
-        title: 'Fill in your bio to get started',
-        subTitle:
-            'This data will be displayed in your account profile for security',
-        child: BioForm(
-          formKey: _formKey,
-          firstNameController: _firstNameController,
-          lastNameController: _lastNameController,
-          onPhoneNumberChanged: (phone) => _phoneNumber = phone,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: ListenError<SignUpCubit>(
+        child: SignUpFlowScreen(
+          onNextPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              await context
+                  .read<SignUpCubit>()
+                  .onBioSubmitted(_firstName, _lastName, _phoneNumber);
+            }
+          },
+          showBackButton: false,
+          title: 'Fill in your bio to get started',
+          subTitle:
+              'This data will be displayed in your account profile for security',
+          child: BioForm(
+            formKey: _formKey,
+            firstNameController: _firstNameController,
+            lastNameController: _lastNameController,
+            onPhoneNumberChanged: (phone) => _phoneNumber = phone,
+          ),
         ),
       ),
     );
