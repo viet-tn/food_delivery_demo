@@ -21,9 +21,7 @@ class FTextButton extends StatelessWidget {
       child: GradientText(
         text,
         gradient: FColors.linearGradient,
-        style: FTextStyles.button.copyWith(
-          decoration: TextDecoration.underline,
-        ),
+        style: FTextStyles.button,
       ),
     );
   }

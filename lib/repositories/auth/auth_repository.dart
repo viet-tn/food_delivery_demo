@@ -33,5 +33,7 @@ abstract class AuthRepository {
     required String otp,
   });
 
+  Future<FResult<String>> resetPassword(String email);
+
   Future<void> signOut();
 }

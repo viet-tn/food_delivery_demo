@@ -45,4 +45,5 @@ class FColors {
   static const metallicOrangeO5 = Color(0x7FDA6317);
   static const darkTangerine = Color(0xFFFEAD1D);
   static const loading = Color.fromARGB(255, 224, 224, 224);
+  static const vistaBlue = Color.fromARGB(255, 167, 220, 195);
 }
