@@ -7,6 +7,7 @@ import 'cloud_storage.dart';
 class FirebaseCloudStorage implements CloudStorage {
   const FirebaseCloudStorage();
 
+  /// Upload avatar then return download url
   @override
   Future<String?> uploadAvatar(String userId, String filePath) async {
     String? downloadUrl;

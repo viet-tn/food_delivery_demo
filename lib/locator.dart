@@ -6,7 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:food_delivery/modules/forgot_password/cubit/forgot_password_cubit.dart';
+import 'modules/forgot_password/cubit/forgot_password_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -78,6 +78,9 @@ Future<void> _locator() async {
       favoriteListRepository: DomainManager().favoriteListRepository,
       cartRepository: DomainManager().cartRepository,
       foodRepository: DomainManager().foodRepository,
+      userRepository: DomainManager().userRepository,
+      cloudStorage: DomainManager().cloudStorage,
+      authRepository: DomainManager().authRepository,
     ),
   );
 

@@ -7,20 +7,23 @@ class Coordinate extends Equatable {
     required this.latitude,
     required this.longtitude,
     String? geohash,
+    this.address,
   }) : geohash = geohash ?? GetIt.I<GeoHasher>().encode(longtitude, latitude);
 
   final double latitude;
   final double longtitude;
   final String geohash;
+  final String? address;
 
   @override
-  List<Object?> get props => [latitude, longtitude, geohash];
+  List<Object?> get props => [latitude, longtitude, geohash, address];
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'latitude': latitude,
       'longtitude': longtitude,
       'geohash': geohash,
+      'address': address
     };
   }
 
@@ -29,6 +32,7 @@ class Coordinate extends Equatable {
       latitude: map['latitude'],
       longtitude: map['longtitude'],
       geohash: map['geohash'],
+      address: map['address'],
     );
   }
 
@@ -36,11 +40,13 @@ class Coordinate extends Equatable {
     double? latitude,
     double? longtitude,
     String? geohash,
+    String? address,
   }) {
     return Coordinate(
       latitude: latitude ?? this.latitude,
       longtitude: longtitude ?? this.longtitude,
       geohash: geohash ?? this.geohash,
+      address: address ?? this.address,
     );
   }
 }

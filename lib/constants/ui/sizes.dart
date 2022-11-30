@@ -17,7 +17,7 @@ class Sizes {
 
   static const restaurantCard = Size(150.0, 180.0);
 
-  static const orderCardHeight = 110.0;
+  static const orderCardHeight = 115.0;
 }
 
 /// Constant gap widths

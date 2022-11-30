@@ -136,6 +136,7 @@ class LoginCubit extends FCubit<LoginState> {
   Future<FUser?> fetchUserFromDB(String id) async {
     final result = await _userRepository.get(id);
     if (result.isError) {
+      emitError(result.error!);
       return null;
     }
 
@@ -145,7 +146,7 @@ class LoginCubit extends FCubit<LoginState> {
   void _emitUserAndRedirect(FUser user) {
     emitValue(state.copyWith(user: user));
     if (user.isSetupComplete) {
-      return FCoordinator.showHomeScreen();
+      return;
     }
     GetIt.I<SignUpCubit>().emitValue(
       GetIt.I<SignUpCubit>().state.copyWith(user: state.user),

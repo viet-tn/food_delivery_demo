@@ -26,7 +26,7 @@ class SignUpPasswordInput
   SignUpPasswordValidationError? validator(String value) {
     if (value.isEmpty == true) return SignUpPasswordValidationError.empty;
 
-    if (value.length < 5) {
+    if (value.length <= 5) {
       return SignUpPasswordValidationError.shortPassword;
     }
     return null;

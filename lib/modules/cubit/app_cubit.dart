@@ -1,15 +1,23 @@
+import 'dart:developer';
+
+import '../signup/cubit/sign_up_cubit.dart';
+import '../../repositories/auth/auth_repository.dart';
+import '../../repositories/cloud_storage/cloud_storage.dart';
+import '../../repositories/users/user_repository.dart';
+import 'package:get_it/get_it.dart';
+
 import '../../../repositories/cart/mutable_cart.dart';
 import '../../base/cubit.dart';
 import '../../base/state.dart';
 import '../../repositories/cart/cart_model.dart';
 import '../../repositories/cart/cart_repository.dart';
 import '../../repositories/cart/item_model.dart';
-import '../../repositories/domain_manager.dart';
 import '../../repositories/favorite/favorite_list_model.dart';
 import '../../repositories/favorite/favorite_list_repository.dart';
 import '../../repositories/food/food_model.dart';
 import '../../repositories/food/food_repository.dart';
 import '../../repositories/users/user_model.dart';
+import '../login/cubit/login_cubit.dart';
 
 part 'app_state.dart';
 
@@ -18,14 +26,23 @@ class AppCubit extends FCubit<AppState> {
     required FavoriteListRepository favoriteListRepository,
     required CartRepository cartRepository,
     required FoodRepository foodRepository,
+    required CloudStorage cloudStorage,
+    required UserRepository userRepository,
+    required AuthRepository authRepository,
   })  : _favoriteListRepository = favoriteListRepository,
         _cartRepository = cartRepository,
         _foodRepository = foodRepository,
+        _cloudStorage = cloudStorage,
+        _userRepository = userRepository,
+        _authRepository = authRepository,
         super(const AppState());
 
   final FavoriteListRepository _favoriteListRepository;
   final CartRepository _cartRepository;
   final FoodRepository _foodRepository;
+  final CloudStorage _cloudStorage;
+  final UserRepository _userRepository;
+  final AuthRepository _authRepository;
 
   void init(FUser user) async {
     final favoriteResult =
@@ -72,8 +89,12 @@ class AppCubit extends FCubit<AppState> {
 
   Future<void> signOut() async {
     emitLoading();
-    await DomainManager().authRepository.signOut();
+    await _authRepository.signOut();
     emit(const AppState());
+    GetIt.I<SignUpCubit>().emit(const SignUpState());
+    GetIt.I<LoginCubit>().emit(
+      GetIt.I<LoginCubit>().state.copyWith(user: FUser.empty),
+    );
   }
 
   /// return true if success otherwise return false
@@ -187,5 +208,45 @@ class AppCubit extends FCubit<AppState> {
       ),
     );
     return update;
+  }
+
+  void updateUserState(FUser user) {
+    emitValue(state.copyWith(user: user));
+  }
+
+  void updateUserToDatabase([String? imgUrl]) async {
+    emitLoading();
+    FUser? update;
+
+    if (imgUrl != null) {
+      update = state.user!.copyWith(
+        photo: await _cloudStorage.uploadAvatar(state.user!.id, imgUrl),
+      );
+    }
+    final result = await _userRepository.set(update ?? state.user!);
+
+    if (result.isError) {
+      emitError(result.error!);
+      return;
+    }
+
+    emitValue(state.copyWith(user: result.data!));
+  }
+
+  void deleteUserFromDatabase() {
+    log('deleted');
+  }
+
+  void changePassword(String currentPassword, String newPassword) async {
+    emitLoading();
+    final result =
+        await _authRepository.changePassword(currentPassword, newPassword);
+
+    if (result.isError) {
+      emitError(result.error!);
+      return;
+    }
+
+    emitValue();
   }
 }

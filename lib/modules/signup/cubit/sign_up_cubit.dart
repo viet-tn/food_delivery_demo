@@ -123,7 +123,7 @@ class SignUpCubit extends FCubit<SignUpState> {
     }
   }
 
-  void onSetLocationButtonPressed(double lat, double lon) {
+  void onSetLocationButtonPressed(double lat, double lon, String address) {
     emitValue(
       state.copyWith(
         user: state.user.copyWith(
@@ -131,6 +131,7 @@ class SignUpCubit extends FCubit<SignUpState> {
             Coordinate(
               latitude: lat,
               longtitude: lon,
+              address: address,
             )
           ],
         ),
@@ -138,7 +139,7 @@ class SignUpCubit extends FCubit<SignUpState> {
     );
   }
 
-  Future<bool> onSetLocationComplete() async {
+  bool onSetLocationComplete() {
     if (state.user.coordinates.isEmpty) {
       emitError('Please set your location');
       emitValue();
@@ -160,9 +161,5 @@ class SignUpCubit extends FCubit<SignUpState> {
     final loginCubit = GetIt.I<LoginCubit>();
     loginCubit.emitValue(loginCubit.state.copyWith(user: result.data!));
     FCoordinator.showCongratsScreen();
-  }
-
-  void setLocation(String? address) {
-    emitValue(state.copyWith(address: address));
   }
 }

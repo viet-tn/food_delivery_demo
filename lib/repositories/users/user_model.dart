@@ -134,7 +134,7 @@ class FUser extends Equatable {
       method: PaymentMethod.values.byName(map['method']),
       photo: map['photo'] != null ? map['photo'] as String : null,
       coordinates: List<Coordinate>.from(
-        (map['locations'] as List<int>).map<Coordinate>(
+        map['locations'].map<Coordinate>(
           (x) => Coordinate.fromMap(x as Map<String, dynamic>),
         ),
       ),
