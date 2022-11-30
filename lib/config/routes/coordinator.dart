@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../modules/forgot_password/email_sent_screen.dart';
-import '../../modules/forgot_password/forgot_password_screen.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,6 +8,8 @@ import '../../modules/cart/cart_screen.dart';
 import '../../modules/chat/chat_detail/chat_detail_screen.dart';
 import '../../modules/chat/chat_screen.dart';
 import '../../modules/food/food_screen.dart';
+import '../../modules/forgot_password/email_sent_screen.dart';
+import '../../modules/forgot_password/forgot_password_screen.dart';
 import '../../modules/home/home_screen.dart';
 import '../../modules/login/login_screen.dart';
 import '../../modules/onboarding/onboarding_screen.dart';

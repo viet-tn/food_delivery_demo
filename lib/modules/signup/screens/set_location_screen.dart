@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../utils/ui/loading_screen.dart';
 
 import '../../../config/routes/coordinator.dart';
 import '../../../repositories/users/coordinate.dart';
 import '../../../utils/ui/listen_error.dart';
+import '../../../utils/ui/loading_screen.dart';
 import '../cubit/sign_up_cubit.dart';
 import '../widgets/location_selector.dart';
 import '../widgets/sign_up_flow_screen.dart';

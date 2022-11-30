@@ -188,4 +188,14 @@ class FirebaseAuthRepository implements AuthRepository {
       return FResult.exception(e);
     }
   }
+
+  @override
+  Future<FResult<String>> deleteUser() async {
+    try {
+      await FirebaseAuth.instance.currentUser!.delete();
+      return FResult.success('');
+    } catch (e) {
+      return FResult.exception(e);
+    }
+  }
 }

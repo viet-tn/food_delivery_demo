@@ -40,4 +40,6 @@ abstract class AuthRepository {
   );
 
   Future<void> signOut();
+
+  Future<FResult<String>> deleteUser();
 }

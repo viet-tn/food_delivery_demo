@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../signup/models/sign_up_password_input.dart';
 
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/sizes.dart';
@@ -7,6 +6,7 @@ import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../widgets/textfield/text_field.dart';
 import '../../login/models/password_input.dart';
+import '../../signup/models/sign_up_password_input.dart';
 
 class ChangePasswordSection extends StatefulWidget {
   const ChangePasswordSection({

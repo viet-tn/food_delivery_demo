@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../config/routes/coordinator.dart';
 import '../../constants/ui/colors.dart';
-
 import '../../constants/ui/sizes.dart';
 import '../../constants/ui/ui_parameters.dart';
 import '../../gen/assets.gen.dart';

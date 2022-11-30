@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../config/routes/coordinator.dart';
-import '../../../widgets/buttons/text_button.dart';
 
+import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../modules/login/cubit/login_cubit.dart';
 import '../../../widgets/buttons/gradient_button.dart';
+import '../../../widgets/buttons/text_button.dart';
 import '../../../widgets/textfield/text_field.dart';
 
 class LoginForm extends StatefulWidget {

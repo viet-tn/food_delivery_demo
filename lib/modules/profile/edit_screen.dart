@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../config/routes/coordinator.dart';
 import '../../widgets/buttons/gradient_button.dart';
 import '../../widgets/dialogs/alert_dialog.dart';
 import 'package:get_it/get_it.dart';
@@ -52,91 +53,98 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onBackButtonPressed,
-      child: ListenError<AppCubit>(
-        child: FScaffold(
-          centerBottomButton: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: GradientButton(
-              width: double.infinity,
-              onPressed: _onChangeInfomationPressed,
-              child: const Text(
-                'Change Infomation',
-                style: FTextStyles.button,
+    return BlocListener<AppCubit, AppState>(
+      listenWhen: (_, current) => current.user == null,
+      listener: (context, state) {
+        FCoordinator.goNamed(Routes.logIn.name);
+      },
+      child: WillPopScope(
+        onWillPop: _onBackButtonPressed,
+        child: ListenError<AppCubit>(
+          child: FScaffold(
+            centerBottomButton: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: GradientButton(
+                width: double.infinity,
+                onPressed: _onChangeInfomationPressed,
+                child: const Text(
+                  'Change Infomation',
+                  style: FTextStyles.button,
+                ),
               ),
             ),
-          ),
-          body: SizedBox.expand(
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: Ui.screenPadding,
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    child: Column(
-                      children: [
-                        SizedBox.fromSize(
-                          size: const Size.fromHeight(60.0),
-                          child: Stack(
-                            alignment: Alignment.centerLeft,
-                            children: [
-                              FBackButton(onPressed: Navigator.of(context).pop),
-                              const Center(
-                                child: Text(
-                                  'Edit Profile',
-                                  style: FTextStyles.heading3,
+            body: SizedBox.expand(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: Ui.screenPadding,
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      child: Column(
+                        children: [
+                          SizedBox.fromSize(
+                            size: const Size.fromHeight(60.0),
+                            child: Stack(
+                              alignment: Alignment.centerLeft,
+                              children: [
+                                FBackButton(
+                                    onPressed: Navigator.of(context).pop),
+                                const Center(
+                                  child: Text(
+                                    'Edit Profile',
+                                    style: FTextStyles.heading3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          BlocBuilder<AppCubit, AppState>(
+                            buildWhen: (previous, current) =>
+                                previous.user != current.user,
+                            builder: (context, state) {
+                              return EditProfileForm(
+                                formKey: _formKey,
+                                changePasswordFormKey: _changePasswordFormKey,
+                                user: state.user!,
+                                onImageChanged: (imgUrl) => _imgUrl = imgUrl,
+                                firstNameController: _firstNameController,
+                                lastNameController: _lastNameController,
+                                currentPasswordController:
+                                    _currentPasswordController,
+                                newPasswordController: _newPasswordController,
+                                confirmPasswordController:
+                                    _confirmPasswordController,
+                              );
+                            },
+                          ),
+                          gapH20,
+                          SizedBox(
+                            height: 57.0,
+                            width: double.infinity,
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                side: const BorderSide(
+                                  color: Colors.red,
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        BlocBuilder<AppCubit, AppState>(
-                          buildWhen: (previous, current) =>
-                              previous.user != current.user,
-                          builder: (context, state) {
-                            return EditProfileForm(
-                              formKey: _formKey,
-                              changePasswordFormKey: _changePasswordFormKey,
-                              user: state.user!,
-                              onImageChanged: (imgUrl) => _imgUrl = imgUrl,
-                              firstNameController: _firstNameController,
-                              lastNameController: _lastNameController,
-                              currentPasswordController:
-                                  _currentPasswordController,
-                              newPasswordController: _newPasswordController,
-                              confirmPasswordController:
-                                  _confirmPasswordController,
-                            );
-                          },
-                        ),
-                        gapH20,
-                        SizedBox(
-                          height: 57.0,
-                          width: double.infinity,
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                color: Colors.red,
-                              ),
-                            ),
-                            onPressed: _onDeleteAccountPressed,
-                            child: Text(
-                              'Delete Account',
-                              style: FTextStyles.button.copyWith(
-                                color: Colors.red,
+                              onPressed: _onDeleteAccountPressed,
+                              child: Text(
+                                'Delete Account',
+                                style: FTextStyles.button.copyWith(
+                                  color: Colors.red,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Sizes.navBarGapH,
-                      ],
+                          Sizes.navBarGapH,
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                gapH32,
-              ],
+                  gapH32,
+                ],
+              ),
             ),
           ),
         ),
@@ -148,12 +156,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     bool? isConfirmed;
     isConfirmed = await showDialog<bool>(
       context: context,
-      builder: (context) {
+      builder: (_) {
         return const FAlertDialog(
             title: 'Are you sure you wan to delete account forever !');
       },
     );
     if (isConfirmed ?? false) {
+      Navigator.pop(context);
       GetIt.I<AppCubit>().deleteUserFromDatabase();
     }
   }

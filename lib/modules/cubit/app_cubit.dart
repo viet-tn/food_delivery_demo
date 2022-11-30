@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../signup/cubit/sign_up_cubit.dart';
 import '../../repositories/auth/auth_repository.dart';
 import '../../repositories/cloud_storage/cloud_storage.dart';
@@ -234,7 +232,14 @@ class AppCubit extends FCubit<AppState> {
   }
 
   void deleteUserFromDatabase() {
-    log('deleted');
+    _authRepository.deleteUser().then((value) {
+      if (value.isError) {
+        emitError(value.error!);
+        return;
+      }
+      signOut();
+    });
+    _userRepository.delete(state.user!.id);
   }
 
   void changePassword(String currentPassword, String newPassword) async {
