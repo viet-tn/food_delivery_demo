@@ -72,7 +72,7 @@ jobs:
         shell: pwsh
         env:
           CI_TOKEN: ${{ secrets.CI_TOKEN }}
-          username: 'viet-t-nguyen'
+          username: 'finn-go-nguyen'
 
       - name: setup firebase cli version v10.9.2
         run: |

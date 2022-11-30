@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../../base/cubit.dart';
+import '../../../base/state.dart';
 import '../../../config/routes/coordinator.dart';
 import '../../../repositories/auth/auth_repository.dart';
 import '../../../repositories/cloud_storage/cloud_storage.dart';
+import '../../../repositories/users/coordinate.dart';
 import '../../../repositories/users/user_model.dart';
 import '../../../repositories/users/user_repository.dart';
-import '../../../base/cubit.dart';
-import '../../../base/state.dart';
 import '../../cubit/app_cubit.dart';
 import '../../login/cubit/login_cubit.dart';
 import '../../login/models/email_input.dart';
@@ -122,12 +123,28 @@ class SignUpCubit extends FCubit<SignUpState> {
     }
   }
 
-  void onSetLocationComplete() {
-    emit(
+  void onSetLocationButtonPressed(double lat, double lon) {
+    emitValue(
       state.copyWith(
-        user: state.user.copyWith(location: 'Not set location'),
+        user: state.user.copyWith(
+          coordinates: <Coordinate>[
+            Coordinate(
+              latitude: lat,
+              longtitude: lon,
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  Future<bool> onSetLocationComplete() async {
+    if (state.user.coordinates.isEmpty) {
+      emitError('Please set your location');
+      emitValue();
+      return false;
+    }
+    return true;
   }
 
   Future<void> onSignUpComplete() async {
@@ -137,10 +154,15 @@ class SignUpCubit extends FCubit<SignUpState> {
     if (result.isError) {
       return emitError(result.error!);
     }
+    emitValue();
 
     GetIt.I<AppCubit>().init(result.data!);
     final loginCubit = GetIt.I<LoginCubit>();
     loginCubit.emitValue(loginCubit.state.copyWith(user: result.data!));
     FCoordinator.showCongratsScreen();
+  }
+
+  void setLocation(String? address) {
+    emitValue(state.copyWith(address: address));
   }
 }

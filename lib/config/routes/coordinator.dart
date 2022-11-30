@@ -17,6 +17,7 @@ import '../../modules/restaurant/restaurant_screen.dart';
 import '../../modules/search/search_screen.dart';
 import '../../modules/signup/screens/fill_bio_screen.dart';
 import '../../modules/signup/screens/fill_payment_screen.dart';
+import '../../modules/signup/screens/map_screen/map_screen.dart';
 import '../../modules/signup/screens/set_location_screen.dart';
 import '../../modules/signup/screens/upload_photo_screen.dart';
 import '../../modules/signup/screens/verification_screen.dart';
@@ -48,6 +49,7 @@ enum Routes {
   restaurant,
   chatDetail,
   search,
+  map,
 }
 
 class FCoordinator {
@@ -70,8 +72,12 @@ class FCoordinator {
     }
   }
 
-  static void pushNamed(String route, {Object? extra}) {
-    return context.pushNamed(route, extra: extra);
+  static void pushNamed(
+    String route, {
+    Object? extra,
+    Map<String, String> params = const <String, String>{},
+  }) {
+    return context.pushNamed(route, extra: extra, params: params);
   }
 
   static Future? push(Route route) {
@@ -288,6 +294,22 @@ final appRouter = GoRouter(
           builder: (_, __) => const SetLocationScreen(),
         ),
       ],
+    ),
+    GoRoute(
+      name: Routes.map.name,
+      path: '/map:lat&:lon',
+      pageBuilder: (_, state) {
+        final lat = double.tryParse(state.params['lat']!);
+        final lon = double.tryParse(state.params['lon']!);
+
+        return MaterialPage(
+          fullscreenDialog: true,
+          child: MapScreen(
+            lat: lat ?? 10.7548026,
+            lon: lon ?? 106.4109718,
+          ),
+        );
+      },
     ),
   ],
 );

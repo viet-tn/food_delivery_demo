@@ -32,23 +32,22 @@ class _SignUpFormState extends State<SignUpForm> {
           previous.password.value != current.password.value,
       builder: (context, state) {
         return Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
           key: _formKey,
           child: Column(
             children: [
               FTextField(
                 labelText: 'Email',
-                iconPath: Assets.icons.message.path,
+                prefixIcon: Image.asset(Assets.icons.message.path),
                 inputType: TextInputType.emailAddress,
                 onChanged: (value) =>
                     context.read<SignUpCubit>().onChangeEmail(value),
                 validator: (value) =>
                     state.email.valid ? null : state.email.error!.toErrorText(),
               ),
-              gapH8,
+              gapH12,
               FTextField(
                 labelText: 'Password',
-                iconPath: Assets.icons.lock.path,
+                prefixIcon: Image.asset(Assets.icons.lock.path),
                 obscureText: true,
                 onChanged: (value) =>
                     context.read<SignUpCubit>().onChangePaswword(value),
@@ -56,10 +55,10 @@ class _SignUpFormState extends State<SignUpForm> {
                     ? null
                     : state.password.error!.toErrorText(),
               ),
-              gapH8,
+              gapH12,
               FTextField(
                 labelText: 'Re-enter Password',
-                iconPath: Assets.icons.lock.path,
+                prefixIcon: Image.asset(Assets.icons.lock.path),
                 obscureText: true,
                 validator: (value) => value == state.password.value
                     ? null
@@ -79,7 +78,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
               gapH32,
               GradientButton(
-                onPresssed: () {
+                onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     widget.onSubmittedCreateAccount
                         ?.call(state.email.value, state.password.value);

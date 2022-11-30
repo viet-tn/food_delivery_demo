@@ -2,6 +2,11 @@
 /// *****************************************************
 ///  FlutterGen
 /// *****************************************************
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal
+
 import 'package:flutter/widgets.dart';
 
 class $AssetsIconsGen {
@@ -71,6 +76,9 @@ class $AssetsIconsGen {
   AssetGenImage get profileNav =>
       const AssetGenImage('assets/icons/profile_nav.png');
 
+  /// File path: assets/icons/search.png
+  AssetGenImage get search => const AssetGenImage('assets/icons/search.png');
+
   /// File path: assets/icons/send.png
   AssetGenImage get send => const AssetGenImage('assets/icons/send.png');
 
@@ -110,6 +118,7 @@ class $AssetsIconsGen {
         pin,
         profile,
         profileNav,
+        search,
         send,
         shoppingBag,
         star,
@@ -128,6 +137,16 @@ class $AssetsImagesGen {
   $AssetsImagesRestaurantsGen get restaurants =>
       const $AssetsImagesRestaurantsGen();
   $AssetsImagesSplashGen get splash => const $AssetsImagesSplashGen();
+}
+
+class $AssetsMapstylesGen {
+  const $AssetsMapstylesGen();
+
+  /// File path: assets/mapstyles/mapstyle_default.json
+  String get mapstyleDefault => 'assets/mapstyles/mapstyle_default.json';
+
+  /// List of all assets
+  List<String> get values => [mapstyleDefault];
 }
 
 class $AssetsImagesBannerGen {
@@ -231,6 +250,7 @@ class Assets {
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsMapstylesGen mapstyles = $AssetsMapstylesGen();
 }
 
 class AssetGenImage {

@@ -1,7 +1,7 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'coordinate.dart';
 
 enum PaymentMethod {
   paypal('assets/images/payment/paypal.png'),
@@ -23,7 +23,7 @@ class FUser extends Equatable {
     this.isVerified,
     this.method,
     this.photo,
-    this.location,
+    this.coordinates = const <Coordinate>[],
   });
 
   final String id;
@@ -34,7 +34,7 @@ class FUser extends Equatable {
   final bool? isVerified;
   final PaymentMethod? method;
   final String? photo;
-  final String? location;
+  final List<Coordinate> coordinates;
 
   static const empty = FUser(id: '');
 
@@ -47,7 +47,7 @@ class FUser extends Equatable {
         isVerified == null ||
         method == null ||
         photo == null ||
-        location == null) {
+        coordinates.isEmpty) {
       return false;
     }
     return true;
@@ -64,7 +64,7 @@ class FUser extends Equatable {
       isVerified,
       method,
       photo,
-      location,
+      coordinates,
     ];
   }
 
@@ -94,7 +94,7 @@ class FUser extends Equatable {
     bool? isVerified,
     PaymentMethod? method,
     String? photo,
-    String? location,
+    List<Coordinate>? coordinates,
   }) {
     return FUser(
       id: id ?? this.id,
@@ -105,7 +105,7 @@ class FUser extends Equatable {
       isVerified: isVerified ?? this.isVerified,
       method: method ?? this.method,
       photo: photo ?? this.photo,
-      location: location ?? this.location,
+      coordinates: coordinates ?? this.coordinates,
     );
   }
 
@@ -119,28 +119,25 @@ class FUser extends Equatable {
       'isVerified': isVerified,
       'method': method?.name,
       'photo': photo,
-      'location': location,
+      'locations': coordinates.map((x) => x.toMap()).toList(),
     };
   }
 
   factory FUser.fromMap(Map<String, dynamic> map) {
     return FUser(
       id: map['id'] as String,
-      email: map['email'] != null ? map['email'] as String : null,
-      phone: map['phone'] != null ? map['phone'] as String : null,
-      firstName: map['firstName'] != null ? map['firstName'] as String : null,
-      lastName: map['lastName'] != null ? map['lastName'] as String : null,
-      isVerified: map['isVerified'] != null ? map['isVerified'] as bool : null,
-      method: map['method'] != null
-          ? PaymentMethod.values.byName(map['method'])
-          : null,
+      email: map['email'],
+      phone: map['phone'],
+      firstName: map['firstName'],
+      lastName: map['lastName'],
+      isVerified: map['isVerified'],
+      method: PaymentMethod.values.byName(map['method']),
       photo: map['photo'] != null ? map['photo'] as String : null,
-      location: map['location'] != null ? map['location'] as String : null,
+      coordinates: List<Coordinate>.from(
+        (map['locations'] as List<int>).map<Coordinate>(
+          (x) => Coordinate.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory FUser.fromJson(String source) =>
-      FUser.fromMap(json.decode(source) as Map<String, dynamic>);
 }

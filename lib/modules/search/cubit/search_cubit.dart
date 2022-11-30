@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:algolia_helper_flutter/algolia_helper_flutter.dart' as algolia;
 
+import '../../../base/cubit.dart';
+import '../../../base/state.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../repositories/search/hits_page.dart';
 import '../../../repositories/search/search_repository.dart';
-import '../../../base/cubit.dart';
-import '../../../base/state.dart';
 
 part 'search_state.dart';
 

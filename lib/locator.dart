@@ -1,3 +1,4 @@
+import 'package:dart_geohash/dart_geohash.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,8 +19,10 @@ import 'modules/login/cubit/login_cubit.dart';
 import 'modules/restaurant/cubit/restaurant_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
 import 'modules/signup/cubit/sign_up_cubit.dart';
+import 'modules/signup/screens/map_screen/cubit/map_screen_cubit.dart';
 import 'repositories/domain_manager.dart';
 import 'utils/services/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 Future<void> initializeApp() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +39,7 @@ Future<void> initializeApp() async {
 
   // Set true to disable verification for testing
   await FirebaseAuth.instance
-      .setSettings(appVerificationDisabledForTesting: false);
+      .setSettings(appVerificationDisabledForTesting: true);
 
   // Remove '#' sign in url
   usePathUrlStrategy();
@@ -48,6 +51,8 @@ Future<void> initializeApp() async {
 }
 
 Future<void> _locator() async {
+  GetIt.I.registerLazySingleton(() => http.Client());
+
   final sharedPreferences = await SharedPreferences.getInstance();
   GetIt.I.registerLazySingleton<FSharedPreferences>(
     () => FSharedPreferences(sharedPreferences),
@@ -125,5 +130,16 @@ Future<void> _locator() async {
     () => SearchCubit(
       searchRepository: DomainManager().searchRepository,
     )..init(),
+  );
+  GetIt.I.registerFactory<MapScreenCubit>(
+    () => MapScreenCubit(
+      geocodingRepository: DomainManager().geocodingRepository,
+      placesSearchRepository: DomainManager().placesSearchRepository,
+    ),
+  );
+
+  // External services
+  GetIt.I.registerLazySingleton<GeoHasher>(
+    () => GeoHasher(),
   );
 }

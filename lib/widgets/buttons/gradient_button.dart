@@ -5,7 +5,7 @@ import '../../constants/ui/colors.dart';
 class GradientButton extends StatelessWidget {
   const GradientButton({
     super.key,
-    this.onPresssed,
+    this.onPressed,
     this.gradient = FColors.linearGradient,
     this.borderRadius = 15.0,
     this.height = 57.0,
@@ -14,7 +14,7 @@ class GradientButton extends StatelessWidget {
     required this.child,
   });
 
-  final VoidCallback? onPresssed;
+  final VoidCallback? onPressed;
   final Gradient gradient;
   final Color splashColor = const Color.fromRGBO(31, 95, 77, 1);
   final double borderRadius;
@@ -37,7 +37,7 @@ class GradientButton extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: onPresssed,
+            onTap: onPressed,
             borderRadius: BorderRadius.circular(borderRadius),
             splashColor: splashColor,
             child: Center(

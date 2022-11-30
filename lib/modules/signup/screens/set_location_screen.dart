@@ -14,8 +14,11 @@ class SetLocationScreen extends StatelessWidget {
     return ListenError<SignUpCubit>(
       child: SignUpFlowScreen(
         onNextPressed: () async {
-          context.read<SignUpCubit>().onSetLocationComplete();
-          await context.read<SignUpCubit>().onSignUpComplete();
+          context.read<SignUpCubit>().onSetLocationComplete().then(
+            (success) {
+              success ? context.read<SignUpCubit>().onSignUpComplete() : null;
+            },
+          );
         },
         title: 'Set Your Location ',
         subTitle:

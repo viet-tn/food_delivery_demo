@@ -1,3 +1,5 @@
+import 'package:get_it/get_it.dart';
+
 import 'auth/auth_repository.dart';
 import 'auth/firebase_auth_repository.dart';
 import 'cart/cart_repository.dart';
@@ -12,6 +14,10 @@ import 'favorite/favorite_list_repository.dart';
 import 'favorite/favorite_list_repository_impl.dart';
 import 'food/food_repository.dart';
 import 'food/food_repository_impl.dart';
+import 'maps/geocoding/geocoding_repository.dart';
+import 'maps/geocoding/google_geocoding_repository.dart';
+import 'maps/search/google_places_search_repository.dart';
+import 'maps/search/places_search_repository.dart';
 import 'restaurants/restaurant_repository.dart';
 import 'restaurants/restaurant_repository_impl.dart';
 import 'search/algolia_search_repository.dart';
@@ -31,6 +37,8 @@ class DomainManager {
     messageRepository = MessageRepositoryImpl();
     searchRepository = AlgoliaSearchRepository();
     cloudStorage = const FirebaseCloudStorage();
+    geocodingRepository = GoogleGeocodingRepository(GetIt.I());
+    placesSearchRepository = GooglePlacesSearchRepository(GetIt.I());
   }
   static final DomainManager _instance = DomainManager._();
 
@@ -48,4 +56,6 @@ class DomainManager {
   late MessageRepository messageRepository;
   late SearchRepository searchRepository;
   late CloudStorage cloudStorage;
+  late GeocodingRepository geocodingRepository;
+  late PlacesSearchRepository placesSearchRepository;
 }

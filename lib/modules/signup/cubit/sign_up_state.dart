@@ -8,12 +8,14 @@ class SignUpState extends FState {
     this.password = const SignUpPasswordInput.pure(),
     this.user = FUser.empty,
     this.verificationId,
+    this.address,
   });
 
   final EmailInput email;
   final SignUpPasswordInput password;
   final FUser user;
   final String? verificationId;
+  final String? address;
 
   @override
   List<Object?> get props => [
@@ -22,6 +24,7 @@ class SignUpState extends FState {
         password,
         user,
         verificationId,
+        address,
       ];
 
   @override
@@ -32,6 +35,7 @@ class SignUpState extends FState {
     SignUpPasswordInput? password,
     FUser? user,
     String? verificationId,
+    String? address,
   }) {
     return SignUpState(
       status: status ?? this.status,
@@ -40,6 +44,7 @@ class SignUpState extends FState {
       password: password ?? this.password,
       user: user ?? this.user,
       verificationId: verificationId ?? this.verificationId,
+      address: address ?? this.address,
     );
   }
 }

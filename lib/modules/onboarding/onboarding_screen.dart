@@ -103,7 +103,7 @@ class OnboardingView extends StatelessWidget {
                 height: 57.0,
                 width: 157.0,
                 child: GradientButton(
-                  onPresssed: onButtonPressed,
+                  onPressed: onButtonPressed,
                   child: const Text(
                     'Next',
                     style: FTextStyles.button,

@@ -131,7 +131,7 @@ class AddToCartButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: GradientButton(
-        onPresssed:
+        onPressed:
             isAdded ? () => FCoordinator.goNamed(Routes.cart.name) : onPressed,
         height: 70.0,
         width: double.infinity,
