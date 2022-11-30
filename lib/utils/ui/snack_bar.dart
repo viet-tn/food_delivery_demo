@@ -4,7 +4,7 @@ import '../../app.dart';
 import '../../constants/ui/text_style.dart';
 
 class FSnackBar {
-  static void showSnackBar(String? text) {
+  static void showSnackBar(String? text, [Color color = Colors.red]) {
     if (text == null) return;
 
     final snackBar = SnackBar(
@@ -12,7 +12,7 @@ class FSnackBar {
         text,
         style: FTextStyles.errorMessage,
       ),
-      backgroundColor: Colors.red,
+      backgroundColor: color,
     );
 
     MyApp.messengerKey.currentState!

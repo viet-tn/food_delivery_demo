@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import '../../../repositories/domain_manager.dart';
 import '../../../modules/profile/widgets/change_password_section.dart';
 
 import '../../../config/routes/coordinator.dart';
@@ -130,12 +131,18 @@ class _EditProfileFormState extends State<EditProfileForm> {
               },
             ),
             gapH20,
-            ChangePasswordSection(
-              formKey: widget.changePasswordFormKey,
-              currentPasswordController: widget.currentPasswordController,
-              newPasswordController: widget.newPasswordController,
-              confirmPasswordController: widget.confirmPasswordController,
-            )
+            DomainManager()
+                        .authRepository
+                        .getUserProviderIds()
+                        ?.contains('password') ??
+                    false
+                ? ChangePasswordSection(
+                    formKey: widget.changePasswordFormKey,
+                    currentPasswordController: widget.currentPasswordController,
+                    newPasswordController: widget.newPasswordController,
+                    confirmPasswordController: widget.confirmPasswordController,
+                  )
+                : const SizedBox()
           ],
         ),
       ),

@@ -198,4 +198,15 @@ class FirebaseAuthRepository implements AuthRepository {
       return FResult.exception(e);
     }
   }
+
+  @override
+  List<String>? getUserProviderIds() {
+    try {
+      final providerData = FirebaseAuth.instance.currentUser!.providerData;
+      log(providerData.toString());
+      return providerData.map((e) => e.providerId).toList();
+    } catch (e) {
+      return null;
+    }
+  }
 }

@@ -212,7 +212,7 @@ class AppCubit extends FCubit<AppState> {
     emitValue(state.copyWith(user: user));
   }
 
-  void updateUserToDatabase([String? imgUrl]) async {
+  Future<void> updateUserToDatabase([String? imgUrl]) async {
     emitLoading();
     FUser? update;
 

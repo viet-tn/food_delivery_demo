@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../utils/ui/loading_screen.dart';
+import '../../utils/ui/snack_bar.dart';
 import '../../config/routes/coordinator.dart';
 import '../../widgets/buttons/gradient_button.dart';
 import '../../widgets/dialogs/alert_dialog.dart';
@@ -53,102 +55,118 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AppCubit, AppState>(
+    return BlocConsumer<AppCubit, AppState>(
       listenWhen: (_, current) => current.user == null,
       listener: (context, state) {
         FCoordinator.goNamed(Routes.logIn.name);
       },
-      child: WillPopScope(
-        onWillPop: _onBackButtonPressed,
-        child: ListenError<AppCubit>(
-          child: FScaffold(
-            centerBottomButton: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: GradientButton(
-                width: double.infinity,
-                onPressed: _onChangeInfomationPressed,
-                child: const Text(
-                  'Change Infomation',
-                  style: FTextStyles.button,
+      buildWhen: (previous, current) => previous.status != current.status,
+      builder: (context, state) {
+        return WillPopScope(
+          onWillPop: _onBackButtonPressed,
+          child: ListenError<AppCubit>(
+            child: LoadingScreen(
+              isLoading: state.status.isLoading,
+              child: FScaffold(
+                centerBottomButton: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: GradientButton(
+                    width: double.infinity,
+                    onPressed: _onChangeInfomationPressed,
+                    child: const Text(
+                      'Change Infomation',
+                      style: FTextStyles.button,
+                    ),
+                  ),
+                ),
+                body: SizedBox.expand(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          padding: Ui.screenPadding,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          child: Column(
+                            children: [
+                              SizedBox.fromSize(
+                                size: const Size.fromHeight(60.0),
+                                child: Stack(
+                                  alignment: Alignment.centerLeft,
+                                  children: [
+                                    FBackButton(
+                                      onPressed: () async {
+                                        final isDisCarded =
+                                            await _onBackButtonPressed();
+                                        if (isDisCarded) {
+                                          FCoordinator.onBack();
+                                        }
+                                      },
+                                    ),
+                                    const Center(
+                                      child: Text(
+                                        'Edit Profile',
+                                        style: FTextStyles.heading3,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              BlocBuilder<AppCubit, AppState>(
+                                buildWhen: (previous, current) =>
+                                    previous.user != current.user,
+                                builder: (context, state) {
+                                  return EditProfileForm(
+                                    formKey: _formKey,
+                                    changePasswordFormKey:
+                                        _changePasswordFormKey,
+                                    user: state.user!,
+                                    onImageChanged: (imgUrl) =>
+                                        _imgUrl = imgUrl,
+                                    firstNameController: _firstNameController,
+                                    lastNameController: _lastNameController,
+                                    currentPasswordController:
+                                        _currentPasswordController,
+                                    newPasswordController:
+                                        _newPasswordController,
+                                    confirmPasswordController:
+                                        _confirmPasswordController,
+                                  );
+                                },
+                              ),
+                              gapH20,
+                              SizedBox(
+                                height: 57.0,
+                                width: double.infinity,
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    side: const BorderSide(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  onPressed: _onDeleteAccountPressed,
+                                  child: Text(
+                                    'Delete Account',
+                                    style: FTextStyles.button.copyWith(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Sizes.navBarGapH,
+                            ],
+                          ),
+                        ),
+                      ),
+                      gapH32,
+                    ],
+                  ),
                 ),
               ),
             ),
-            body: SizedBox.expand(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: Ui.screenPadding,
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
-                      child: Column(
-                        children: [
-                          SizedBox.fromSize(
-                            size: const Size.fromHeight(60.0),
-                            child: Stack(
-                              alignment: Alignment.centerLeft,
-                              children: [
-                                FBackButton(
-                                    onPressed: Navigator.of(context).pop),
-                                const Center(
-                                  child: Text(
-                                    'Edit Profile',
-                                    style: FTextStyles.heading3,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          BlocBuilder<AppCubit, AppState>(
-                            buildWhen: (previous, current) =>
-                                previous.user != current.user,
-                            builder: (context, state) {
-                              return EditProfileForm(
-                                formKey: _formKey,
-                                changePasswordFormKey: _changePasswordFormKey,
-                                user: state.user!,
-                                onImageChanged: (imgUrl) => _imgUrl = imgUrl,
-                                firstNameController: _firstNameController,
-                                lastNameController: _lastNameController,
-                                currentPasswordController:
-                                    _currentPasswordController,
-                                newPasswordController: _newPasswordController,
-                                confirmPasswordController:
-                                    _confirmPasswordController,
-                              );
-                            },
-                          ),
-                          gapH20,
-                          SizedBox(
-                            height: 57.0,
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(
-                                  color: Colors.red,
-                                ),
-                              ),
-                              onPressed: _onDeleteAccountPressed,
-                              child: Text(
-                                'Delete Account',
-                                style: FTextStyles.button.copyWith(
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Sizes.navBarGapH,
-                        ],
-                      ),
-                    ),
-                  ),
-                  gapH32,
-                ],
-              ),
-            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -162,7 +180,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       },
     );
     if (isConfirmed ?? false) {
-      Navigator.pop(context);
+      FCoordinator.onBack();
       GetIt.I<AppCubit>().deleteUserFromDatabase();
     }
   }
@@ -172,7 +190,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     isDiscarded = await showDialog<bool>(
       context: context,
       builder: (context) {
-        return const FAlertDialog(title: 'Your changes will be discard?');
+        return const FAlertDialog(
+            title: 'Any unsaved changes will be discarded ?');
       },
     );
     if (isDiscarded ?? false) {
@@ -210,10 +229,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         );
 
     // return if not change anything
-    if (update == GetIt.I<AppCubit>().state.user! && _imgUrl != null) return;
+    if (update == GetIt.I<AppCubit>().state.user! && _imgUrl == null) return;
 
     _appCubit.updateUserState(update);
-    await Future.delayed(const Duration());
-    _appCubit.updateUserToDatabase(_imgUrl);
+    await _appCubit.updateUserToDatabase(_imgUrl);
+    FSnackBar.showSnackBar(
+      'Saved',
+      Colors.black87,
+    );
   }
 }
