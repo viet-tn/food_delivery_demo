@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/config/routes/coordinator.dart';
+import 'package:food_delivery/widgets/buttons/text_button.dart';
 
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
@@ -53,19 +55,29 @@ class _LoginFormState extends State<LoginForm> {
                     ? null
                     : state.password.error!.toErrorText(),
               ),
-              gapH32,
+              Align(
+                alignment: Alignment.centerRight,
+                child: FTextButton(
+                  text: 'Forgot Password?',
+                  onPressed: () {
+                    FCoordinator.pushNamed(Routes.forgotPassword.name);
+                  },
+                ),
+              ),
               GradientButton(
+                width: double.infinity,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     widget.onSubmittedEmailAndPassword
                         ?.call(state.email.value, state.password.value);
                   }
                 },
-                child: const Text(
-                  'Next',
-                  style: FTextStyles.button,
+                child: Text(
+                  'Log In',
+                  style: FTextStyles.button.copyWith(fontSize: 16.0),
                 ),
               ),
+              gapH12,
             ],
           ),
         );

@@ -9,6 +9,7 @@ class DropShadow extends StatelessWidget {
     this.borderRadius = Ui.borderRadius,
     this.elevation = 10.0,
     this.shadowColor = FColors.shadow,
+    this.color,
     required this.child,
   });
 
@@ -16,11 +17,13 @@ class DropShadow extends StatelessWidget {
   final double elevation;
   final Color shadowColor;
   final Widget child;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       borderRadius: borderRadius,
+      color: color,
       elevation: elevation,
       shadowColor: shadowColor,
       child: child,

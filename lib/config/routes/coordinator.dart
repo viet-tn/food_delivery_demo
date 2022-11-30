@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:food_delivery/modules/forgot_password/email_sent_screen.dart';
+import 'package:food_delivery/modules/forgot_password/forgot_password_screen.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -50,6 +52,8 @@ enum Routes {
   chatDetail,
   search,
   map,
+  forgotPassword,
+  resetPasswordEmailSent,
 }
 
 class FCoordinator {
@@ -257,6 +261,20 @@ final appRouter = GoRouter(
         }
         return null;
       },
+      routes: [
+        GoRoute(
+          name: Routes.forgotPassword.name,
+          path: 'forgot',
+          builder: (_, __) => const ForgotPasswordScreen(),
+          routes: [
+            GoRoute(
+              name: Routes.resetPasswordEmailSent.name,
+              path: 'sent',
+              builder: (_, __) => const EmailSentScreen(),
+            ),
+          ],
+        ),
+      ],
     ),
     GoRoute(
       name: Routes.congrats.name,

@@ -28,6 +28,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/edit.png
   AssetGenImage get edit => const AssetGenImage('assets/icons/edit.png');
 
+  /// File path: assets/icons/email.png
+  AssetGenImage get email => const AssetGenImage('assets/icons/email.png');
+
   /// File path: assets/icons/facebook-icon.png
   AssetGenImage get facebookIcon =>
       const AssetGenImage('assets/icons/facebook-icon.png');
@@ -104,6 +107,7 @@ class $AssetsIconsGen {
         chat,
         congrats,
         edit,
+        email,
         facebookIcon,
         filter,
         gallery,
