@@ -1,21 +1,21 @@
-import '../signup/cubit/sign_up_cubit.dart';
-import '../../repositories/auth/auth_repository.dart';
-import '../../repositories/cloud_storage/cloud_storage.dart';
-import '../../repositories/users/user_repository.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../repositories/cart/mutable_cart.dart';
 import '../../base/cubit.dart';
 import '../../base/state.dart';
+import '../../repositories/auth/auth_repository.dart';
 import '../../repositories/cart/cart_model.dart';
 import '../../repositories/cart/cart_repository.dart';
 import '../../repositories/cart/item_model.dart';
+import '../../repositories/cloud_storage/cloud_storage.dart';
 import '../../repositories/favorite/favorite_list_model.dart';
 import '../../repositories/favorite/favorite_list_repository.dart';
 import '../../repositories/food/food_model.dart';
 import '../../repositories/food/food_repository.dart';
 import '../../repositories/users/user_model.dart';
+import '../../repositories/users/user_repository.dart';
 import '../login/cubit/login_cubit.dart';
+import '../signup/cubit/sign_up_cubit.dart';
 
 part 'app_state.dart';
 

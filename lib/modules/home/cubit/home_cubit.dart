@@ -16,7 +16,7 @@ class HomeCubit extends FCubit<HomeState> {
         super(const HomeState());
 
   void init() async {
-    await fetchFistFoodBatch();
+    await fetchFistPopularFoodBatch();
     await fetchNearestRestaurant();
     emitValue();
   }
@@ -25,7 +25,7 @@ class HomeCubit extends FCubit<HomeState> {
   final FoodRepository _foodRepository;
 
   Future<void> fetchNearestRestaurant() async {
-    final result = await _restaurantRepository.fetchNearestRestaurant();
+    final result = await _restaurantRepository.fetchNearestRestaurants();
 
     if (result.isError) {
       emitError(result.error!);
@@ -35,22 +35,12 @@ class HomeCubit extends FCubit<HomeState> {
     emit(state.copyWith(restaurants: result.data!));
   }
 
-  Future<void> fetchFistFoodBatch() async {
+  Future<void> fetchFistPopularFoodBatch() async {
     final result = await _foodRepository.fetchFoods(null, 5);
     if (result.isError) {
       return emitError(result.error!);
     }
     return emit(state.copyWith(
-      foods: [...state.foods, ...result.data!],
-    ));
-  }
-
-  Future<void> fetchNextFoodBatch() async {
-    final result = await _foodRepository.fetchFoods(state.foods.last);
-    if (result.isError) {
-      return emitError(result.error!);
-    }
-    return emitValue(state.copyWith(
       foods: [...state.foods, ...result.data!],
     ));
   }

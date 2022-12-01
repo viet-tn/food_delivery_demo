@@ -8,44 +8,12 @@ import 'home_banner_section.dart';
 import 'nearest_restaurant_section.dart';
 import 'popular_food_section.dart';
 
-class HomeBody extends StatefulWidget {
+class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
-
-  @override
-  State<HomeBody> createState() => _HomeBodyState();
-}
-
-class _HomeBodyState extends State<HomeBody> {
-  late ScrollController _scrollController;
-  var preventCall = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController()
-      ..addListener(() async {
-        double currentScroll = _scrollController.position.pixels;
-        double maxScroll = _scrollController.position.maxScrollExtent;
-        const fetchOffset = 400.0;
-        if (currentScroll > maxScroll - fetchOffset && !preventCall) {
-          // 200 is offset
-          preventCall = true;
-          await context.read<HomeCubit>().fetchNextFoodBatch();
-          preventCall = false;
-        }
-      });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      controller: _scrollController,
       child: SizedBox(
         child: Column(
           children: [
@@ -84,7 +52,6 @@ class _HomeBodyState extends State<HomeBody> {
                 );
               },
             ),
-            Sizes.navBarGapH,
           ],
         ),
       ),

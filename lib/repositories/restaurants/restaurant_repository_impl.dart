@@ -21,13 +21,33 @@ class RestaurantRepositoryImpl extends BaseCollectionReference<FRestaurant>
         );
 
   @override
-  Future<FResult<List<FRestaurant>>> fetchNearestRestaurant(
-      [int limit = 5]) async {
+  Future<FResult<List<FRestaurant>>> fetchNearestRestaurants(
+      [FRestaurant? restaurant, int limit = 5]) async {
     try {
-      final querySnapshot = await ref.limit(limit).get();
+      late QuerySnapshot<FRestaurant> querySnapshot;
+      if (restaurant == null) {
+        querySnapshot = await ref.orderBy('name').limit(limit).get();
+      } else {
+        final documentSnapshot = await ref
+            .where('id', isEqualTo: restaurant.id)
+            .get()
+            .then((value) => value.docs.isNotEmpty ? value.docs.first : null);
+
+        if (documentSnapshot == null) {
+          return FResult.success(const <FRestaurant>[]);
+        }
+        querySnapshot = await ref
+            .orderBy('name')
+            .startAfterDocument(documentSnapshot)
+            .limit(limit)
+            .get();
+      }
+      if (querySnapshot.docs.isEmpty) {
+        return FResult.success(const <FRestaurant>[]);
+      }
       return FResult.success(querySnapshot.docs.map((e) => e.data()).toList());
     } catch (e) {
-      return FResult.exception(e.runtimeType.toString());
+      return FResult.exception(e);
     }
   }
 }

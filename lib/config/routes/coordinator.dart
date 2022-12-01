@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import '../../modules/home/screens/foods_screen.dart';
+import '../../modules/home/screens/restaurants_screen.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -54,6 +56,8 @@ enum Routes {
   map,
   forgotPassword,
   resetPasswordEmailSent,
+  foods,
+  restaurants,
 }
 
 class FCoordinator {
@@ -199,6 +203,18 @@ final appRouter = GoRouter(
               pageBuilder: (_, __) => const NoTransitionPage(
                 child: SearchScreen(),
               ),
+            ),
+            GoRoute(
+              path: 'restaurants',
+              name: Routes.restaurants.name,
+              parentNavigatorKey: FCoordinator.navigatorKey,
+              builder: (_, __) => RestaurantsScreen(),
+            ),
+            GoRoute(
+              path: 'foods',
+              name: Routes.foods.name,
+              parentNavigatorKey: FCoordinator.navigatorKey,
+              builder: (_, __) => const FoodsScreen(),
             ),
           ],
         ),

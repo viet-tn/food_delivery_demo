@@ -1,0 +1,36 @@
+import 'package:flutter/material.dart';
+import 'buttons/back_button.dart';
+
+import '../constants/ui/text_style.dart';
+
+class FAppBar extends StatelessWidget {
+  const FAppBar({
+    super.key,
+    required this.title,
+    this.onPressed,
+  });
+
+  final String title;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.fromSize(
+      size: const Size.fromHeight(60.0),
+      child: Stack(
+        alignment: Alignment.centerLeft,
+        children: [
+          FBackButton(
+            onPressed: onPressed,
+          ),
+          Center(
+            child: Text(
+              title,
+              style: FTextStyles.heading3,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
