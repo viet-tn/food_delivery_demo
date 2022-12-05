@@ -27,7 +27,7 @@ class ChatCubit extends FCubit<ChatState> {
       (event) {
         emitValue(
           state.copyWith(
-            chats: event
+            chats: event.toList()
               ..sort(
                 (a, b) => a.lastestMessage.timeStamp
                     .compareTo(b.lastestMessage.timeStamp),

@@ -1,181 +1,241 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../utils/ui/loading_screen.dart';
+import '../../utils/ui/snack_bar.dart';
+import '../../config/routes/coordinator.dart';
+import '../../widgets/buttons/gradient_button.dart';
+import '../../widgets/dialogs/alert_dialog.dart';
+import 'package:get_it/get_it.dart';
 
-import '../../constants/ui/colors.dart';
 import '../../constants/ui/sizes.dart';
 import '../../constants/ui/text_style.dart';
 import '../../constants/ui/ui_parameters.dart';
 import '../../repositories/users/user_model.dart';
-import '../../utils/helpers/image_converter.dart';
+import '../../utils/ui/forms/edit_profile_form.dart';
 import '../../utils/ui/listen_error.dart';
 import '../../utils/ui/scaffold.dart';
 import '../../widgets/buttons/back_button.dart';
-import '../../widgets/textfield/text_field.dart';
 import '../cubit/app_cubit.dart';
 
-class EditProfileScreen extends StatelessWidget {
+class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ListenError<AppCubit>(
-      child: FScaffold(
-        body: SizedBox.expand(
-          child: Column(
-            children: [
-              SizedBox.fromSize(
-                size: const Size.fromHeight(60.0),
-                child: Stack(
-                  alignment: Alignment.centerLeft,
-                  children: [
-                    FBackButton(onPressed: Navigator.of(context).pop),
-                    const Center(
-                      child: Text(
-                        'Edit Profile',
-                        style: FTextStyles.heading3,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Expanded(
-                child: SingleChildScrollView(
-                  padding: Ui.screenPadding,
-                  child: EditProfileForm(),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class EditProfileForm extends StatelessWidget {
-  const EditProfileForm({super.key});
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  final _appCubit = GetIt.I<AppCubit>();
+  late final FUser _user = _appCubit.state.user!;
+  late final TextEditingController _firstNameController;
+  late final TextEditingController _lastNameController;
+  late final _currentPasswordController = TextEditingController();
+  late final _newPasswordController = TextEditingController();
+  late final _confirmPasswordController = TextEditingController();
+  String? _imgUrl;
+  final _formKey = GlobalKey<FormState>();
+  final _changePasswordFormKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _firstNameController = TextEditingController(text: _user.firstName);
+    _lastNameController = TextEditingController(text: _user.lastName);
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _currentPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AppCubit, AppState, FUser>(
-      // [state.user] cannot null because of [_init] function in cubit
-      selector: (state) => state.user!,
+    return BlocConsumer<AppCubit, AppState>(
+      listenWhen: (_, current) => current.user == null,
+      listener: (context, state) {
+        FCoordinator.goNamed(Routes.logIn.name);
+      },
+      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return SizedBox(
-          width: double.infinity,
-          child: Form(
-            child: Column(
-              children: [
-                ChangeAvatar(
-                  image:
-                      ImageConverter.imageFromBase64String(state.photo!).image,
-                ),
-                gapH48,
-                FTextField(
-                  enabled: false,
-                  labelText: 'Email',
-                  initialValue: state.email,
-                  textStyle: FTextStyles.body.copyWith(color: Colors.grey),
-                ),
-                gapH32,
-                FTextField(
-                  enabled: false,
-                  labelText: 'Phone number',
-                  initialValue: state.phone,
-                  textStyle: FTextStyles.body.copyWith(color: Colors.grey),
-                ),
-                gapH32,
-                Row(
-                  children: [
-                    Expanded(
-                      child: FTextField(
-                        labelText: 'First name',
-                        initialValue: state.firstName,
-                      ),
+        return WillPopScope(
+          onWillPop: _onBackButtonPressed,
+          child: ListenError<AppCubit>(
+            child: LoadingScreen(
+              isLoading: state.status.isLoading,
+              child: FScaffold(
+                centerBottomButton: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: GradientButton(
+                    width: double.infinity,
+                    onPressed: _onChangeInfomationPressed,
+                    child: const Text(
+                      'Change Infomation',
+                      style: FTextStyles.button,
                     ),
-                    gapW12,
-                    Expanded(
-                      child: FTextField(
-                        labelText: 'Last name',
-                        initialValue: state.lastName,
+                  ),
+                ),
+                body: SizedBox.expand(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          padding: Ui.screenPadding,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          child: Column(
+                            children: [
+                              SizedBox.fromSize(
+                                size: const Size.fromHeight(60.0),
+                                child: Stack(
+                                  alignment: Alignment.centerLeft,
+                                  children: [
+                                    FBackButton(
+                                      onPressed: () async {
+                                        final isDisCarded =
+                                            await _onBackButtonPressed();
+                                        if (isDisCarded) {
+                                          FCoordinator.onBack();
+                                        }
+                                      },
+                                    ),
+                                    const Center(
+                                      child: Text(
+                                        'Edit Profile',
+                                        style: FTextStyles.heading3,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              BlocBuilder<AppCubit, AppState>(
+                                buildWhen: (previous, current) =>
+                                    previous.user != current.user,
+                                builder: (context, state) {
+                                  return EditProfileForm(
+                                    formKey: _formKey,
+                                    changePasswordFormKey:
+                                        _changePasswordFormKey,
+                                    user: state.user!,
+                                    onImageChanged: (imgUrl) =>
+                                        _imgUrl = imgUrl,
+                                    firstNameController: _firstNameController,
+                                    lastNameController: _lastNameController,
+                                    currentPasswordController:
+                                        _currentPasswordController,
+                                    newPasswordController:
+                                        _newPasswordController,
+                                    confirmPasswordController:
+                                        _confirmPasswordController,
+                                  );
+                                },
+                              ),
+                              gapH20,
+                              SizedBox(
+                                height: 57.0,
+                                width: double.infinity,
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    side: const BorderSide(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  onPressed: _onDeleteAccountPressed,
+                                  child: Text(
+                                    'Delete Account',
+                                    style: FTextStyles.button.copyWith(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Sizes.navBarGapH,
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                      gapH32,
+                    ],
+                  ),
                 ),
-                gapH32,
-                const FTextField(
-                  labelText: 'Location',
-                  initialValue: 'Not set location',
-                ),
-                gapH32,
-              ],
+              ),
             ),
           ),
         );
       },
     );
   }
-}
 
-class ChangeAvatar extends StatelessWidget {
-  const ChangeAvatar({
-    super.key,
-    required this.image,
-  });
+  void _onDeleteAccountPressed() async {
+    bool? isConfirmed;
+    isConfirmed = await showDialog<bool>(
+      context: context,
+      builder: (_) {
+        return const FAlertDialog(
+            title: 'Are you sure you wan to delete account forever !');
+      },
+    );
+    if (isConfirmed ?? false) {
+      FCoordinator.onBack();
+      GetIt.I<AppCubit>().deleteUserFromDatabase();
+    }
+  }
 
-  final ImageProvider<Object> image;
+  Future<bool> _onBackButtonPressed() async {
+    bool? isDiscarded;
+    isDiscarded = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return const FAlertDialog(
+            title: 'Any unsaved changes will be discarded ?');
+      },
+    );
+    if (isDiscarded ?? false) {
+      //TODO: Fetch user from database to AppCubit
+      return true;
+    }
+    return false;
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: 150.0,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: image,
-                fit: BoxFit.cover,
-                onError: (_, __) => const FlutterLogo(size: 150.0),
-              ),
-            ),
-            child: Material(
-              color: Colors.transparent,
-              shape: const CircleBorder(),
-              child: InkWell(
-                onTap: () {},
-                borderRadius: BorderRadius.circular(150.0),
-              ),
-            ),
-          ),
-          Positioned(
-            right: 5.0,
-            bottom: 5.0,
-            child: Container(
-              height: 35.0,
-              width: 35.0,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: Container(
-                margin: const EdgeInsets.all(3.0),
-                decoration: const BoxDecoration(
-                  color: FColors.green,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.photo_camera_outlined,
-                  color: Colors.white,
-                  size: 20.0,
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
+  void _onChangeInfomationPressed() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    final bool hasTypedInChangePasswordSection =
+        _currentPasswordController.text.isNotEmpty ||
+            _newPasswordController.text.isNotEmpty ||
+            _confirmPasswordController.text.isNotEmpty;
+
+    if (hasTypedInChangePasswordSection &&
+        !_changePasswordFormKey.currentState!.validate()) return;
+
+    if (!_formKey.currentState!.validate()) return;
+
+    if (hasTypedInChangePasswordSection) {
+      _appCubit.changePassword(
+        _currentPasswordController.text,
+        _newPasswordController.text,
+      );
+      _currentPasswordController.clear();
+      _newPasswordController.clear();
+      _confirmPasswordController.clear();
+    }
+
+    final update = GetIt.I<AppCubit>().state.user!.copyWith(
+          firstName: _firstNameController.text,
+          lastName: _lastNameController.text,
+        );
+
+    // return if not change anything
+    if (update == GetIt.I<AppCubit>().state.user! && _imgUrl == null) return;
+
+    _appCubit.updateUserState(update);
+    await _appCubit.updateUserToDatabase(_imgUrl);
+    FSnackBar.showSnackBar(
+      'Saved',
+      Colors.black87,
     );
   }
 }

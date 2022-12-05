@@ -34,6 +34,14 @@ abstract class AuthRepository {
   });
 
   Future<FResult<String>> resetPassword(String email);
+  Future<FResult<String>> changePassword(
+    String currentPassword,
+    String newPassword,
+  );
 
   Future<void> signOut();
+
+  Future<FResult<String>> deleteUser();
+
+  List<String>? getUserProviderIds();
 }

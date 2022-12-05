@@ -168,4 +168,45 @@ class FirebaseAuthRepository implements AuthRepository {
       return FResult.exception(e);
     }
   }
+
+  @override
+  Future<FResult<String>> changePassword(
+    String currentPassword,
+    String newPassword,
+  ) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser!;
+      final cred = EmailAuthProvider.credential(
+        email: user.email!,
+        password: currentPassword,
+      );
+
+      await user.reauthenticateWithCredential(cred);
+      user.updatePassword(newPassword);
+      return FResult.success('');
+    } catch (e) {
+      return FResult.exception(e);
+    }
+  }
+
+  @override
+  Future<FResult<String>> deleteUser() async {
+    try {
+      await FirebaseAuth.instance.currentUser!.delete();
+      return FResult.success('');
+    } catch (e) {
+      return FResult.exception(e);
+    }
+  }
+
+  @override
+  List<String>? getUserProviderIds() {
+    try {
+      final providerData = FirebaseAuth.instance.currentUser!.providerData;
+      log(providerData.toString());
+      return providerData.map((e) => e.providerId).toList();
+    } catch (e) {
+      return null;
+    }
+  }
 }

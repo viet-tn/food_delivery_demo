@@ -25,7 +25,6 @@ class HomeCubit extends FCubit<HomeState> {
   final FoodRepository _foodRepository;
 
   Future<void> fetchNearestRestaurant() async {
-    await Future.delayed(const Duration(seconds: 1));
     final result = await _restaurantRepository.fetchNearestRestaurant();
 
     if (result.isError) {

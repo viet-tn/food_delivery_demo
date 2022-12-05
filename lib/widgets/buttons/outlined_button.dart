@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/constants/ui/colors.dart';
-import 'package:food_delivery/constants/ui/ui_parameters.dart';
 
+import '../../constants/ui/colors.dart';
 import '../../constants/ui/text_style.dart';
+import '../../constants/ui/ui_parameters.dart';
 import '../../utils/ui/drop_shadow.dart';
 
-class FOutlinedIconButton extends StatelessWidget {
-  const FOutlinedIconButton({
+class FOutlinedButton extends StatelessWidget {
+  const FOutlinedButton({
     super.key,
     required this.label,
-    required this.iconPath,
+    this.iconPath,
     this.onPressed,
     this.minHeight = 57.0,
     this.minWidth = 152.0,
@@ -20,7 +20,7 @@ class FOutlinedIconButton extends StatelessWidget {
   });
 
   final String label;
-  final String iconPath;
+  final String? iconPath;
   final VoidCallback? onPressed;
   final double minWidth;
   final double minHeight;
@@ -47,13 +47,15 @@ class FOutlinedIconButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              SizedBox.square(
-                dimension: 26.0,
-                child: Image.asset(
-                  iconPath,
-                  fit: BoxFit.contain,
-                ),
-              ),
+              iconPath == null
+                  ? const SizedBox()
+                  : SizedBox.square(
+                      dimension: 26.0,
+                      child: Image.asset(
+                        iconPath!,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
               Text(
                 label,
                 style: style,

@@ -20,6 +20,7 @@ class AppState extends FState {
   @override
   List<Object?> get props => [
         ...super.props,
+        user,
         favoriteList,
         cart,
         favoriteFoodList,

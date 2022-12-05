@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubit/sign_up_cubit.dart';
-import '../../../config/routes/coordinator.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../../constants/ui/colors.dart';
@@ -12,7 +9,16 @@ import '../../../gen/assets.gen.dart';
 import '../../../utils/ui/drop_shadow.dart';
 
 class LocationSelector extends StatelessWidget {
-  const LocationSelector({super.key});
+  const LocationSelector({
+    super.key,
+    this.buttonLabel,
+    this.address,
+    this.onSetLocationPressed,
+  });
+
+  final String? buttonLabel;
+  final String? address;
+  final void Function(double latitude, double longitude)? onSetLocationPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +35,11 @@ class LocationSelector extends StatelessWidget {
                 Image.asset(Assets.icons.pin.path),
                 gapW16,
                 Expanded(
-                  child: BlocSelector<SignUpCubit, SignUpState, String?>(
-                    selector: (state) => state.address,
-                    builder: (context, state) {
-                      return Text(
-                        state ?? 'Please choose your address.',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: FTextStyles.buttonBlack,
-                      );
-                    },
+                  child: Text(
+                    address ?? 'Please choose your address.',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: FTextStyles.buttonBlack,
                   ),
                 ),
               ],
@@ -54,15 +55,15 @@ class LocationSelector extends StatelessWidget {
                 child: InkWell(
                   onTap: () async {
                     final position = await _determinePosition();
-                    FCoordinator.pushNamed(Routes.map.name, params: {
-                      'lat': position.latitude.toStringAsFixed(15),
-                      'lon': position.longitude.toStringAsFixed(15),
-                    });
+                    onSetLocationPressed?.call(
+                      position.latitude,
+                      position.longitude,
+                    );
                   },
                   borderRadius: Ui.borderRadius,
-                  child: const Center(
+                  child: Center(
                     child: Text(
-                      'Set Location',
+                      buttonLabel ?? 'Set Location',
                       style: FTextStyles.buttonBlack,
                     ),
                   ),

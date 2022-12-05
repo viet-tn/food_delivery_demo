@@ -1,9 +1,8 @@
-import '../../../../../repositories/maps/search/place_model.dart';
-import '../../../../../repositories/maps/search/places_search_repository.dart';
-
 import '../../../../../base/cubit.dart';
 import '../../../../../base/state.dart';
 import '../../../../../repositories/maps/geocoding/geocoding_repository.dart';
+import '../../../../../repositories/maps/search/place_model.dart';
+import '../../../../../repositories/maps/search/places_search_repository.dart';
 
 part 'map_screen_state.dart';
 

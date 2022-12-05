@@ -8,6 +8,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../constants/ui/ui_parameters.dart';
 import '../../../../gen/assets.gen.dart';
+import '../../../../repositories/users/coordinate.dart';
+import '../../../cubit/app_cubit.dart';
 import '../../cubit/sign_up_cubit.dart';
 import 'cubit/map_screen_cubit.dart';
 import 'widgets/address_search_bar.dart';
@@ -18,10 +20,12 @@ class MapScreen extends StatefulWidget {
     super.key,
     required this.lat,
     required this.lon,
+    this.isSigningUp = false,
   });
 
   final double lat;
   final double lon;
+  final bool isSigningUp;
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -93,10 +97,22 @@ class _MapScreenState extends State<MapScreen> {
                     return SetLocationButton(
                       isLoading: state.status.isLoading,
                       onPressed: () {
-                        context
-                            .read<SignUpCubit>()
-                            .onSetLocationButtonPressed(state.lat!, state.lon!);
-                        context.read<SignUpCubit>().setLocation(state.address);
+                        widget.isSigningUp
+                            ? context
+                                .read<SignUpCubit>()
+                                .onSetLocationButtonPressed(
+                                    state.lat!, state.lon!, state.address!)
+                            : context.read<AppCubit>().updateUserState(
+                                  context.read<AppCubit>().state.user!.copyWith(
+                                    coordinates: [
+                                      Coordinate(
+                                        latitude: state.lat!,
+                                        longtitude: state.lon!,
+                                        address: state.address!,
+                                      )
+                                    ],
+                                  ),
+                                );
                         Navigator.pop(context);
                       },
                       location: state.address,

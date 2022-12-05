@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:food_delivery/modules/forgot_password/email_sent_screen.dart';
-import 'package:food_delivery/modules/forgot_password/forgot_password_screen.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,6 +8,8 @@ import '../../modules/cart/cart_screen.dart';
 import '../../modules/chat/chat_detail/chat_detail_screen.dart';
 import '../../modules/chat/chat_screen.dart';
 import '../../modules/food/food_screen.dart';
+import '../../modules/forgot_password/email_sent_screen.dart';
+import '../../modules/forgot_password/forgot_password_screen.dart';
 import '../../modules/home/home_screen.dart';
 import '../../modules/login/login_screen.dart';
 import '../../modules/onboarding/onboarding_screen.dart';
@@ -315,6 +315,7 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       name: Routes.map.name,
+      parentNavigatorKey: FCoordinator.navigatorKey,
       path: '/map:lat&:lon',
       pageBuilder: (_, state) {
         final lat = double.tryParse(state.params['lat']!);
@@ -325,6 +326,7 @@ final appRouter = GoRouter(
           child: MapScreen(
             lat: lat ?? 10.7548026,
             lon: lon ?? 106.4109718,
+            isSigningUp: (state.extra as bool?) ?? false,
           ),
         );
       },

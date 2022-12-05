@@ -25,7 +25,6 @@ class CartTotalInformation extends StatelessWidget {
     return Padding(
       padding: Ui.screenPaddingHorizontal,
       child: Container(
-        height: 300,
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -38,82 +37,78 @@ class CartTotalInformation extends StatelessWidget {
           vertical: 16.0,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
+            gapH8,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                gapH8,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Sub-Total',
-                      style: FTextStyles.heading5.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      '${subTotal.toInt()} \$',
-                      style: FTextStyles.heading5.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+                Text(
+                  'Sub-Total',
+                  style: FTextStyles.heading5.copyWith(
+                    color: Colors.white,
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Delivery Charge',
-                      style: FTextStyles.heading5.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      '${deliveryCharge.toInt()} \$',
-                      style: FTextStyles.heading5.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+                Text(
+                  '${subTotal.toInt()} \$',
+                  style: FTextStyles.heading5.copyWith(
+                    color: Colors.white,
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Discount',
-                      style: FTextStyles.heading5.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      '${discount.toInt()} \$',
-                      style: FTextStyles.heading5.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                gapH12,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Total',
-                      style: FTextStyles.heading3.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      '${max(0, (subTotal + deliveryCharge - discount).toInt())} \$',
-                      style: FTextStyles.heading3.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Delivery Charge',
+                  style: FTextStyles.heading5.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  '${deliveryCharge.toInt()} \$',
+                  style: FTextStyles.heading5.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Discount',
+                  style: FTextStyles.heading5.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  '${discount.toInt()} \$',
+                  style: FTextStyles.heading5.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            gapH12,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Total',
+                  style: FTextStyles.heading3.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  '${max(0, (subTotal + deliveryCharge - discount).toInt())} \$',
+                  style: FTextStyles.heading3.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
             ConstrainedBox(
               constraints: const BoxConstraints(
                 minHeight: 60.0,
@@ -132,6 +127,7 @@ class CartTotalInformation extends StatelessWidget {
                 ),
               ),
             ),
+            gapH8,
           ],
         ),
       ),
