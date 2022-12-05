@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../config/routes/coordinator.dart';
+import 'package:get_it/get_it.dart';
+
 import '../../base/state.dart';
+import '../../config/routes/coordinator.dart';
 import '../../constants/ui/sizes.dart';
 import '../../constants/ui/ui_parameters.dart';
 import '../../repositories/domain_manager.dart';
-import '../cart/cubit/cart_cubit.dart';
-import '../cart/widgets/cart_total_infomation.dart';
-import 'cubit/payment_cubit.dart';
-import 'widgets/order_summary_section.dart';
-import 'widgets/shipping_address_section.dart';
-import '../cubit/app_cubit.dart';
 import '../../repositories/users/user_model.dart';
 import '../../utils/ui/listen_error.dart';
 import '../../utils/ui/loading_screen.dart';
 import '../../utils/ui/scaffold.dart';
 import '../../widgets/app_bar.dart';
-import 'package:get_it/get_it.dart';
+import '../cart/cubit/cart_cubit.dart';
+import '../cart/widgets/cart_total_infomation.dart';
+import '../cubit/app_cubit.dart';
+import 'cubit/payment_cubit.dart';
+import 'widgets/order_summary_section.dart';
+import 'widgets/shipping_address_section.dart';
 
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({super.key});

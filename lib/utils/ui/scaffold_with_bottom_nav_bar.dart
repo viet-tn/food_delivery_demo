@@ -44,16 +44,10 @@ class ScaffoldWithBottomNavBar extends StatelessWidget {
   }
 
   int _locationToIndex(String location) {
-    switch (location) {
-      case '/profile':
-        return 1;
-      case '/cart':
-        return 2;
-      case '/chat':
-        return 3;
-      default:
-        return 0;
-    }
+    if (location.contains('/profile')) return 1;
+    if (location.contains('/cart')) return 2;
+    if (location.contains('/chat')) return 3;
+    return 0;
   }
 
   void _onItemTapped(int tabIndex) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../repositories/food/food_model.dart';
 
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';
+import '../../../repositories/food/food_model.dart';
 import '../../../utils/ui/network_image.dart';
 
 class BriefOrderCard extends StatelessWidget {
