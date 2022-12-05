@@ -1,12 +1,9 @@
 import 'package:get_it/get_it.dart';
 
-import '../../../repositories/cart/mutable_cart.dart';
 import '../../base/cubit.dart';
 import '../../base/state.dart';
 import '../../repositories/auth/auth_repository.dart';
-import '../../repositories/cart/cart_model.dart';
 import '../../repositories/cart/cart_repository.dart';
-import '../../repositories/cart/item_model.dart';
 import '../../repositories/cloud_storage/cloud_storage.dart';
 import '../../repositories/favorite/favorite_list_model.dart';
 import '../../repositories/favorite/favorite_list_repository.dart';
@@ -28,7 +25,6 @@ class AppCubit extends FCubit<AppState> {
     required UserRepository userRepository,
     required AuthRepository authRepository,
   })  : _favoriteListRepository = favoriteListRepository,
-        _cartRepository = cartRepository,
         _foodRepository = foodRepository,
         _cloudStorage = cloudStorage,
         _userRepository = userRepository,
@@ -36,7 +32,6 @@ class AppCubit extends FCubit<AppState> {
         super(const AppState());
 
   final FavoriteListRepository _favoriteListRepository;
-  final CartRepository _cartRepository;
   final FoodRepository _foodRepository;
   final CloudStorage _cloudStorage;
   final UserRepository _userRepository;
@@ -59,28 +54,11 @@ class AppCubit extends FCubit<AppState> {
       return;
     }
 
-    final cartResult = await _cartRepository.fetchCart();
-
-    if (cartResult.isError) {
-      emitError(cartResult.error!);
-      return;
-    }
-
-    final cartFoodResult = await _foodRepository
-        .fetchFoodsByIds(cartResult.data!.items.keys.toList());
-
-    if (cartFoodResult.isError) {
-      emitError(cartFoodResult.error!);
-      return;
-    }
-
     emitValue(
       state.copyWith(
         user: user,
         favoriteList: favoriteResult.data!,
         favoriteFoodList: favoriteFoodResult.data!,
-        cart: cartResult.data!,
-        cartFoodList: cartFoodResult.data!,
       ),
     );
   }
@@ -146,66 +124,6 @@ class AppCubit extends FCubit<AppState> {
       ),
     );
     return true;
-  }
-
-  /// return true if success otherwise return false
-  Future<bool> addToCart(FFood food) async {
-    emitLoading();
-    final update = state.cart!.addItem(
-      Item(
-        foodId: food.id,
-        quantity: 1,
-      ),
-    );
-
-    final result = await _cartRepository.setCart(update);
-
-    if (result.isError) {
-      emitError(result.error!);
-      return false;
-    }
-
-    emitValue(
-      state.copyWith(
-        cart: update,
-        cartFoodList: [...state.cartFoodList, food],
-      ),
-    );
-    return true;
-  }
-
-  Future<FCart> onCartQuantityChanged(Item item) async {
-    final update = state.cart!.setItem(item);
-    final result = await _cartRepository.setCart(update);
-
-    if (result.isError) {
-      emitError(result.error!);
-      return state.cart!;
-    }
-
-    emitValue(state.copyWith(cart: update));
-    return update;
-  }
-
-  Future<FCart> onCartItemDeleted(String foodId) async {
-    final update = state.cart!.removeItemById(foodId);
-    final result = await _cartRepository.setCart(update);
-
-    if (result.isError) {
-      emitError(result.error!);
-      return state.cart!;
-    }
-
-    final foodList = state.cartFoodList
-      ..removeWhere((food) => food.id == foodId);
-
-    emitValue(
-      state.copyWith(
-        cart: update,
-        cartFoodList: foodList,
-      ),
-    );
-    return update;
   }
 
   void updateUserState(FUser user) {

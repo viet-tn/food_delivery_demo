@@ -3,13 +3,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../../config/routes/coordinator.dart';
 import '../../../utils/ui/listen_error.dart';
 import '../../../utils/ui/loading/food_list_loading.dart';
 import '../../../utils/ui/scaffold.dart';
 import '../../../widgets/app_bar.dart';
-import 'package:get_it/get_it.dart';
-
-import '../../../config/routes/coordinator.dart';
 import '../widgets/food_card.dart';
 import 'cubit/view_more_cubit.dart';
 

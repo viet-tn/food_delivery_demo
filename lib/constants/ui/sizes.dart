@@ -14,6 +14,7 @@ class Sizes {
 
   /// Add space for screen not be covered by navigationbar
   static const navBarGapH = SizedBox(height: 80);
+  static const orderInforGapH = SizedBox(height: 180);
 
   static const restaurantCard = Size(150.0, 180.0);
 

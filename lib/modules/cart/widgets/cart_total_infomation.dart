@@ -14,122 +14,116 @@ class CartTotalInformation extends StatelessWidget {
     required this.subTotal,
     required this.deliveryCharge,
     required this.discount,
+    this.buttonLabel,
+    this.onPressed,
   });
 
   final int subTotal;
   final int deliveryCharge;
   final int discount;
+  final String? buttonLabel;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: Ui.screenPaddingHorizontal,
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(Assets.images.banner.priceInfo.path),
-            fit: BoxFit.fitWidth,
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        borderRadius: Ui.borderRadius,
+        image: DecorationImage(
+          image: AssetImage(Assets.images.banner.priceInfo.path),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Sub-Total',
+                style: FTextStyles.heading5.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                '${subTotal.toInt()} \$',
+                style: FTextStyles.heading5.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: 16.0,
-        ),
-        child: Column(
-          children: [
-            gapH8,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Sub-Total',
-                  style: FTextStyles.heading5.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  '${subTotal.toInt()} \$',
-                  style: FTextStyles.heading5.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Delivery Charge',
-                  style: FTextStyles.heading5.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  '${deliveryCharge.toInt()} \$',
-                  style: FTextStyles.heading5.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Discount',
-                  style: FTextStyles.heading5.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  '${discount.toInt()} \$',
-                  style: FTextStyles.heading5.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            gapH12,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Total',
-                  style: FTextStyles.heading3.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  '${max(0, (subTotal + deliveryCharge - discount).toInt())} \$',
-                  style: FTextStyles.heading3.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            ConstrainedBox(
-              constraints: const BoxConstraints(
-                minHeight: 60.0,
-                minWidth: double.infinity,
-              ),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: Ui.borderRadius,
-                  ),
-                ),
-                child: const GradientText(
-                  'Place My Order',
-                  style: FTextStyles.heading4,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Delivery Charge',
+                style: FTextStyles.heading5.copyWith(
+                  color: Colors.white,
                 ),
               ),
+              Text(
+                '${deliveryCharge.toInt()} \$',
+                style: FTextStyles.heading5.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Discount',
+                style: FTextStyles.heading5.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                '${discount.toInt()} \$',
+                style: FTextStyles.heading5.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          gapH12,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Total',
+                style: FTextStyles.heading3.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                '${max(0, (subTotal + deliveryCharge - discount).toInt())} \$',
+                style: FTextStyles.heading3.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          gapH8,
+          SizedBox.fromSize(
+            size: const Size.fromHeight(60.0),
+            child: ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: Ui.borderRadius,
+                ),
+              ),
+              child: GradientText(
+                buttonLabel ?? 'Check Out',
+                style: FTextStyles.heading4,
+              ),
             ),
-            gapH8,
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

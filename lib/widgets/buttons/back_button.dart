@@ -14,8 +14,8 @@ class FBackButton extends StatelessWidget {
     return Container(
       height: 45.0,
       width: 45.0,
-      decoration: const BoxDecoration(
-        color: FColors.backButtonBgColor,
+      decoration: BoxDecoration(
+        color: FColors.backButtonBgColor.withOpacity(.3),
         borderRadius: Ui.borderRadius,
       ),
       child: Material(
@@ -28,7 +28,7 @@ class FBackButton extends StatelessWidget {
           child: const Center(
             child: Icon(
               Icons.arrow_back_ios_new,
-              color: FColors.backButtonIconColor,
+              color: Color(0xFFF56E1B),
             ),
           ),
         ),

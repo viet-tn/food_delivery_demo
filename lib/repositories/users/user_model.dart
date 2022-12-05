@@ -3,16 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'coordinate.dart';
 
-enum PaymentMethod {
-  paypal('assets/images/payment/paypal.png'),
-  visa('assets/images/payment/visa.png'),
-  payoneer('assets/images/payment/payoneer.png');
-
-  final String path;
-
-  const PaymentMethod(this.path);
-}
-
 class FUser extends Equatable {
   const FUser({
     required this.id,
@@ -21,7 +11,6 @@ class FUser extends Equatable {
     this.firstName,
     this.lastName,
     this.isVerified,
-    this.method,
     this.photo,
     this.coordinates = const <Coordinate>[],
   });
@@ -32,7 +21,6 @@ class FUser extends Equatable {
   final String? firstName;
   final String? lastName;
   final bool? isVerified;
-  final PaymentMethod? method;
   final String? photo;
   final List<Coordinate> coordinates;
 
@@ -45,7 +33,6 @@ class FUser extends Equatable {
         firstName == null ||
         lastName == null ||
         isVerified == null ||
-        method == null ||
         photo == null ||
         coordinates.isEmpty) {
       return false;
@@ -62,7 +49,6 @@ class FUser extends Equatable {
       firstName,
       lastName,
       isVerified,
-      method,
       photo,
       coordinates,
     ];
@@ -92,7 +78,6 @@ class FUser extends Equatable {
     String? firstName,
     String? lastName,
     bool? isVerified,
-    PaymentMethod? method,
     String? photo,
     List<Coordinate>? coordinates,
   }) {
@@ -103,7 +88,6 @@ class FUser extends Equatable {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       isVerified: isVerified ?? this.isVerified,
-      method: method ?? this.method,
       photo: photo ?? this.photo,
       coordinates: coordinates ?? this.coordinates,
     );
@@ -117,7 +101,6 @@ class FUser extends Equatable {
       'firstName': firstName,
       'lastName': lastName,
       'isVerified': isVerified,
-      'method': method?.name,
       'photo': photo,
       'locations': coordinates.map((x) => x.toMap()).toList(),
     };
@@ -131,7 +114,6 @@ class FUser extends Equatable {
       firstName: map['firstName'],
       lastName: map['lastName'],
       isVerified: map['isVerified'],
-      method: PaymentMethod.values.byName(map['method']),
       photo: map['photo'] != null ? map['photo'] as String : null,
       coordinates: List<Coordinate>.from(
         map['locations'].map<Coordinate>(

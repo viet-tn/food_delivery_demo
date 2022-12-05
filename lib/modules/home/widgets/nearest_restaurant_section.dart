@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../config/routes/coordinator.dart';
 
+import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';

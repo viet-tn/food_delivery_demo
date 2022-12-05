@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 
 import 'config/routes/coordinator.dart';
 import 'config/themes/app_theme.dart';
+import 'modules/cart/cubit/cart_cubit.dart';
 import 'modules/cubit/app_cubit.dart';
 import 'modules/login/cubit/login_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => GetIt.I<SearchCubit>(),
         ),
+        BlocProvider(
+          create: (_) => GetIt.I<CartCubit>(),
+        )
       ],
       child: MaterialApp.router(
         scaffoldMessengerKey: messengerKey,

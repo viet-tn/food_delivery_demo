@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../config/routes/coordinator.dart';
 import '../constants/ui/colors.dart';
 import '../constants/ui/sizes.dart';
 import '../constants/ui/text_style.dart';
@@ -9,8 +8,25 @@ import '../utils/ui/gradient_text.dart';
 import '../utils/ui/scaffold.dart';
 import 'buttons/gradient_button.dart';
 
+class CongratsParams {
+  const CongratsParams({
+    this.content = 'Your Profile Is Ready To Use',
+    this.buttonLabel = 'Try Order',
+    this.onPressed,
+  });
+
+  final String content;
+  final String buttonLabel;
+  final VoidCallback? onPressed;
+}
+
 class CongratsScreen extends StatelessWidget {
-  const CongratsScreen({super.key});
+  const CongratsScreen({
+    super.key,
+    required this.params,
+  });
+
+  final CongratsParams params;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +47,8 @@ class CongratsScreen extends StatelessWidget {
                 style: FTextStyles.heading1,
               ),
               gapH12,
-              const Text(
-                'Your Profile Is Ready To Use',
+              Text(
+                params.content,
                 textAlign: TextAlign.center,
                 style: FTextStyles.heading2,
               ),
@@ -40,11 +56,9 @@ class CongratsScreen extends StatelessWidget {
           ),
         ),
         centerBottomButton: GradientButton(
-          onPressed: () {
-            FCoordinator.showHomeScreen();
-          },
-          child: const Text(
-            'Try Order',
+          onPressed: params.onPressed,
+          child: Text(
+            params.buttonLabel,
             style: FTextStyles.button,
           ),
         ),

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../widgets/app_bar.dart';
-import '../../utils/ui/loading_screen.dart';
-import '../../utils/ui/snack_bar.dart';
-import '../../config/routes/coordinator.dart';
-import '../../widgets/buttons/gradient_button.dart';
-import '../../widgets/dialogs/alert_dialog.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../config/routes/coordinator.dart';
 import '../../constants/ui/sizes.dart';
 import '../../constants/ui/text_style.dart';
 import '../../constants/ui/ui_parameters.dart';
 import '../../repositories/users/user_model.dart';
 import '../../utils/ui/forms/edit_profile_form.dart';
 import '../../utils/ui/listen_error.dart';
+import '../../utils/ui/loading_screen.dart';
 import '../../utils/ui/scaffold.dart';
+import '../../utils/ui/snack_bar.dart';
+import '../../widgets/app_bar.dart';
+import '../../widgets/buttons/gradient_button.dart';
+import '../../widgets/dialogs/alert_dialog.dart';
 import '../cubit/app_cubit.dart';
 
 class EditProfileScreen extends StatefulWidget {

@@ -49,7 +49,7 @@ class OrderCard extends StatelessWidget {
           Dismissible(
             confirmDismiss: (_) => confirmDismiss(context),
             onDismissed: (_) => context.read<CartCubit>().onDeleteItem(food.id),
-            key: ValueKey(food.id),
+            key: UniqueKey(),
             direction: DismissDirection.endToStart,
             child: FCard(
               onTap: onTap,

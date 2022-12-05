@@ -5,4 +5,6 @@ abstract class CartRepository {
   Future<FResult<FCart>> fetchCart();
 
   Future<FResult<FCart>> setCart(FCart cart);
+
+  void clear();
 }

@@ -94,11 +94,7 @@ class SignUpCubit extends FCubit<SignUpState> {
 
     emitValue(state.copyWith(user: state.user.copyWith(isVerified: true)));
     // TODO: Write verified status into firestore
-    return FCoordinator.showPaymentScreen();
-  }
-
-  void onPaymentMethodSelected(PaymentMethod method) {
-    emit(state.copyWith(user: state.user.copyWith(method: method)));
+    return FCoordinator.showUploadPhotoScreen();
   }
 
   void onPaymentComplete() {

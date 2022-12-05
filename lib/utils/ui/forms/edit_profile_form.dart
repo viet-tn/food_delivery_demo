@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import '../../../repositories/domain_manager.dart';
-import '../../../modules/profile/widgets/change_password_section.dart';
 
 import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
+import '../../../modules/profile/widgets/change_password_section.dart';
 import '../../../modules/profile/widgets/widgets.dart';
 import '../../../modules/signup/widgets/location_selector.dart';
+import '../../../repositories/domain_manager.dart';
 import '../../../repositories/users/user_model.dart';
 import '../../../widgets/textfield/text_field.dart';
 import '../network_image.dart';
@@ -121,13 +121,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
               buttonLabel: 'Change location',
               address: widget.user.coordinates[0].address!,
               onSetLocationPressed: (latitude, longitude) {
-                FCoordinator.pushNamed(
-                  Routes.map.name,
-                  params: {
-                    'lat': latitude.toStringAsFixed(15),
-                    'lon': longitude.toStringAsFixed(15),
-                  },
-                );
+                FCoordinator.showMapScreen(latitude, longitude);
               },
             ),
             gapH20,

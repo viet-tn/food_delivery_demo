@@ -38,14 +38,10 @@ class SetLocationScreen extends StatelessWidget {
                 builder: (context, state) {
                   return LocationSelector(
                     onSetLocationPressed: (latitude, longitude) {
-                      FCoordinator.pushNamed(
-                        Routes.map.name,
-                        params: {
-                          'lat': latitude.toStringAsFixed(15),
-                          'lon': longitude.toStringAsFixed(15),
-                        },
-                        // isSignUp - parameter of MapScreen()
-                        extra: true,
+                      FCoordinator.showMapScreen(
+                        latitude,
+                        longitude,
+                        isSignUp: true,
                       );
                     },
                     address: state.isEmpty ? null : state[0].address,

@@ -20,51 +20,50 @@ class SetLocationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 28.0),
-        padding: const EdgeInsets.all(12.0),
-        decoration: const BoxDecoration(
-          borderRadius: Ui.borderRadius,
-          color: Colors.white,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Your location',
-              style: FTextStyles.label.copyWith(color: Colors.grey),
-            ),
-            gapH12,
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(Assets.icons.pin.path),
-                gapW12,
-                Expanded(
-                  child: Text(
-                    location ?? '',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: FTextStyles.heading5,
-                  ),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 28.0),
+      padding: const EdgeInsets.all(12.0),
+      decoration: const BoxDecoration(
+        borderRadius: Ui.borderRadius,
+        color: Colors.white,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Your location',
+            style: FTextStyles.label.copyWith(color: Colors.grey),
+          ),
+          gapH12,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(Assets.icons.pin.path),
+              gapW12,
+              Expanded(
+                child: Text(
+                  location ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: FTextStyles.heading5,
                 ),
-              ],
-            ),
-            gapH12,
-            GradientButton(
-              onPressed: isLoading ? null : onPressed,
-              width: double.infinity,
-              child: isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text(
-                      'Set Location',
-                      style: FTextStyles.button,
-                    ),
-            )
-          ],
-        ),
+              ),
+            ],
+          ),
+          gapH12,
+          GradientButton(
+            onPressed: isLoading ? null : onPressed,
+            width: double.infinity,
+            child: isLoading
+                ? const CircularProgressIndicator()
+                : const Text(
+                    'Set Location',
+                    style: FTextStyles.button,
+                  ),
+          )
+        ],
       ),
     );
   }

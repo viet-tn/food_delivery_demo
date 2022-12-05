@@ -1,18 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../modules/home/screens/foods_screen.dart';
-import '../../modules/home/screens/restaurants_screen.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../modules/cart/cart_screen.dart';
 import '../../modules/chat/chat_detail/chat_detail_screen.dart';
 import '../../modules/chat/chat_screen.dart';
+import '../../modules/checkout/checkout_screen.dart';
 import '../../modules/food/food_screen.dart';
 import '../../modules/forgot_password/email_sent_screen.dart';
 import '../../modules/forgot_password/forgot_password_screen.dart';
 import '../../modules/home/home_screen.dart';
+import '../../modules/home/screens/foods_screen.dart';
+import '../../modules/home/screens/restaurants_screen.dart';
 import '../../modules/login/login_screen.dart';
 import '../../modules/onboarding/onboarding_screen.dart';
 import '../../modules/profile/edit_screen.dart';
@@ -58,6 +59,7 @@ enum Routes {
   resetPasswordEmailSent,
   foods,
   restaurants,
+  checkout,
 }
 
 class FCoordinator {
@@ -138,8 +140,12 @@ class FCoordinator {
     context.pushNamed(Routes.setLocation.name);
   }
 
-  static void showCongratsScreen() {
-    context.goNamed(Routes.congrats.name);
+  static void showCongratsScreen(
+      [CongratsParams params = const CongratsParams()]) {
+    context.goNamed(
+      Routes.congrats.name,
+      extra: params,
+    );
   }
 
   static void showEditProfileScreen() {
@@ -152,6 +158,21 @@ class FCoordinator {
 
   static void showRestaurantScreen(FRestaurant restaurant) {
     context.goNamed(Routes.restaurant.name, extra: restaurant);
+  }
+
+  static void showMapScreen(
+    double latitude,
+    double longitude, {
+    bool isSignUp = false,
+  }) {
+    FCoordinator.pushNamed(
+      Routes.map.name,
+      params: {
+        'lat': latitude.toStringAsFixed(15),
+        'lon': longitude.toStringAsFixed(15),
+      },
+      extra: isSignUp,
+    );
   }
 }
 
@@ -208,7 +229,7 @@ final appRouter = GoRouter(
               path: 'restaurants',
               name: Routes.restaurants.name,
               parentNavigatorKey: FCoordinator.navigatorKey,
-              builder: (_, __) => RestaurantsScreen(),
+              builder: (_, __) => const RestaurantsScreen(),
             ),
             GoRoute(
               path: 'foods',
@@ -242,6 +263,17 @@ final appRouter = GoRouter(
           pageBuilder: (_, __) => const NoTransitionPage(
             child: CartScreen(),
           ),
+          routes: [
+            GoRoute(
+              name: Routes.checkout.name,
+              path: 'checkout',
+              parentNavigatorKey: FCoordinator.navigatorKey,
+              pageBuilder: (context, state) => const MaterialPage(
+                fullscreenDialog: true,
+                child: CheckoutScreen(),
+              ),
+            ),
+          ],
         ),
         GoRoute(
           name: Routes.chat.name,
@@ -295,7 +327,9 @@ final appRouter = GoRouter(
     GoRoute(
       name: Routes.congrats.name,
       path: '/congrats',
-      builder: (_, __) => const CongratsScreen(),
+      builder: (_, state) => CongratsScreen(
+        params: state.extra as CongratsParams,
+      ),
     ),
     GoRoute(
       name: Routes.signUp.name,
