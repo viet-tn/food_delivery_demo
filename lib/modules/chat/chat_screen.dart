@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../config/routes/coordinator.dart';
 import '../../constants/ui/text_style.dart';
 import '../../constants/ui/ui_parameters.dart';
 import '../../utils/ui/listen_error.dart';
@@ -15,27 +16,33 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetIt.I<ChatCubit>(),
-      child: ListenError<ChatCubit>(
-        child: FScaffold(
-          body: Column(
-            children: [
-              const _AppBar(),
-              Expanded(
-                child: BlocBuilder<ChatCubit, ChatState>(
-                  buildWhen: (previous, current) =>
-                      previous.status != current.status ||
-                      previous.chats != current.chats,
-                  builder: (context, state) {
-                    return ChatBody(
-                      chats: state.chats,
-                      myUserId: GetIt.I<LoginCubit>().state.user.id,
-                    );
-                  },
+    return WillPopScope(
+      onWillPop: () async {
+        FCoordinator.goNamed(Routes.home.name);
+        return false;
+      },
+      child: BlocProvider(
+        create: (context) => GetIt.I<ChatCubit>(),
+        child: ListenError<ChatCubit>(
+          child: FScaffold(
+            body: Column(
+              children: [
+                const _AppBar(),
+                Expanded(
+                  child: BlocBuilder<ChatCubit, ChatState>(
+                    buildWhen: (previous, current) =>
+                        previous.status != current.status ||
+                        previous.chats != current.chats,
+                    builder: (context, state) {
+                      return ChatBody(
+                        chats: state.chats,
+                        myUserId: GetIt.I<LoginCubit>().state.user.id,
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
