@@ -23,45 +23,41 @@ class ChatBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return chats.isEmpty
-        ? const Center(
-            child: Text('No chat'),
-          )
-        : ListView(
-            children: List.generate(
-              chats.length,
-              (index) {
-                final chat = chats[index];
-                final chatWithUserId = chat.userIds.firstWhere(
-                  (element) => element != myUserId,
-                );
-                return Padding(
-                  padding: Ui.screenPadding,
-                  child: ChatCard(
-                    onPressed: () {
-                      context
-                          .read<ChatCubit>()
-                          .readMessage(chat.id, chat.lastestMessage);
-                      FCoordinator.goNamed(
-                        Routes.chatDetail.name,
-                        params: {
-                          'chatId': chat.id,
-                          'chatWithUserId': chatWithUserId,
-                        },
-                      );
-                    },
-                    withUserId: chatWithUserId,
-                    lastMessage: chat.lastestMessage.content,
-                    lastMessageTime: DateTime.fromMillisecondsSinceEpoch(
-                            chat.lastestMessage.timeStamp)
-                        .timeString,
-                    isSeen: chat.lastestMessage.isSeen,
-                    isMyMessage: chat.lastestMessage.senderId ==
-                        GetIt.I<LoginCubit>().state.user.id,
-                  ),
+    return ListView(
+      children: List.generate(
+        chats.length,
+        (index) {
+          final chat = chats[index];
+          final chatWithUserId = chat.userIds.firstWhere(
+            (element) => element != myUserId,
+          );
+          return Padding(
+            padding: Ui.screenPadding,
+            child: ChatCard(
+              onPressed: () {
+                context
+                    .read<ChatCubit>()
+                    .readMessage(chat.id, chat.lastestMessage);
+                FCoordinator.goNamed(
+                  Routes.chatDetail.name,
+                  params: {
+                    'chatId': chat.id,
+                    'chatWithUserId': chatWithUserId,
+                  },
                 );
               },
-            )..add(Sizes.navBarGapH),
+              withUserId: chatWithUserId,
+              lastMessage: chat.lastestMessage.content,
+              lastMessageTime: DateTime.fromMillisecondsSinceEpoch(
+                      chat.lastestMessage.timeStamp)
+                  .timeString,
+              isSeen: chat.lastestMessage.isSeen,
+              isMyMessage: chat.lastestMessage.senderId ==
+                  GetIt.I<LoginCubit>().state.user.id,
+            ),
           );
+        },
+      )..add(Sizes.navBarGapH),
+    );
   }
 }

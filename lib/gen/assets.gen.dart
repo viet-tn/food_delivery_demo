@@ -2,6 +2,11 @@
 /// *****************************************************
 ///  FlutterGen
 /// *****************************************************
+
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal
+
 import 'package:flutter/widgets.dart';
 
 class $AssetsIconsGen {
@@ -130,6 +135,8 @@ class $AssetsImagesGen {
   const $AssetsImagesGen();
 
   $AssetsImagesBannerGen get banner => const $AssetsImagesBannerGen();
+  $AssetsImagesIllustrationsGen get illustrations =>
+      const $AssetsImagesIllustrationsGen();
   $AssetsImagesOnboardingGen get onboarding =>
       const $AssetsImagesOnboardingGen();
   $AssetsImagesPaymentGen get payment => const $AssetsImagesPaymentGen();
@@ -161,6 +168,29 @@ class $AssetsImagesBannerGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [banner, priceInfo];
+}
+
+class $AssetsImagesIllustrationsGen {
+  const $AssetsImagesIllustrationsGen();
+
+  /// File path: assets/images/illustrations/cart.svg
+  String get cart => 'assets/images/illustrations/cart.svg';
+
+  /// File path: assets/images/illustrations/chat.svg
+  String get chat => 'assets/images/illustrations/chat.svg';
+
+  /// File path: assets/images/illustrations/favorite.png
+  AssetGenImage get favoritePng =>
+      const AssetGenImage('assets/images/illustrations/favorite.png');
+
+  /// File path: assets/images/illustrations/favorite.svg
+  String get favoriteSvg => 'assets/images/illustrations/favorite.svg';
+
+  /// File path: assets/images/illustrations/sad.svg
+  String get sad => 'assets/images/illustrations/sad.svg';
+
+  /// List of all assets
+  List<dynamic> get values => [cart, chat, favoritePng, favoriteSvg, sad];
 }
 
 class $AssetsImagesOnboardingGen {

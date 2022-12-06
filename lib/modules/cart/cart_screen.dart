@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../config/routes/coordinator.dart';
 import '../../constants/ui/sizes.dart';
 import '../../constants/ui/text_style.dart';
 import '../../constants/ui/ui_parameters.dart';
+import '../../gen/assets.gen.dart';
 import '../../utils/ui/listen_error.dart';
 import '../../utils/ui/scaffold.dart';
 import '../../widgets/app_bar.dart';
+import '../../widgets/buttons/gradient_button.dart';
 import '../cubit/app_cubit.dart';
 import 'cubit/cart_cubit.dart';
 import 'widgets/cart_total_infomation.dart';
@@ -39,12 +42,29 @@ class CartScreen extends StatelessWidget {
                       previous.cart != current.cart,
                   builder: (context, state) {
                     if (state.cart.items.isEmpty) {
-                      return Center(
-                        child: Text(
-                          'Your cart is empty',
-                          style:
-                              FTextStyles.heading4.copyWith(color: Colors.grey),
-                        ),
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox.square(
+                            dimension: 300.0,
+                            child: SvgPicture.asset(
+                                Assets.images.illustrations.cart),
+                          ),
+                          Text(
+                            'Your cart is empty',
+                            style: FTextStyles.heading5
+                                .copyWith(color: Colors.grey),
+                          ),
+                          gapH20,
+                          GradientButton(
+                            onPressed: () =>
+                                FCoordinator.goNamed(Routes.search.name),
+                            child: const Text(
+                              'Explore food now',
+                              style: FTextStyles.button,
+                            ),
+                          ),
+                        ],
                       );
                     }
 
