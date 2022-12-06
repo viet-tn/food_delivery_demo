@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/favorite/favorite_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../config/routes/coordinator.dart';
@@ -19,6 +18,7 @@ import '../../widgets/buttons/icon_button.dart';
 import '../../widgets/chips/category_chip.dart';
 import '../../widgets/testimonial_section.dart';
 import '../cart/cubit/cart_cubit.dart';
+import '../cubits/favorite/favorite_cubit.dart';
 import 'cubit/food_cubit.dart';
 import 'widgets/food_rating.dart';
 

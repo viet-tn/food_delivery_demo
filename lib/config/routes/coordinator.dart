@@ -1,6 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../modules/login/cubit/login_cubit.dart';
+import '../../repositories/domain_manager.dart';
+import '../../repositories/users/user_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,13 +25,11 @@ import '../../modules/profile/profile_screen.dart';
 import '../../modules/restaurant/restaurant_screen.dart';
 import '../../modules/search/search_screen.dart';
 import '../../modules/signup/screens/fill_bio_screen.dart';
-import '../../modules/signup/screens/fill_payment_screen.dart';
 import '../../modules/signup/screens/map_screen/map_screen.dart';
 import '../../modules/signup/screens/set_location_screen.dart';
 import '../../modules/signup/screens/upload_photo_screen.dart';
 import '../../modules/signup/screens/verification_screen.dart';
 import '../../modules/signup/sign_up_screen.dart';
-import '../../repositories/domain_manager.dart';
 import '../../repositories/food/food_model.dart';
 import '../../repositories/restaurants/restaurant_model.dart';
 import '../../utils/helpers/resfresh_stream.dart';
@@ -185,14 +187,21 @@ final appRouter = GoRouter(
   navigatorKey: FCoordinator.navigatorKey,
   initialLocation: '/logIn',
   debugLogDiagnostics: true,
-  refreshListenable: RefreshStream(DomainManager().authRepository.status),
+  refreshListenable: UserRefreshStream(GetIt.I<LoginCubit>()),
   redirect: (context, state) {
-    if (DomainManager().authRepository.currentUser == null) {
-      if (state.location == '/' ||
-          state.location.contains(RegExp(r'(\/profile|\/chat|\/cart)'))) {
-        return '/logIn';
+    final isLoggedIn = DomainManager().authRepository.currentUser != null;
+    if (isLoggedIn) {
+      if (state.location.contains(RegExp(r'\/(onboarding|logIn|signUp)'))) {
+        return '/';
       }
+      return null;
     }
+
+    if (state.location == '/' ||
+        state.location.contains(RegExp(r'\/(profile|cart|chat)'))) {
+      return '/logIn';
+    }
+
     return null;
   },
   routes: [
@@ -216,6 +225,16 @@ final appRouter = GoRouter(
           pageBuilder: (_, __) => const NoTransitionPage(
             child: HomeScreen(),
           ),
+          redirect: (context, state) {
+            if (context.read<LoginCubit>().state.user == FUser.empty) {
+              return null;
+            }
+
+            if (!context.read<LoginCubit>().state.user.isSetupComplete) {
+              return '/bio';
+            }
+            return null;
+          },
           routes: [
             GoRoute(
               path: 'restaurant',
@@ -360,11 +379,6 @@ final appRouter = GoRouter(
           name: Routes.verification.name,
           path: 'verification',
           builder: (_, state) => const VerificationScreen(),
-        ),
-        GoRoute(
-          name: Routes.payment.name,
-          path: 'payment',
-          builder: (_, __) => const FillPaymentScreen(),
         ),
         GoRoute(
           name: Routes.uploadPhoto.name,

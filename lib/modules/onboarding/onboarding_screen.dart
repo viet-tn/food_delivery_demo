@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../config/routes/coordinator.dart';
 
 import '../../constants/app_constants.dart';
 import '../../constants/ui/text_style.dart';
@@ -42,7 +43,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   subTitle: page['subTitle']!,
                   onButtonPressed: () async => await context
                       .read<LoginCubit>()
-                      .onOnboardingNextButtonPressed(_controller),
+                      .onOnboardingNextButtonPressed(
+                    _controller,
+                    (isLastPage) {
+                      FCoordinator.showLoginScreen();
+                    },
+                  ),
                 ),
               )
               .toList(),

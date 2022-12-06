@@ -29,91 +29,83 @@ class _LoginScreenState extends State<LoginScreen> {
   );
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginCubit, LoginState>(
-      listenWhen: (previous, current) => previous.user != current.user,
-      listener: (context, state) {
-        if (state.user.isNotEmpty) {
-          FCoordinator.goNamed(Routes.home.name);
-        }
+    return WillPopScope(
+      onWillPop: () async {
+        setState(() {
+          _isLoginWithEmail = false;
+        });
+        return false;
       },
-      child: WillPopScope(
-        onWillPop: () async {
-          setState(() {
-            _isLoginWithEmail = false;
-          });
-          return false;
-        },
-        child: BlocBuilder<LoginCubit, LoginState>(
-          buildWhen: (previous, current) => previous.status != current.status,
-          builder: (_, state) {
-            return LoadingScreen(
-              isLoading: state.status.isLoading,
-              child: ListenError<LoginCubit>(
-                child: FScaffold(
-                  body: SingleChildScrollView(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    padding: Ui.screenPadding,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset(
-                          Assets.images.splash.logo.path,
-                          fit: BoxFit.cover,
+      child: BlocBuilder<LoginCubit, LoginState>(
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: (_, state) {
+          return LoadingScreen(
+            isLoading: state.status.isLoading,
+            child: ListenError<LoginCubit>(
+              child: FScaffold(
+                body: SingleChildScrollView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  padding: Ui.screenPadding,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        Assets.images.splash.logo.path,
+                        fit: BoxFit.cover,
+                      ),
+                      gapH32,
+                      const Text(
+                        'Login To Your Account',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
                         ),
-                        gapH32,
-                        const Text(
-                          'Login To Your Account',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900,
-                          ),
+                      ),
+                      gapH12,
+                      _isLoginWithEmail
+                          ? LoginForm(
+                              onSubmittedEmailAndPassword:
+                                  (email, password) async => await context
+                                      .read<LoginCubit>()
+                                      .loginWithEmailAndPassword(
+                                        email: email,
+                                        password: password,
+                                      ),
+                            )
+                          : LoginOption(
+                              onEmailLoginPressed: () {
+                                setState(() {
+                                  _isLoginWithEmail = true;
+                                });
+                              },
+                            ),
+                      gapH16,
+                      const Text(
+                        'Not a member?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
                         ),
-                        gapH12,
-                        _isLoginWithEmail
-                            ? LoginForm(
-                                onSubmittedEmailAndPassword:
-                                    (email, password) async => await context
-                                        .read<LoginCubit>()
-                                        .loginWithEmailAndPassword(
-                                          email: email,
-                                          password: password,
-                                        ),
-                              )
-                            : LoginOption(
-                                onEmailLoginPressed: () {
-                                  setState(() {
-                                    _isLoginWithEmail = true;
-                                  });
-                                },
-                              ),
-                        gapH16,
-                        const Text(
-                          'Not a member?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        gapH12,
-                        FOutlinedButton(
-                          minWidth: double.infinity,
-                          color: FColors.vistaBlue,
-                          label: 'Create your account',
-                          style: _buttonTextStyle,
-                          iconPath: Assets.icons.message.path,
-                          onPressed: () {
-                            FCoordinator.pushNamed(Routes.signUp.name);
-                          },
-                        ),
-                      ],
-                    ),
+                      ),
+                      gapH12,
+                      FOutlinedButton(
+                        minWidth: double.infinity,
+                        color: FColors.vistaBlue,
+                        label: 'Create your account',
+                        style: _buttonTextStyle,
+                        iconPath: Assets.icons.message.path,
+                        onPressed: () {
+                          FCoordinator.pushNamed(Routes.signUp.name);
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

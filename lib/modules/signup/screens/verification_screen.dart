@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../config/routes/coordinator.dart';
 
 import '../../../utils/helpers/text_helpers.dart';
 import '../../../utils/ui/listen_error.dart';
@@ -20,7 +21,8 @@ class VerificationScreen extends StatelessWidget {
       child: SignUpFlowScreen(
         onNextPressed: () async {
           if (otp.length == otpLetterCount) {
-            await context.read<SignUpCubit>().onOtpPhoneConfirm(otp);
+            await context.read<SignUpCubit>().onOtpPhoneConfirm(otp,
+                onOtpPassed: FCoordinator.showUploadPhotoScreen);
           } else {
             FSnackBar.showSnackBar('Please enter valid OTP');
           }

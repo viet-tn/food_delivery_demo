@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/favorite/favorite_cubit.dart';
 
 import '../../config/routes/coordinator.dart';
 import '../../constants/ui/sizes.dart';
@@ -11,6 +10,7 @@ import '../../utils/ui/network_image.dart';
 import '../../utils/ui/scrollable_screen_with_background.dart';
 import '../../widgets/buttons/logout_button.dart';
 import '../cubits/app/app_cubit.dart';
+import '../cubits/favorite/favorite_cubit.dart';
 import 'widgets/widgets.dart';
 
 class ProfileScreen extends StatelessWidget {

@@ -1,10 +1,9 @@
+import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/favorite/favorite_list_model.dart';
 import '../../../repositories/favorite/favorite_list_repository.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../repositories/food/food_repository.dart';
-
-import '../../../base/cubit.dart';
 
 part 'favorite_state.dart';
 

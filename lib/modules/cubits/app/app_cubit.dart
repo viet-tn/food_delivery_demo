@@ -70,7 +70,9 @@ class AppCubit extends FCubit<AppState> {
       }
       signOut();
     });
-    _userRepository.delete(state.user!.id);
+    if (!state.status.hasError) {
+      _userRepository.delete(state.user!.id);
+    }
   }
 
   void changePassword(String currentPassword, String newPassword) async {

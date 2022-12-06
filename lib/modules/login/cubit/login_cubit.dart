@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
-import '../../../config/routes/coordinator.dart';
 import '../../../constants/app_constants.dart';
 import '../../../repositories/auth/auth_repository.dart';
 import '../../../repositories/result.dart';
@@ -78,11 +77,12 @@ class LoginCubit extends FCubit<LoginState> {
 
   Future<void> signOut() => _authRepository.signOut();
 
-  Future<void> onOnboardingNextButtonPressed(PageController controller) async {
+  Future<void> onOnboardingNextButtonPressed(PageController controller,
+      void Function(bool isLastPage) onLastPageButtonPressed) async {
     final isLastPage = controller.page!.toInt() == onboardingContent.length - 1;
     if (isLastPage) {
       _sharedPreferences.setOnboardingValue(true);
-      FCoordinator.showLoginScreen();
+      onLastPageButtonPressed(true);
     } else {
       controller.nextPage(
         duration: const Duration(milliseconds: 500),
@@ -108,7 +108,7 @@ class LoginCubit extends FCubit<LoginState> {
   }
 
   void _unauthenticatedHandler() {
-    emitValue(state.copyWith(user: null));
+    emitValue(state.copyWith(user: FUser.empty));
   }
 
   void _authenticatedHandler() async {
@@ -125,25 +125,24 @@ class LoginCubit extends FCubit<LoginState> {
         return emitError(setResult.error!);
       }
       GetIt.I<AppCubit>().init(setResult.data!);
-      _emitUserAndRedirect(setResult.data!);
+      _emitUser(setResult.data!);
       return;
     }
 
     GetIt.I<AppCubit>().init(dbUser);
-    _emitUserAndRedirect(dbUser);
+    _emitUser(dbUser);
   }
 
   Future<FUser?> fetchUserFromDB(String id) async {
     final result = await _userRepository.get(id);
     if (result.isError) {
-      emitError(result.error!);
       return null;
     }
 
     return result.data;
   }
 
-  void _emitUserAndRedirect(FUser user) {
+  void _emitUser(FUser user) {
     emitValue(state.copyWith(user: user));
     if (user.isSetupComplete) {
       return;
@@ -151,6 +150,5 @@ class LoginCubit extends FCubit<LoginState> {
     GetIt.I<SignUpCubit>().emitValue(
       GetIt.I<SignUpCubit>().state.copyWith(user: state.user),
     );
-    return FCoordinator.showBioScreen();
   }
 }

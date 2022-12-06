@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../config/routes/coordinator.dart';
 
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../utils/ui/snack_bar.dart';
@@ -23,7 +24,8 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
     return SignUpFlowScreen(
       onNextPressed: () {
         if (imgPath != null) {
-          context.read<SignUpCubit>().onSelectImageComplete(imgPath!);
+          context.read<SignUpCubit>().onSelectImageComplete(imgPath!,
+              onUploadAvatarCompleted: FCoordinator.showSetLocationScreen);
         } else {
           FSnackBar.showSnackBar('Please choose your image');
         }
