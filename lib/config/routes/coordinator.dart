@@ -30,6 +30,7 @@ import '../../modules/signup/sign_up_screen.dart';
 import '../../repositories/domain_manager.dart';
 import '../../repositories/food/food_model.dart';
 import '../../repositories/restaurants/restaurant_model.dart';
+import '../../utils/helpers/resfresh_stream.dart';
 import '../../utils/services/shared_preferences.dart';
 import '../../utils/ui/scaffold_with_bottom_nav_bar.dart';
 import '../../widgets/congrats_screen.dart';
@@ -140,11 +141,15 @@ class FCoordinator {
     context.pushNamed(Routes.setLocation.name);
   }
 
-  static void showCongratsScreen(
-      [CongratsParams params = const CongratsParams()]) {
+  static void showCongratsScreen([CongratsParams? params]) {
     context.goNamed(
       Routes.congrats.name,
-      extra: params,
+      extra: params ??
+          CongratsParams(
+            onPressed: () {
+              FCoordinator.showHomeScreen();
+            },
+          ),
     );
   }
 
@@ -180,6 +185,16 @@ final appRouter = GoRouter(
   navigatorKey: FCoordinator.navigatorKey,
   initialLocation: '/logIn',
   debugLogDiagnostics: true,
+  refreshListenable: RefreshStream(DomainManager().authRepository.status),
+  redirect: (context, state) {
+    if (DomainManager().authRepository.currentUser == null) {
+      if (state.location == '/' ||
+          state.location.contains(RegExp(r'(\/profile|\/chat|\/cart)'))) {
+        return '/logIn';
+      }
+    }
+    return null;
+  },
   routes: [
     GoRoute(
       name: Routes.onboarding.name,

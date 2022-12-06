@@ -55,11 +55,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppState>(
-      listenWhen: (_, current) => current.user == null,
-      listener: (context, state) {
-        FCoordinator.goNamed(Routes.logIn.name);
-      },
+    return BlocBuilder<AppCubit, AppState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return WillPopScope(
