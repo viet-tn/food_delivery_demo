@@ -14,7 +14,7 @@ import '../../utils/ui/scaffold.dart';
 import '../../widgets/app_bar.dart';
 import '../cart/cubit/cart_cubit.dart';
 import '../cart/widgets/cart_total_infomation.dart';
-import '../cubit/app_cubit.dart';
+import '../cubits/app/app_cubit.dart';
 import 'cubit/payment_cubit.dart';
 import 'widgets/order_summary_section.dart';
 import 'widgets/shipping_address_section.dart';
@@ -34,9 +34,9 @@ class CheckoutScreen extends StatelessWidget {
           return BlocListener<PaymentCubit, PaymentState>(
             listenWhen: (_, current) => current.isSuccess == true,
             listener: (context, state) {
+              FCoordinator.goNamed(Routes.home.name);
               DomainManager().cartRepository.clear();
               context.read<CartCubit>().clear();
-              FCoordinator.goNamed(Routes.home.name);
             },
             child: ListenError<PaymentCubit>(
               child: LoadingScreen(

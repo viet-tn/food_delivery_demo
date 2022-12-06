@@ -15,7 +15,7 @@ import '../../utils/ui/snack_bar.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/gradient_button.dart';
 import '../../widgets/dialogs/alert_dialog.dart';
-import '../cubit/app_cubit.dart';
+import '../cubits/app/app_cubit.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});

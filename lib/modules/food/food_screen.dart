@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubits/favorite/favorite_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../config/routes/coordinator.dart';
@@ -34,7 +35,13 @@ class FoodScreen extends StatefulWidget {
 }
 
 class _FoodScreenState extends State<FoodScreen> {
-  late final FoodCubit _foodCubit = GetIt.I<FoodCubit>()..init(widget.food);
+  late final FoodCubit _foodCubit = GetIt.I<FoodCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+    _foodCubit.init(widget.food);
+  }
 
   @override
   Widget build(BuildContext _) {
@@ -80,18 +87,33 @@ class _FoodScreenState extends State<FoodScreen> {
                               color: FColors.lightGreen.withOpacity(.2),
                             ),
                             gapW8,
-                            FIconButtonn(
-                              onTap: () => context
-                                  .read<FoodCubit>()
-                                  .toggleFavoriteList(
-                                      state.isAddToFavoriteList),
-                              icon: Icon(
-                                state.isAddToFavoriteList
-                                    ? Icons.favorite
-                                    : Icons.favorite_outline,
-                                color: Colors.red,
-                              ),
-                              color: Colors.red.withOpacity(.1),
+                            BlocBuilder<FavoriteCubit, FavoriteState>(
+                              buildWhen: (previous, current) =>
+                                  previous.favoriteList != current.favoriteList,
+                              builder: (context, favoriteState) {
+                                if (favoriteState.favoriteList == null) {
+                                  return FIconButtonn(
+                                    icon: const Icon(
+                                      Icons.favorite_outline,
+                                      color: Colors.red,
+                                    ),
+                                    color: Colors.red.withOpacity(.1),
+                                  );
+                                }
+                                return FIconButtonn(
+                                  onTap: () => context
+                                      .read<FavoriteCubit>()
+                                      .toggleFavoriteList(state.food!),
+                                  icon: Icon(
+                                    favoriteState.favoriteList!.foodIds
+                                            .contains(widget.food.id)
+                                        ? Icons.favorite
+                                        : Icons.favorite_outline,
+                                    color: Colors.red,
+                                  ),
+                                  color: Colors.red.withOpacity(.1),
+                                );
+                              },
                             )
                           ],
                         ),

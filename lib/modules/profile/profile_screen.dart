@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubits/favorite/favorite_cubit.dart';
 
 import '../../config/routes/coordinator.dart';
 import '../../constants/ui/sizes.dart';
@@ -9,7 +10,7 @@ import '../../utils/ui/listen_error.dart';
 import '../../utils/ui/network_image.dart';
 import '../../utils/ui/scrollable_screen_with_background.dart';
 import '../../widgets/buttons/logout_button.dart';
-import '../cubit/app_cubit.dart';
+import '../cubits/app/app_cubit.dart';
 import 'widgets/widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -26,8 +27,7 @@ class ProfileScreen extends StatelessWidget {
         child: BlocBuilder<AppCubit, AppState>(
           buildWhen: (previous, current) =>
               previous.status != current.status ||
-              previous.user != current.user ||
-              previous.favoriteList != current.favoriteList,
+              previous.user != current.user,
           builder: (_, state) {
             if (state.status.isLoading) {
               return const SafeArea(
@@ -66,8 +66,14 @@ class ProfileScreen extends StatelessWidget {
                     'Favorite',
                     style: FTextStyles.heading4,
                   ),
-                  FavoriteSection(
-                    foodList: state.favoriteFoodList,
+                  BlocBuilder<FavoriteCubit, FavoriteState>(
+                    buildWhen: (previous, current) =>
+                        previous.foods != current.foods,
+                    builder: (_, state) {
+                      return FavoriteSection(
+                        foodList: state.foods,
+                      );
+                    },
                   ),
                   Sizes.navBarGapH,
                 ],

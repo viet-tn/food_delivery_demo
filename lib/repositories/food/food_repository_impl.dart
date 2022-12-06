@@ -45,9 +45,11 @@ class FoodRepositoryImpl extends BaseCollectionReference<FFood>
   @override
   Future<FResult<FFood>> fetchFoodById(String foodId) async {
     try {
-      final documentSnapshot =
-          await ref.where('id', isEqualTo: foodId).limit(1).get();
-      return FResult.success(documentSnapshot.docs.first.data());
+      final documentSnapshot = await ref.doc(foodId).get();
+
+      return documentSnapshot.exists
+          ? FResult.success(documentSnapshot.data())
+          : FResult.error('food not found');
     } catch (e) {
       return FResult.exception(e);
     }

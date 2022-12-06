@@ -11,7 +11,7 @@ import '../../utils/ui/listen_error.dart';
 import '../../utils/ui/scaffold.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/gradient_button.dart';
-import '../cubit/app_cubit.dart';
+import '../cubits/app/app_cubit.dart';
 import 'cubit/cart_cubit.dart';
 import 'widgets/cart_total_infomation.dart';
 import 'widgets/order_card.dart';
@@ -38,8 +38,7 @@ class CartScreen extends StatelessWidget {
                 flex: 3,
                 child: BlocBuilder<CartCubit, CartState>(
                   buildWhen: (previous, current) =>
-                      previous.status != current.status ||
-                      previous.cart != current.cart,
+                      previous.cart.items.length != current.cart.items.length,
                   builder: (context, state) {
                     if (state.cart.items.isEmpty) {
                       return Column(
@@ -77,13 +76,20 @@ class CartScreen extends StatelessWidget {
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(
                                   15.0, 4.0, 15.0, 10.0),
-                              child: OrderCard(
-                                onTap: () => FCoordinator.pushNamed(
-                                  Routes.food.name,
-                                  extra: food,
-                                ),
-                                food: food,
-                                quantity: state.cart.items[food.id]!,
+                              child: BlocBuilder<CartCubit, CartState>(
+                                buildWhen: (previous, current) =>
+                                    previous.cart.items[food.id] !=
+                                    current.cart.items[food.id],
+                                builder: (context, state) {
+                                  return OrderCard(
+                                    onTap: () => FCoordinator.pushNamed(
+                                      Routes.food.name,
+                                      extra: food,
+                                    ),
+                                    food: food,
+                                    quantity: state.cart.items[food.id]!,
+                                  );
+                                },
                               ),
                             );
                           },

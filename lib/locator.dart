@@ -16,7 +16,8 @@ import 'modules/cart/cubit/cart_cubit.dart';
 import 'modules/chat/chat_detail/cubit/chat_detail_cubit.dart';
 import 'modules/chat/cubit/chat_cubit.dart';
 import 'modules/checkout/cubit/payment_cubit.dart';
-import 'modules/cubit/app_cubit.dart';
+import 'modules/cubits/app/app_cubit.dart';
+import 'modules/cubits/favorite/favorite_cubit.dart';
 import 'modules/food/cubit/food_cubit.dart';
 import 'modules/forgot_password/cubit/forgot_password_cubit.dart';
 import 'modules/home/cubit/home_cubit.dart';
@@ -84,9 +85,6 @@ Future<void> _locator() async {
   GetIt.I.registerLazySingleton<AppCubit>(
     dispose: (cubit) => cubit.close(),
     () => AppCubit(
-      favoriteListRepository: DomainManager().favoriteListRepository,
-      cartRepository: DomainManager().cartRepository,
-      foodRepository: DomainManager().foodRepository,
       userRepository: DomainManager().userRepository,
       cloudStorage: DomainManager().cloudStorage,
       authRepository: DomainManager().authRepository,
@@ -111,7 +109,6 @@ Future<void> _locator() async {
 
   GetIt.I.registerFactory<FoodCubit>(
     () => FoodCubit(
-      appCubit: GetIt.I<AppCubit>(),
       foodRepository: DomainManager().foodRepository,
     ),
   );
@@ -163,6 +160,14 @@ Future<void> _locator() async {
 
   GetIt.I.registerFactory<PaymentCubit>(
     () => PaymentCubit(),
+  );
+
+  GetIt.I.registerFactory<FavoriteCubit>(
+    () => FavoriteCubit(
+      uid: GetIt.I<AppCubit>().state.user!.id,
+      favoriteListRepository: DomainManager().favoriteListRepository,
+      foodRepository: DomainManager().foodRepository,
+    )..fetchFavoriteList(),
   );
 
   // External services

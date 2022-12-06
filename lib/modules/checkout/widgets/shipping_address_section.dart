@@ -7,7 +7,7 @@ import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../repositories/users/coordinate.dart';
-import '../../cubit/app_cubit.dart';
+import '../../cubits/app/app_cubit.dart';
 import 'editable_section_bar.dart';
 
 class ShippingAdressSection extends StatelessWidget {

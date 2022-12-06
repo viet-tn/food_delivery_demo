@@ -1,40 +1,35 @@
-part of 'app_cubit.dart';
+part of 'favorite_cubit.dart';
 
-class AppState extends FState {
-  const AppState({
+class FavoriteState extends FState {
+  const FavoriteState({
     super.status,
     super.errorMessage,
-    this.user,
     this.favoriteList,
-    this.favoriteFoodList = const <FFood>[],
+    this.foods = const <FFood>[],
   });
 
-  final FUser? user;
   final FFavoriteList? favoriteList;
-  final List<FFood> favoriteFoodList;
+  final List<FFood> foods;
 
   @override
   List<Object?> get props => [
         ...super.props,
-        user,
         favoriteList,
-        favoriteFoodList,
+        foods,
       ];
 
   @override
-  AppState copyWith({
+  FavoriteState copyWith({
     ScreenStatus? status,
     String? errorMessage,
-    FUser? user,
     FFavoriteList? favoriteList,
-    List<FFood>? favoriteFoodList,
+    List<FFood>? foods,
   }) {
-    return AppState(
+    return FavoriteState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
-      user: user ?? this.user,
       favoriteList: favoriteList ?? this.favoriteList,
-      favoriteFoodList: favoriteFoodList ?? this.favoriteFoodList,
+      foods: foods ?? this.foods,
     );
   }
 }

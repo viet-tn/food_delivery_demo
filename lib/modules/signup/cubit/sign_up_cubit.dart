@@ -9,7 +9,7 @@ import '../../../repositories/cloud_storage/cloud_storage.dart';
 import '../../../repositories/users/coordinate.dart';
 import '../../../repositories/users/user_model.dart';
 import '../../../repositories/users/user_repository.dart';
-import '../../cubit/app_cubit.dart';
+import '../../cubits/app/app_cubit.dart';
 import '../../login/cubit/login_cubit.dart';
 import '../../login/models/email_input.dart';
 import '../models/sign_up_password_input.dart';

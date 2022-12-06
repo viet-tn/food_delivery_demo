@@ -1,31 +1,30 @@
-part of 'food_cubit.dart';
+part of 'app_cubit.dart';
 
-class FoodState extends FState {
-  const FoodState({
+class AppState extends FState {
+  const AppState({
     super.status,
     super.errorMessage,
-    this.food,
+    this.user,
   });
 
-  final FFood? food;
+  final FUser? user;
 
   @override
   List<Object?> get props => [
         ...super.props,
-        food,
+        user,
       ];
 
   @override
-  FoodState copyWith({
+  AppState copyWith({
     ScreenStatus? status,
     String? errorMessage,
-    FFood? food,
-    bool? isAddedToCart,
+    FUser? user,
   }) {
-    return FoodState(
+    return AppState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
-      food: food ?? this.food,
+      user: user ?? this.user,
     );
   }
 }

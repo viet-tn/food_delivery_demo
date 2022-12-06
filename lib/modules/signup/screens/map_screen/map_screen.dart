@@ -9,7 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../constants/ui/ui_parameters.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../repositories/users/coordinate.dart';
-import '../../../cubit/app_cubit.dart';
+import '../../../cubits/app/app_cubit.dart';
 import '../../cubit/sign_up_cubit.dart';
 import 'cubit/map_screen_cubit.dart';
 import 'widgets/address_search_bar.dart';
