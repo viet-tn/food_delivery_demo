@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'widgets/voucher_section.dart';
 
 import '../../config/routes/coordinator.dart';
 import '../../constants/ui/sizes.dart';
@@ -13,7 +14,6 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/gradient_button.dart';
 import '../cubits/app/app_cubit.dart';
 import 'cubit/cart_cubit.dart';
-import 'widgets/cart_total_infomation.dart';
 import 'widgets/order_card.dart';
 
 class CartScreen extends StatelessWidget {
@@ -75,7 +75,11 @@ class CartScreen extends StatelessWidget {
                             final food = state.foods[index];
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(
-                                  15.0, 4.0, 15.0, 10.0),
+                                15.0,
+                                4.0,
+                                15.0,
+                                6.0,
+                              ),
                               child: BlocBuilder<CartCubit, CartState>(
                                 buildWhen: (previous, current) =>
                                     previous.cart.items[food.id] !=
@@ -100,20 +104,15 @@ class CartScreen extends StatelessWidget {
                 ),
               ),
               BlocBuilder<CartCubit, CartState>(
-                buildWhen: (previous, current) => previous.cart != current.cart,
-                builder: (_, state) {
-                  return state.cart.items.isEmpty
+                buildWhen: (previous, current) =>
+                    previous.cart != current.cart ||
+                    previous.discount != current.discount,
+                builder: (context, state) {
+                  return state.subTotal == 0
                       ? const SizedBox()
-                      : Padding(
-                          padding: Ui.screenPaddingHorizontal,
-                          child: CartTotalInformation(
-                            onPressed: () {
-                              FCoordinator.goNamed(Routes.checkout.name);
-                            },
-                            subTotal: state.subTotal,
-                            deliveryCharge: state.deliveryCharge,
-                            discount: state.discount,
-                          ),
+                      : VoucherSection(
+                          itemTotal: state.subTotal,
+                          discount: state.discount,
                         );
                 },
               ),

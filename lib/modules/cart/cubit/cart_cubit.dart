@@ -110,6 +110,10 @@ class CartCubit extends FCubit<CartState> {
     );
   }
 
+  void onVoucherChanged(int amount) {
+    emitValue(state.copyWith(discount: amount));
+  }
+
   void clear() {
     emitValue(const CartState());
   }

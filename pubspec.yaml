@@ -233,6 +233,7 @@ flutter:
     - assets/images/banner/
     - assets/images/restaurants/
     - assets/images/illustrations/
+    - assets/images/voucher/
     - assets/icons/
     - assets/mapstyles/
 

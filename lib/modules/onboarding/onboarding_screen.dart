@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../config/routes/coordinator.dart';
 
+import '../../config/routes/coordinator.dart';
 import '../../constants/app_constants.dart';
 import '../../constants/ui/text_style.dart';
 import '../../widgets/buttons/gradient_button.dart';

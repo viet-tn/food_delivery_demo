@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+
 import '../../modules/login/cubit/login_cubit.dart';
 
 class UserRefreshStream extends ChangeNotifier {

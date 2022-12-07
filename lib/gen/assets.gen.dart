@@ -138,6 +138,7 @@ class $AssetsImagesGen {
   $AssetsImagesRestaurantsGen get restaurants =>
       const $AssetsImagesRestaurantsGen();
   $AssetsImagesSplashGen get splash => const $AssetsImagesSplashGen();
+  $AssetsImagesVoucherGen get voucher => const $AssetsImagesVoucherGen();
 }
 
 class $AssetsMapstylesGen {
@@ -267,6 +268,21 @@ class $AssetsImagesSplashGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [bgPattern, logo];
+}
+
+class $AssetsImagesVoucherGen {
+  const $AssetsImagesVoucherGen();
+
+  /// File path: assets/images/voucher/voucher_1.png
+  AssetGenImage get voucher1 =>
+      const AssetGenImage('assets/images/voucher/voucher_1.png');
+
+  /// File path: assets/images/voucher/voucher_2.png
+  AssetGenImage get voucher2 =>
+      const AssetGenImage('assets/images/voucher/voucher_2.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [voucher1, voucher2];
 }
 
 class Assets {

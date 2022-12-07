@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../config/routes/coordinator.dart';
 
+import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../utils/ui/snack_bar.dart';
 import '../cubit/sign_up_cubit.dart';

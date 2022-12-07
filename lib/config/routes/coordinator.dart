@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../modules/voucher/voucher_screen.dart';
 import '../../modules/login/cubit/login_cubit.dart';
 import '../../repositories/domain_manager.dart';
 import '../../repositories/users/user_model.dart';
@@ -63,6 +64,7 @@ enum Routes {
   foods,
   restaurants,
   checkout,
+  voucher,
 }
 
 class FCoordinator {
@@ -409,6 +411,15 @@ final appRouter = GoRouter(
           ),
         );
       },
+    ),
+    GoRoute(
+      name: Routes.voucher.name,
+      path: '/voucher',
+      parentNavigatorKey: FCoordinator.navigatorKey,
+      pageBuilder: (_, __) => const MaterialPage(
+        fullscreenDialog: true,
+        child: VoucherScreen(),
+      ),
     ),
   ],
 );

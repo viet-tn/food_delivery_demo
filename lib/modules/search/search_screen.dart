@@ -92,21 +92,23 @@ class _SearchScreenState extends State<SearchScreen> {
             builder: (context, state) {
               return Expanded(
                 child: state.foods.isEmpty
-                    ? Center(
-                        child: Column(
-                          children: [
-                            SizedBox.square(
-                              dimension: 250.0,
-                              child: SvgPicture.asset(
-                                  Assets.images.illustrations.sad),
-                            ),
-                            Text(
-                              'Food not found',
-                              style: FTextStyles.heading5.copyWith(
-                                color: Colors.grey,
+                    ? SingleChildScrollView(
+                        child: Center(
+                          child: Column(
+                            children: [
+                              SizedBox.square(
+                                dimension: 250.0,
+                                child: SvgPicture.asset(
+                                    Assets.images.illustrations.sad),
                               ),
-                            ),
-                          ],
+                              Text(
+                                'Food not found',
+                                style: FTextStyles.heading5.copyWith(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     : FoodListView(
