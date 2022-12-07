@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../config/routes/coordinator.dart';
 
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/text_style.dart';
@@ -31,7 +32,9 @@ class PopularFoodSection extends StatelessWidget {
                 style: FTextStyles.heading4,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  FCoordinator.pushNamed(Routes.foods.name);
+                },
                 child: Text(
                   'View More',
                   style:

@@ -6,8 +6,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'modules/forgot_password/cubit/forgot_password_cubit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'modules/cart/cubit/cart_cubit.dart';
@@ -15,7 +15,9 @@ import 'modules/chat/chat_detail/cubit/chat_detail_cubit.dart';
 import 'modules/chat/cubit/chat_cubit.dart';
 import 'modules/cubit/app_cubit.dart';
 import 'modules/food/cubit/food_cubit.dart';
+import 'modules/forgot_password/cubit/forgot_password_cubit.dart';
 import 'modules/home/cubit/home_cubit.dart';
+import 'modules/home/screens/cubit/view_more_cubit.dart';
 import 'modules/login/cubit/login_cubit.dart';
 import 'modules/restaurant/cubit/restaurant_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
@@ -23,7 +25,6 @@ import 'modules/signup/cubit/sign_up_cubit.dart';
 import 'modules/signup/screens/map_screen/cubit/map_screen_cubit.dart';
 import 'repositories/domain_manager.dart';
 import 'utils/services/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 Future<void> initializeApp() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -143,6 +144,12 @@ Future<void> _locator() async {
   );
   GetIt.I.registerFactory<ForgotPasswordCubit>(
     () => ForgotPasswordCubit(DomainManager().authRepository),
+  );
+  GetIt.I.registerFactory<ViewMoreCubit>(
+    () => ViewMoreCubit(
+      DomainManager().foodRepository,
+      DomainManager().restaurantRepository,
+    ),
   );
 
   // External services

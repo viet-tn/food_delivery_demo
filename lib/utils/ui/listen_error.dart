@@ -11,13 +11,16 @@ class ListenError<C extends FCubit> extends StatelessWidget {
   const ListenError({
     super.key,
     required this.child,
+    this.bloc,
   });
 
   final Widget child;
+  final C? bloc;
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<C, FState>(
+      bloc: bloc,
       listenWhen: (_, current) => current.status.hasError,
       listener: (_, state) {
         log(state.errorMessage ?? '');

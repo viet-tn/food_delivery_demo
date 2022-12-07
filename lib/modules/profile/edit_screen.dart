@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../widgets/app_bar.dart';
 import '../../utils/ui/loading_screen.dart';
 import '../../utils/ui/snack_bar.dart';
 import '../../config/routes/coordinator.dart';
@@ -14,7 +15,6 @@ import '../../repositories/users/user_model.dart';
 import '../../utils/ui/forms/edit_profile_form.dart';
 import '../../utils/ui/listen_error.dart';
 import '../../utils/ui/scaffold.dart';
-import '../../widgets/buttons/back_button.dart';
 import '../cubit/app_cubit.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -82,6 +82,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 body: SizedBox.expand(
                   child: Column(
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: FAppBar(
+                          onPressed: () async {
+                            final isDisCarded = await _onBackButtonPressed();
+                            if (isDisCarded) {
+                              FCoordinator.onBack();
+                            }
+                          },
+                          title: 'Edit Profile',
+                        ),
+                      ),
                       Expanded(
                         child: SingleChildScrollView(
                           padding: Ui.screenPadding,
@@ -89,29 +101,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ScrollViewKeyboardDismissBehavior.onDrag,
                           child: Column(
                             children: [
-                              SizedBox.fromSize(
-                                size: const Size.fromHeight(60.0),
-                                child: Stack(
-                                  alignment: Alignment.centerLeft,
-                                  children: [
-                                    FBackButton(
-                                      onPressed: () async {
-                                        final isDisCarded =
-                                            await _onBackButtonPressed();
-                                        if (isDisCarded) {
-                                          FCoordinator.onBack();
-                                        }
-                                      },
-                                    ),
-                                    const Center(
-                                      child: Text(
-                                        'Edit Profile',
-                                        style: FTextStyles.heading3,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                               BlocBuilder<AppCubit, AppState>(
                                 buildWhen: (previous, current) =>
                                     previous.user != current.user,

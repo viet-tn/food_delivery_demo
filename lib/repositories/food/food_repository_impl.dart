@@ -82,4 +82,40 @@ class FoodRepositoryImpl extends BaseCollectionReference<FFood>
       return FResult.exception(e);
     }
   }
+
+  @override
+  Future<FResult<List<FFood>>> fetchPopularFoods(
+      [FFood? food, int limit = 10]) async {
+    try {
+      late QuerySnapshot<FFood> querySnapshot;
+      if (food == null) {
+        querySnapshot = await ref
+            .orderBy('name')
+            .where('category', isEqualTo: 'best-foods')
+            .limit(limit)
+            .get();
+      } else {
+        final documentSnapshot = await ref
+            .where('id', isEqualTo: food.id)
+            .get()
+            .then((value) => value.docs.isNotEmpty ? value.docs.first : null);
+
+        if (documentSnapshot == null) {
+          return FResult.success(const <FFood>[]);
+        }
+        querySnapshot = await ref
+            .orderBy('name')
+            .where('category', isEqualTo: 'best-foods')
+            .startAfterDocument(documentSnapshot)
+            .limit(limit)
+            .get();
+      }
+      if (querySnapshot.docs.isEmpty) {
+        return FResult.success(const <FFood>[]);
+      }
+      return FResult.success(querySnapshot.docs.map((e) => e.data()).toList());
+    } catch (e) {
+      return FResult.exception(e);
+    }
+  }
 }

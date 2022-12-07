@@ -149,7 +149,7 @@ class _ScrollableScreenWithBackgroundState
                 ? const Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                      padding: EdgeInsets.all(20.0),
+                      padding: EdgeInsets.only(left: 15.0, top: 5.0),
                       child: FBackButton(),
                     ),
                   )
