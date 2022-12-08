@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'widgets/voucher_section.dart';
 
 import '../../config/routes/coordinator.dart';
 import '../../constants/ui/sizes.dart';
@@ -14,7 +13,8 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/gradient_button.dart';
 import '../cubits/app/app_cubit.dart';
 import 'cubit/cart_cubit.dart';
-import 'widgets/order_card.dart';
+import 'widgets/cart_item_card.dart';
+import 'widgets/voucher_section.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -85,7 +85,7 @@ class CartScreen extends StatelessWidget {
                                     previous.cart.items[food.id] !=
                                     current.cart.items[food.id],
                                 builder: (context, state) {
-                                  return OrderCard(
+                                  return CartItemCard(
                                     onTap: () => FCoordinator.pushNamed(
                                       Routes.food.name,
                                       extra: food,

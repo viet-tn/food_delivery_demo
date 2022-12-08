@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../config/routes/coordinator.dart';
 
+import '../../../config/routes/coordinator.dart';
 import '../../../utils/helpers/text_helpers.dart';
 import '../../../utils/ui/listen_error.dart';
 import '../../../utils/ui/snack_bar.dart';

@@ -1,6 +1,6 @@
-import 'order_model.dart';
+import 'payment_model.dart';
 
-class FStripe extends FOrder {
+class FStripe extends FPayment {
   FStripe({
     super.id,
     required super.amount,
@@ -75,7 +75,7 @@ class FStripe extends FOrder {
     );
   }
 
-  factory FStripe.fromFOrder(FOrder order) {
+  factory FStripe.fromFOrder(FPayment order) {
     return FStripe(
       id: order.id,
       amount: order.amount,

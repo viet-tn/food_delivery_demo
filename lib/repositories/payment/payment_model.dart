@@ -1,5 +1,5 @@
-class FOrder {
-  const FOrder({
+class FPayment {
+  const FPayment({
     this.id,
     required this.amount,
   });
@@ -7,11 +7,11 @@ class FOrder {
   final String? id;
   final int amount;
 
-  FOrder copyWith({
+  FPayment copyWith({
     String? id,
     int? amount,
   }) {
-    return FOrder(
+    return FPayment(
       id: id ?? this.id,
       amount: amount ?? this.amount,
     );

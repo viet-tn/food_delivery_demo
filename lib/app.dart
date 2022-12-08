@@ -7,8 +7,10 @@ import 'config/themes/app_theme.dart';
 import 'modules/cart/cubit/cart_cubit.dart';
 import 'modules/cubits/app/app_cubit.dart';
 import 'modules/cubits/favorite/favorite_cubit.dart';
+import 'modules/food/cubit/food_cubit.dart';
 import 'modules/home/cubit/home_cubit.dart';
 import 'modules/login/cubit/login_cubit.dart';
+import 'modules/order/cubit/orders_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
 import 'modules/signup/cubit/sign_up_cubit.dart';
 
@@ -41,6 +43,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => GetIt.I<HomeCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => GetIt.I<OrdersCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => GetIt.I<FoodCubit>(),
         )
       ],
       child: MaterialApp.router(

@@ -44,9 +44,10 @@ class ScaffoldWithBottomNavBar extends StatelessWidget {
   }
 
   int _locationToIndex(String location) {
-    if (location.contains('/profile')) return 1;
+    if (location.contains('/orders')) return 1;
     if (location.contains('/cart')) return 2;
     if (location.contains('/chat')) return 3;
+    if (location.contains('/profile')) return 4;
     return 0;
   }
 
@@ -100,7 +101,7 @@ class _FBottomNavigationBarState extends State<FBottomNavigationBar> {
           bool isActiveTab = activeTab == index;
           return Container(
             padding: isActiveTab
-                ? const EdgeInsets.symmetric(horizontal: 14.0, vertical: 2.0)
+                ? const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0)
                 : null,
             decoration: isActiveTab
                 ? const BoxDecoration(
@@ -125,9 +126,9 @@ class _FBottomNavigationBarState extends State<FBottomNavigationBar> {
                 isActiveTab
                     ? Row(
                         children: [
-                          gapW12,
-                          widget.items[index].title,
                           gapW8,
+                          widget.items[index].title,
+                          gapW12,
                         ],
                       )
                     : const SizedBox(),
@@ -173,14 +174,14 @@ final _tabs = <FBottomBarItem>[
     ),
   ),
   FBottomBarItem(
-    initialLocation: Routes.profile.name,
+    initialLocation: Routes.orders.name,
     icon: Image.asset(
-      Assets.icons.profileNav.path,
+      Assets.icons.order.path,
       fit: BoxFit.contain,
       scale: _iconScale,
     ),
     title: const Text(
-      'Profile',
+      'Orders',
       style: FTextStyles.heading5,
     ),
   ),
@@ -205,6 +206,18 @@ final _tabs = <FBottomBarItem>[
     ),
     title: const Text(
       'Chat',
+      style: FTextStyles.heading5,
+    ),
+  ),
+  FBottomBarItem(
+    initialLocation: Routes.profile.name,
+    icon: Image.asset(
+      Assets.icons.profileNav.path,
+      fit: BoxFit.contain,
+      scale: _iconScale,
+    ),
+    title: const Text(
+      'Profile',
       style: FTextStyles.heading5,
     ),
   ),

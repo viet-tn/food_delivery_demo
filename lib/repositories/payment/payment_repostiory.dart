@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'order_model.dart';
+import 'payment_model.dart';
 import 'stripe.dart';
 
 class PaymentRepository {
@@ -18,7 +18,7 @@ class PaymentRepository {
   final String uid;
   final CollectionReference<FStripe> ref;
 
-  Stream<FStripe> createCheckoutSession(FOrder order) async* {
+  Stream<FStripe> createCheckoutSession(FPayment order) async* {
     final doc = await ref.add(FStripe.fromFOrder(order));
     await for (var snapshot in doc.snapshots()) {
       final data = snapshot.data()!;

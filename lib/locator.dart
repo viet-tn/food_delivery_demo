@@ -23,6 +23,8 @@ import 'modules/forgot_password/cubit/forgot_password_cubit.dart';
 import 'modules/home/cubit/home_cubit.dart';
 import 'modules/home/screens/cubit/view_more_cubit.dart';
 import 'modules/login/cubit/login_cubit.dart';
+import 'modules/order/cubit/orders_cubit.dart';
+import 'modules/order/data/order_repository.dart';
 import 'modules/restaurant/cubit/restaurant_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
 import 'modules/signup/cubit/sign_up_cubit.dart';
@@ -34,28 +36,25 @@ import 'utils/services/shared_preferences.dart';
 Future<void> initializeApp() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
-  await Firebase.initializeApp();
-
   Stripe.publishableKey = Credentials.stripePublishableKey;
-
-  await Stripe.instance.applySettings();
-
-  await FirebaseAppCheck.instance.activate(
-    webRecaptchaSiteKey: 'recaptcha-v3-site-key',
-  );
-
-  // Pass all uncaught errors from the framework to Crashlytics.
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-  // Set true to disable verification for testing
-  await FirebaseAuth.instance
-      .setSettings(appVerificationDisabledForTesting: true);
-
   // Remove '#' sign in url
   usePathUrlStrategy();
 
-  await _locator();
+  await Firebase.initializeApp();
+  await Future.wait(
+    [
+      FirebaseAppCheck.instance.activate(
+        webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+      ),
+      Stripe.instance.applySettings(),
+      // Set true to disable verification for testing
+      FirebaseAuth.instance
+          .setSettings(appVerificationDisabledForTesting: false),
+      _locator(),
+    ],
+  );
+
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   // whenever your initialization is completed, remove the splash screen:
   FlutterNativeSplash.remove();
@@ -170,13 +169,24 @@ Future<void> _locator() async {
     )..fetchFavoriteList(),
   );
 
+  GetIt.I.registerFactory<OrdersCubit>(
+    () => OrdersCubit(
+      orderRepository: GetIt.I<OrderRepository>(),
+      foodRepository: DomainManager().foodRepository,
+    )..init(),
+  );
+
   // External services
   GetIt.I.registerLazySingleton<GeoHasher>(
     () => GeoHasher(),
   );
 
   // Payment repository
-  GetIt.I.registerFactory<PaymentRepository>(
+  GetIt.I.registerLazySingleton<PaymentRepository>(
     () => PaymentRepository(GetIt.I<AppCubit>().state.user!.id),
+  );
+
+  GetIt.I.registerLazySingleton<OrderRepository>(
+    () => OrderRepository(GetIt.I<AppCubit>().state.user!.id),
   );
 }

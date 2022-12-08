@@ -15,6 +15,7 @@ import '../../widgets/app_bar.dart';
 import '../cart/cubit/cart_cubit.dart';
 import '../cart/widgets/cart_total_infomation.dart';
 import '../cubits/app/app_cubit.dart';
+import '../order/cubit/orders_cubit.dart';
 import 'cubit/payment_cubit.dart';
 import 'widgets/order_summary_section.dart';
 import 'widgets/shipping_address_section.dart';
@@ -93,7 +94,23 @@ class CheckoutScreen extends StatelessWidget {
                         child: CartTotalInformation(
                           onPressed: () {
                             context.read<PaymentCubit>().onCheckoutPressed(
-                                state.total * 100); // convert dolar to cent
+                              state.total * 100, // convert dolar to cent
+                              onPaymentSuccessful: () {
+                                FCoordinator.showPaymentSuccessfulScreen();
+                              },
+                            );
+                            context.read<OrdersCubit>().createOrder(
+                                  address: GetIt.I<AppCubit>()
+                                      .state
+                                      .user!
+                                      .coordinates
+                                      .first,
+                                  cart: state.cart,
+                                  discount: state.discount.toDouble(),
+                                  deliveryCharge:
+                                      state.deliveryCharge.toDouble(),
+                                  subTotal: state.subTotal.toDouble(),
+                                );
                           },
                           subTotal: state.subTotal,
                           deliveryCharge: state.deliveryCharge,

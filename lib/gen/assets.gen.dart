@@ -64,6 +64,9 @@ class $AssetsIconsGen {
   AssetGenImage get notifiaction =>
       const AssetGenImage('assets/icons/notifiaction.png');
 
+  /// File path: assets/icons/order.png
+  AssetGenImage get order => const AssetGenImage('assets/icons/order.png');
+
   /// File path: assets/icons/pin.png
   AssetGenImage get pin => const AssetGenImage('assets/icons/pin.png');
 
@@ -114,6 +117,7 @@ class $AssetsIconsGen {
         lock,
         message,
         notifiaction,
+        order,
         pin,
         profile,
         profileNav,
@@ -175,18 +179,21 @@ class $AssetsImagesIllustrationsGen {
   /// File path: assets/images/illustrations/chat.svg
   String get chat => 'assets/images/illustrations/chat.svg';
 
-  /// File path: assets/images/illustrations/favorite.png
-  AssetGenImage get favoritePng =>
-      const AssetGenImage('assets/images/illustrations/favorite.png');
-
   /// File path: assets/images/illustrations/favorite.svg
-  String get favoriteSvg => 'assets/images/illustrations/favorite.svg';
+  String get favorite => 'assets/images/illustrations/favorite.svg';
+
+  /// File path: assets/images/illustrations/on_the_way.svg
+  String get onTheWay => 'assets/images/illustrations/on_the_way.svg';
+
+  /// File path: assets/images/illustrations/payment.png
+  AssetGenImage get payment =>
+      const AssetGenImage('assets/images/illustrations/payment.png');
 
   /// File path: assets/images/illustrations/sad.svg
   String get sad => 'assets/images/illustrations/sad.svg';
 
   /// List of all assets
-  List<dynamic> get values => [cart, chat, favoritePng, favoriteSvg, sad];
+  List<dynamic> get values => [cart, chat, favorite, onTheWay, payment, sad];
 }
 
 class $AssetsImagesOnboardingGen {

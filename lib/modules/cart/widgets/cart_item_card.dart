@@ -13,8 +13,8 @@ import '../../../widgets/dialogs/alert_dialog.dart';
 import '../cubit/cart_cubit.dart';
 import 'item_quantity_selector.dart';
 
-class OrderCard extends StatelessWidget {
-  const OrderCard({
+class CartItemCard extends StatelessWidget {
+  const CartItemCard({
     super.key,
     this.onTap,
     required this.food,

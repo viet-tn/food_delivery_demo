@@ -47,7 +47,7 @@ final appThemeData = {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         side: const BorderSide(
-          color: FColors.stroke,
+          color: FColors.green,
         ),
         shape: const RoundedRectangleBorder(
           borderRadius: Ui.borderRadius,

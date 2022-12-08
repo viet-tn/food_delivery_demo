@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../modules/order/orders_screen.dart';
+import '../../widgets/payment_successful_screen.dart';
 import '../../modules/voucher/voucher_screen.dart';
 import '../../modules/login/cubit/login_cubit.dart';
 import '../../repositories/domain_manager.dart';
@@ -65,6 +67,7 @@ enum Routes {
   restaurants,
   checkout,
   voucher,
+  orders,
 }
 
 class FCoordinator {
@@ -167,6 +170,14 @@ class FCoordinator {
 
   static void showRestaurantScreen(FRestaurant restaurant) {
     context.goNamed(Routes.restaurant.name, extra: restaurant);
+  }
+
+  static void showPaymentSuccessfulScreen() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const PaymentSuccessfulScreen(),
+        ));
   }
 
   static void showMapScreen(
@@ -310,6 +321,13 @@ final appRouter = GoRouter(
               ),
             ),
           ],
+        ),
+        GoRoute(
+          path: '/orders',
+          name: Routes.orders.name,
+          pageBuilder: (_, __) => const NoTransitionPage(
+            child: OrdersScreen(),
+          ),
         ),
         GoRoute(
           name: Routes.chat.name,

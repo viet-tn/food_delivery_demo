@@ -30,7 +30,7 @@ class FavoriteSection extends StatelessWidget {
                 SizedBox.square(
                   dimension: 220.0,
                   child: SvgPicture.asset(
-                    Assets.images.illustrations.favoriteSvg,
+                    Assets.images.illustrations.favorite,
                   ),
                 ),
                 Text(
