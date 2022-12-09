@@ -179,6 +179,9 @@ class $AssetsImagesIllustrationsGen {
   /// File path: assets/images/illustrations/chat.svg
   String get chat => 'assets/images/illustrations/chat.svg';
 
+  /// File path: assets/images/illustrations/cooking.svg
+  String get cooking => 'assets/images/illustrations/cooking.svg';
+
   /// File path: assets/images/illustrations/favorite.svg
   String get favorite => 'assets/images/illustrations/favorite.svg';
 
@@ -193,7 +196,8 @@ class $AssetsImagesIllustrationsGen {
   String get sad => 'assets/images/illustrations/sad.svg';
 
   /// List of all assets
-  List<dynamic> get values => [cart, chat, favorite, onTheWay, payment, sad];
+  List<dynamic> get values =>
+      [cart, chat, cooking, favorite, onTheWay, payment, sad];
 }
 
 class $AssetsImagesOnboardingGen {

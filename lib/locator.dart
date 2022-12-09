@@ -3,6 +3,7 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -25,6 +26,7 @@ import 'modules/home/screens/cubit/view_more_cubit.dart';
 import 'modules/login/cubit/login_cubit.dart';
 import 'modules/order/cubit/orders_cubit.dart';
 import 'modules/order/data/order_repository.dart';
+import 'modules/order/order_details/cubit/order_details_cubit.dart';
 import 'modules/restaurant/cubit/restaurant_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
 import 'modules/signup/cubit/sign_up_cubit.dart';
@@ -49,12 +51,14 @@ Future<void> initializeApp() async {
       Stripe.instance.applySettings(),
       // Set true to disable verification for testing
       FirebaseAuth.instance
-          .setSettings(appVerificationDisabledForTesting: false),
+          .setSettings(appVerificationDisabledForTesting: kDebugMode),
       _locator(),
     ],
   );
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  await FirebaseCrashlytics.instance
+      .setCrashlyticsCollectionEnabled(!kDebugMode);
 
   // whenever your initialization is completed, remove the splash screen:
   FlutterNativeSplash.remove();
@@ -174,6 +178,12 @@ Future<void> _locator() async {
       orderRepository: GetIt.I<OrderRepository>(),
       foodRepository: DomainManager().foodRepository,
     )..init(),
+  );
+
+  GetIt.I.registerFactory<OrderDetailsCubit>(
+    () => OrderDetailsCubit(
+      foodRepository: DomainManager().foodRepository,
+    ),
   );
 
   // External services

@@ -99,12 +99,11 @@ class CheckoutScreen extends StatelessWidget {
                                 FCoordinator.showPaymentSuccessfulScreen();
                               },
                             );
+                            final user = GetIt.I<AppCubit>().state.user!;
                             context.read<OrdersCubit>().createOrder(
-                                  address: GetIt.I<AppCubit>()
-                                      .state
-                                      .user!
-                                      .coordinates
-                                      .first,
+                                  name: '${user.firstName!} ${user.lastName!}',
+                                  phone: user.phone!,
+                                  address: user.coordinates.first,
                                   cart: state.cart,
                                   discount: state.discount.toDouble(),
                                   deliveryCharge:

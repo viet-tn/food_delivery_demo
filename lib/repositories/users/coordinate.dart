@@ -1,28 +1,24 @@
-import 'package:dart_geohash/dart_geohash.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:get_it/get_it.dart';
 
 class Coordinate extends Equatable {
-  Coordinate({
+  const Coordinate({
     required this.latitude,
-    required this.longtitude,
-    String? geohash,
+    required this.longitude,
     this.address,
-  }) : geohash = geohash ?? GetIt.I<GeoHasher>().encode(longtitude, latitude);
+  });
 
   final double latitude;
-  final double longtitude;
-  final String geohash;
+  final double longitude;
   final String? address;
 
   @override
-  List<Object?> get props => [latitude, longtitude, geohash, address];
+  List<Object?> get props => [latitude, longitude, address];
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'latitude': latitude,
-      'longtitude': longtitude,
-      'geohash': geohash,
+      'longitude': longitude,
       'address': address
     };
   }
@@ -30,22 +26,25 @@ class Coordinate extends Equatable {
   factory Coordinate.fromMap(Map<String, dynamic> map) {
     return Coordinate(
       latitude: map['latitude'],
-      longtitude: map['longtitude'],
-      geohash: map['geohash'],
+      longitude: map['longitude'],
       address: map['address'],
     );
   }
 
+  factory Coordinate.fromGeoPoint(GeoPoint geoPoint) {
+    return Coordinate(
+        latitude: geoPoint.latitude, longitude: geoPoint.longitude);
+  }
+
   Coordinate copyWith({
     double? latitude,
-    double? longtitude,
+    double? longitude,
     String? geohash,
     String? address,
   }) {
     return Coordinate(
       latitude: latitude ?? this.latitude,
-      longtitude: longtitude ?? this.longtitude,
-      geohash: geohash ?? this.geohash,
+      longitude: longitude ?? this.longitude,
       address: address ?? this.address,
     );
   }

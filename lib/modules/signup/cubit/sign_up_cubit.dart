@@ -127,7 +127,7 @@ class SignUpCubit extends FCubit<SignUpState> {
           coordinates: <Coordinate>[
             Coordinate(
               latitude: lat,
-              longtitude: lon,
+              longitude: lon,
               address: address,
             )
           ],

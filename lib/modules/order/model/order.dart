@@ -9,7 +9,9 @@ class FOrder extends Equatable {
   const FOrder({
     this.id,
     this.status = OrderStatus.processing,
-    required this.address,
+    required this.name,
+    required this.phone,
+    required this.coordinate,
     required this.cart,
     required this.created,
     required this.discount,
@@ -19,7 +21,9 @@ class FOrder extends Equatable {
 
   final String? id;
   final OrderStatus status;
-  final Coordinate address;
+  final String name;
+  final String phone;
+  final Coordinate coordinate;
   final FCart cart;
   final DateTime created;
   final double discount;
@@ -32,7 +36,7 @@ class FOrder extends Equatable {
   List<Object?> get props => [
         id,
         status,
-        address,
+        coordinate,
         cart,
         created,
         discount,
@@ -43,7 +47,9 @@ class FOrder extends Equatable {
   FOrder copyWith({
     String? id,
     OrderStatus? status,
-    Coordinate? address,
+    String? name,
+    String? phone,
+    Coordinate? coordinate,
     FCart? cart,
     DateTime? created,
     double? discount,
@@ -53,7 +59,9 @@ class FOrder extends Equatable {
     return FOrder(
       id: id ?? this.id,
       status: status ?? this.status,
-      address: address ?? this.address,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      coordinate: coordinate ?? this.coordinate,
       cart: cart ?? this.cart,
       created: created ?? this.created,
       discount: discount ?? this.discount,
@@ -66,7 +74,9 @@ class FOrder extends Equatable {
     return <String, dynamic>{
       'id': id,
       'status': status.name,
-      'address': address.toMap(),
+      'name': name,
+      'phone': phone,
+      'coordinate': coordinate.toMap(),
       'cart': cart.toMap(),
       'created': created,
       'discount': discount,
@@ -79,7 +89,9 @@ class FOrder extends Equatable {
     return FOrder(
       id: map['id'],
       status: OrderStatus.values.byName(map['status']),
-      address: Coordinate.fromMap(map['address']),
+      name: map['name'],
+      phone: map['phone'],
+      coordinate: Coordinate.fromMap(map['coordinate']),
       cart: FCart.fromMap(map['cart']),
       created: map['created'].toDate(),
       discount: map['discount'],

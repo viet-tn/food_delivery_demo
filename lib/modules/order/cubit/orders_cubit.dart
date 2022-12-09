@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
+
+import '../../../base/cubit.dart';
 import '../../../base/state.dart';
-import '../data/order_repository.dart';
-import '../model/order.dart';
 import '../../../repositories/cart/cart_model.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../repositories/food/food_repository.dart';
-import '../../../repositories/users/coordinate.dart';
-
-import '../../../base/cubit.dart';
 import '../../../repositories/result.dart';
+import '../../../repositories/users/coordinate.dart';
+import '../data/order_repository.dart';
+import '../model/order.dart';
 
 part 'orders_state.dart';
 
@@ -56,10 +56,14 @@ class OrdersCubit extends FCubit<OrdersState> {
     required double discount,
     required double deliveryCharge,
     required double subTotal,
+    required String name,
+    required String phone,
     required Coordinate address,
   }) async {
     final newOrder = FOrder(
-      address: address,
+      name: name,
+      phone: phone,
+      coordinate: address,
       cart: cart,
       created: DateTime.now(),
       discount: discount,

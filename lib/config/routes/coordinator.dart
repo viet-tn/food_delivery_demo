@@ -2,12 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../modules/order/orders_screen.dart';
-import '../../widgets/payment_successful_screen.dart';
-import '../../modules/voucher/voucher_screen.dart';
-import '../../modules/login/cubit/login_cubit.dart';
-import '../../repositories/domain_manager.dart';
-import '../../repositories/users/user_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,8 +15,12 @@ import '../../modules/forgot_password/forgot_password_screen.dart';
 import '../../modules/home/home_screen.dart';
 import '../../modules/home/screens/foods_screen.dart';
 import '../../modules/home/screens/restaurants_screen.dart';
+import '../../modules/login/cubit/login_cubit.dart';
 import '../../modules/login/login_screen.dart';
 import '../../modules/onboarding/onboarding_screen.dart';
+import '../../modules/order/model/order.dart';
+import '../../modules/order/order_details/order_details_screen.dart';
+import '../../modules/order/orders_screen.dart';
 import '../../modules/profile/edit_screen.dart';
 import '../../modules/profile/profile_screen.dart';
 import '../../modules/restaurant/restaurant_screen.dart';
@@ -33,12 +31,16 @@ import '../../modules/signup/screens/set_location_screen.dart';
 import '../../modules/signup/screens/upload_photo_screen.dart';
 import '../../modules/signup/screens/verification_screen.dart';
 import '../../modules/signup/sign_up_screen.dart';
+import '../../modules/voucher/voucher_screen.dart';
+import '../../repositories/domain_manager.dart';
 import '../../repositories/food/food_model.dart';
 import '../../repositories/restaurants/restaurant_model.dart';
+import '../../repositories/users/user_model.dart';
 import '../../utils/helpers/resfresh_stream.dart';
 import '../../utils/services/shared_preferences.dart';
 import '../../utils/ui/scaffold_with_bottom_nav_bar.dart';
 import '../../widgets/congrats_screen.dart';
+import '../../widgets/payment_successful_screen.dart';
 import 'route_observer.dart';
 
 enum Routes {
@@ -68,6 +70,7 @@ enum Routes {
   checkout,
   voucher,
   orders,
+  orderDetails,
 }
 
 class FCoordinator {
@@ -328,6 +331,16 @@ final appRouter = GoRouter(
           pageBuilder: (_, __) => const NoTransitionPage(
             child: OrdersScreen(),
           ),
+          routes: [
+            GoRoute(
+              parentNavigatorKey: FCoordinator.navigatorKey,
+              path: 'details',
+              name: Routes.orderDetails.name,
+              builder: (_, state) => OrderDetailsScreen(
+                order: state.extra as FOrder,
+              ),
+            ),
+          ],
         ),
         GoRoute(
           name: Routes.chat.name,

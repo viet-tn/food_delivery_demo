@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../config/routes/coordinator.dart';
 import '../model/order.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../utils/helpers/text_helpers.dart';
@@ -93,7 +94,12 @@ class OrderCard extends StatelessWidget {
                 child: SizedBox(
                   height: 45.0,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      FCoordinator.goNamed(
+                        Routes.orderDetails.name,
+                        extra: order,
+                      );
+                    },
                     child: Text(
                       'View Details',
                       style: FTextStyles.button.copyWith(color: FColors.green),

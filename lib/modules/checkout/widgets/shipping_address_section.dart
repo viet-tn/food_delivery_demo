@@ -34,7 +34,7 @@ class ShippingAdressSection extends StatelessWidget {
           builder: (context, state) {
             return EditableSectionBar(
               onEditPressed: () {
-                FCoordinator.showMapScreen(state.latitude, state.longtitude);
+                FCoordinator.showMapScreen(state.latitude, state.longitude);
               },
               title: 'Shipping Address',
             );

@@ -21,7 +21,7 @@ class PaymentSuccessfulScreen extends StatelessWidget {
             children: [
               SizedBox.square(
                 dimension: 300.0,
-                child: Image.asset(Assets.images.illustrations.payment.path),
+                child: Image.asset(Assets.images.illustrations.cooking),
               ),
               const Text(
                 'Payment Success',

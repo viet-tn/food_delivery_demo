@@ -107,7 +107,7 @@ class _MapScreenState extends State<MapScreen> {
                                     coordinates: [
                                       Coordinate(
                                         latitude: state.lat!,
-                                        longtitude: state.lon!,
+                                        longitude: state.lon!,
                                         address: state.address!,
                                       )
                                     ],

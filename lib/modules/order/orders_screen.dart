@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'cubit/orders_cubit.dart';
 
 import '../../config/routes/coordinator.dart';
 import '../../constants/ui/ui_parameters.dart';
 import '../../utils/ui/scaffold.dart';
+import 'cubit/orders_cubit.dart';
 import 'model/order.dart';
 import 'widgets/order_list.dart';
 import 'widgets/order_tab.dart';

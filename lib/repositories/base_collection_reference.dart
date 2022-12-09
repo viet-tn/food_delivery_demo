@@ -46,6 +46,7 @@ class BaseCollectionReference<T> {
     try {
       final DocumentReference<T> doc =
           await ref.add(item).timeout(const Duration(seconds: 5));
+      await doc.update({'id': doc.id});
       return FResult.success(setID(item, doc.id));
     } catch (e) {
       return FResult.exception(e);
