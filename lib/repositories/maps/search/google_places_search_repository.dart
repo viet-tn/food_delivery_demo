@@ -53,7 +53,7 @@ class GooglePlacesSearchRepository implements PlacesSearchRepository {
   }
 
   @override
-  Future<String> calculateDistance(
+  Future<List<int>> calculateDistance(
       double srcLat, double srcLng, double desLat, double desLng) async {
     const unencodedPath = '/maps/api/distancematrix/json';
 
@@ -77,6 +77,9 @@ class GooglePlacesSearchRepository implements PlacesSearchRepository {
 
     List<dynamic> data = jsonDecode(response.body)['rows'];
 
-    return data[0]['elements'][0]['distance']['text'];
+    return [
+      data[0]['elements'][0]['distance']['value'] ?? 0,
+      data[0]['elements'][0]['duration']['value'] ?? 0,
+    ];
   }
 }

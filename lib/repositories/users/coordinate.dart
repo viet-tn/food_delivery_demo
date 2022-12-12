@@ -6,28 +6,31 @@ class Coordinate extends Equatable {
     required this.latitude,
     required this.longitude,
     this.address,
+    this.geohash,
   });
 
   final double latitude;
   final double longitude;
   final String? address;
+  final String? geohash;
 
   @override
-  List<Object?> get props => [latitude, longitude, address];
+  List<Object?> get props => [latitude, longitude, address, geohash];
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'latitude': latitude,
-      'longitude': longitude,
-      'address': address
+      'address': address,
+      'position': GeoPoint(latitude, longitude),
     };
   }
 
   factory Coordinate.fromMap(Map<String, dynamic> map) {
+    final position = map['position'];
     return Coordinate(
-      latitude: map['latitude'],
-      longitude: map['longitude'],
+      latitude: position['geopoint'].latitude,
+      longitude: position['geopoint'].longitude,
       address: map['address'],
+      geohash: map['geohash'],
     );
   }
 

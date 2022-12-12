@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import '../users/coordinate.dart';
 
 class FRestaurant extends Equatable {
@@ -8,6 +9,7 @@ class FRestaurant extends Equatable {
     required this.url,
     this.foodIds = const <String>[],
     required this.coordinate,
+    this.duration,
   });
 
   final String id;
@@ -17,6 +19,7 @@ class FRestaurant extends Equatable {
 
   /// List of food id
   final List<String> foodIds;
+  final int? duration;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -45,6 +48,7 @@ class FRestaurant extends Equatable {
     String? url,
     List<String>? menu,
     Coordinate? coordinate,
+    int? duration,
   }) {
     return FRestaurant(
       id: id ?? this.id,
@@ -52,9 +56,10 @@ class FRestaurant extends Equatable {
       url: url ?? this.url,
       foodIds: menu ?? foodIds,
       coordinate: coordinate ?? this.coordinate,
+      duration: duration ?? this.duration,
     );
   }
 
   @override
-  List<Object> get props => [id, name, url, foodIds];
+  List<Object?> get props => [id, name, url, foodIds, coordinate, duration];
 }

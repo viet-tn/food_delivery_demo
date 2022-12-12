@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../repositories/result.dart';
 
 import '../../../repositories/base_collection_reference.dart';
+import '../../../repositories/result.dart';
 import '../model/order.dart';
 
 class OrderRepository extends BaseCollectionReference<FOrder> {

@@ -1,3 +1,4 @@
+import '../../home/cubit/home_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
@@ -27,6 +28,8 @@ class AppCubit extends FCubit<AppState> {
 
   void init(FUser user) {
     emitValue(state.copyWith(user: user));
+    GetIt.I<HomeCubit>().init(
+        user.coordinates.first.latitude, user.coordinates.first.longitude);
   }
 
   Future<void> signOut() async {

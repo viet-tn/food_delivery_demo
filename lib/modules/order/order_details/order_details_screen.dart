@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'cubit/order_details_cubit.dart';
-import 'widgets/order_details_card.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 
@@ -13,6 +11,8 @@ import '../../../utils/ui/scaffold.dart';
 import '../../../widgets/app_bar.dart';
 import '../../../widgets/chips/category_chip.dart';
 import '../model/order.dart';
+import 'cubit/order_details_cubit.dart';
+import 'widgets/order_details_card.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   const OrderDetailsScreen({

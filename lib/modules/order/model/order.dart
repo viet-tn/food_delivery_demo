@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import '../../../repositories/users/coordinate.dart';
 
 import '../../../repositories/cart/cart_model.dart';
+import '../../../repositories/users/coordinate.dart';
 
 enum OrderStatus { processing, delivered, cancelled }
 

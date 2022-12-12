@@ -103,11 +103,12 @@ Future<void> _locator() async {
     ),
   );
 
-  GetIt.I.registerFactory<HomeCubit>(
+  GetIt.I.registerLazySingleton<HomeCubit>(
     () => HomeCubit(
       restaurantRepository: DomainManager().restaurantRepository,
       foodRepository: DomainManager().foodRepository,
-    )..init(),
+      placesSearchRepository: DomainManager().placesSearchRepository,
+    ),
   );
 
   GetIt.I.registerFactory<FoodCubit>(
@@ -158,6 +159,7 @@ Future<void> _locator() async {
     () => ViewMoreCubit(
       DomainManager().foodRepository,
       DomainManager().restaurantRepository,
+      DomainManager().placesSearchRepository,
     ),
   );
 
