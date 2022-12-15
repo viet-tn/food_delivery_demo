@@ -74,6 +74,13 @@ class RestaurantRepositoryImpl extends BaseCollectionReference<FRestaurant>
     return FResult.success(
         result.sublist(index + 1, min(index + limit, result.length)));
   }
+
+  @override
+  Future<FResult<FRestaurant>> getByFoodId(String foodId) async {
+    final query =
+        await ref.where('menu', arrayContains: {'food_id': foodId}).get();
+    return FResult.success(query.docs.first.data());
+  }
 }
 
 double _calulateRelativeDistance(

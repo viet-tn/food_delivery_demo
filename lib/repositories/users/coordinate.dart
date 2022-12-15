@@ -20,7 +20,9 @@ class Coordinate extends Equatable {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'address': address,
-      'position': GeoPoint(latitude, longitude),
+      'position': {
+        'geopoint': GeoPoint(latitude, longitude),
+      },
     };
   }
 

@@ -37,22 +37,24 @@ class ChatBody extends StatelessWidget {
               onPressed: () {
                 context
                     .read<ChatCubit>()
-                    .readMessage(chat.id, chat.lastestMessage);
+                    .readMessage(chat.id!, chat.lastestMessage);
                 FCoordinator.goNamed(
                   Routes.chatDetail.name,
                   params: {
-                    'chatId': chat.id,
+                    'chatId': chat.id!,
                     'chatWithUserId': chatWithUserId,
                   },
                 );
               },
               withUserId: chatWithUserId,
-              lastMessage: chat.lastestMessage.content,
-              lastMessageTime: DateTime.fromMillisecondsSinceEpoch(
-                      chat.lastestMessage.timeStamp)
-                  .timeString,
-              isSeen: chat.lastestMessage.isSeen,
-              isMyMessage: chat.lastestMessage.senderId ==
+              lastMessage: chat.lastestMessage?.content ?? '',
+              lastMessageTime: chat.lastestMessage == null
+                  ? ''
+                  : DateTime.fromMillisecondsSinceEpoch(
+                          chat.lastestMessage!.timeStamp)
+                      .timeString,
+              isSeen: chat.lastestMessage?.isSeen ?? false,
+              isMyMessage: chat.lastestMessage?.senderId ==
                   GetIt.I<LoginCubit>().state.user.id,
             ),
           );

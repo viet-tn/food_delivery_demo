@@ -48,7 +48,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                controller: ScrollController()..jumpTo(300.0),
                 padding: Ui.screenPaddingHorizontal,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,7 +115,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                               Text(widget.order.name),
                               Text(widget.order.phone),
                               Text(
-                                widget.order.coordinate.address!,
+                                widget.order.userPosition.address!,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),

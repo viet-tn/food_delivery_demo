@@ -83,6 +83,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/send.png
   AssetGenImage get send => const AssetGenImage('assets/icons/send.png');
 
+  /// File path: assets/icons/shipper.png
+  AssetGenImage get shipper => const AssetGenImage('assets/icons/shipper.png');
+
   /// File path: assets/icons/shopping_bag.png
   AssetGenImage get shoppingBag =>
       const AssetGenImage('assets/icons/shopping_bag.png');
@@ -123,6 +126,7 @@ class $AssetsIconsGen {
         profileNav,
         search,
         send,
+        shipper,
         shoppingBag,
         star,
         starFull,
@@ -151,8 +155,12 @@ class $AssetsMapstylesGen {
   /// File path: assets/mapstyles/mapstyle_default.json
   String get mapstyleDefault => 'assets/mapstyles/mapstyle_default.json';
 
+  /// File path: assets/mapstyles/order_tracking_mapstyle.json
+  String get orderTrackingMapstyle =>
+      'assets/mapstyles/order_tracking_mapstyle.json';
+
   /// List of all assets
-  List<String> get values => [mapstyleDefault];
+  List<String> get values => [mapstyleDefault, orderTrackingMapstyle];
 }
 
 class $AssetsImagesBannerGen {
@@ -182,6 +190,9 @@ class $AssetsImagesIllustrationsGen {
   /// File path: assets/images/illustrations/cooking.svg
   String get cooking => 'assets/images/illustrations/cooking.svg';
 
+  /// File path: assets/images/illustrations/empty.svg
+  String get empty => 'assets/images/illustrations/empty.svg';
+
   /// File path: assets/images/illustrations/favorite.svg
   String get favorite => 'assets/images/illustrations/favorite.svg';
 
@@ -197,7 +208,7 @@ class $AssetsImagesIllustrationsGen {
 
   /// List of all assets
   List<dynamic> get values =>
-      [cart, chat, cooking, favorite, onTheWay, payment, sad];
+      [cart, chat, cooking, empty, favorite, onTheWay, payment, sad];
 }
 
 class $AssetsImagesOnboardingGen {

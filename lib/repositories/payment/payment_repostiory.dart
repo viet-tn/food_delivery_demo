@@ -27,4 +27,18 @@ class PaymentRepository {
       }
     }
   }
+
+  Stream<FStripe> setup() async* {
+    final doc = await ref.add(FStripe());
+    await for (var snapshot in doc.snapshots()) {
+      final data = snapshot.data()!;
+      if (data.created != null) {
+        yield data;
+      }
+    }
+  }
+
+  // Future<bool> wasSetUp() async {
+  //   final doc = await FirebaseFirestore.instance.collection('order')
+  // }
 }

@@ -1,11 +1,11 @@
 class FPayment {
   const FPayment({
     this.id,
-    required this.amount,
+    this.amount,
   });
 
   final String? id;
-  final int amount;
+  final int? amount;
 
   FPayment copyWith({
     String? id,

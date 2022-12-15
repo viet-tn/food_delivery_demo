@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../config/routes/coordinator.dart';
 
 import '../constants/ui/colors.dart';
 import '../constants/ui/sizes.dart';
@@ -21,7 +23,7 @@ class PaymentSuccessfulScreen extends StatelessWidget {
             children: [
               SizedBox.square(
                 dimension: 300.0,
-                child: Image.asset(Assets.images.illustrations.cooking),
+                child: SvgPicture.asset(Assets.images.illustrations.cooking),
               ),
               const Text(
                 'Payment Success',
@@ -47,7 +49,7 @@ class PaymentSuccessfulScreen extends StatelessWidget {
                     SizedBox.fromSize(
                       size: const Size.fromHeight(60.0),
                       child: OutlinedButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: FCoordinator.showHomeScreen,
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: FColors.green),
                         ),

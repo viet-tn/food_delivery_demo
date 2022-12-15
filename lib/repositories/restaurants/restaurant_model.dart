@@ -10,6 +10,7 @@ class FRestaurant extends Equatable {
     this.foodIds = const <String>[],
     required this.coordinate,
     this.duration,
+    this.distance,
   });
 
   final String id;
@@ -20,6 +21,7 @@ class FRestaurant extends Equatable {
   /// List of food id
   final List<String> foodIds;
   final int? duration;
+  final int? distance;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -49,6 +51,7 @@ class FRestaurant extends Equatable {
     List<String>? menu,
     Coordinate? coordinate,
     int? duration,
+    int? distance,
   }) {
     return FRestaurant(
       id: id ?? this.id,
@@ -57,9 +60,18 @@ class FRestaurant extends Equatable {
       foodIds: menu ?? foodIds,
       coordinate: coordinate ?? this.coordinate,
       duration: duration ?? this.duration,
+      distance: distance ?? this.distance,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, url, foodIds, coordinate, duration];
+  List<Object?> get props => [
+        id,
+        name,
+        url,
+        foodIds,
+        coordinate,
+        duration,
+        distance,
+      ];
 }

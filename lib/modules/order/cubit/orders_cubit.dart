@@ -2,11 +2,9 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
-import '../../../repositories/cart/cart_model.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../repositories/food/food_repository.dart';
 import '../../../repositories/result.dart';
-import '../../../repositories/users/coordinate.dart';
 import '../data/order_repository.dart';
 import '../model/order.dart';
 
@@ -43,36 +41,16 @@ class OrdersCubit extends FCubit<OrdersState> {
 
   void onPageChanged(int index, [PageController? controller]) async {
     if (index == state.currentPage) return;
-    await controller?.animateToPage(
+    controller?.jumpToPage(
       index,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.ease,
     );
     emitValue(state.copyWith(currentPage: index));
   }
 
-  void createOrder({
-    required FCart cart,
-    required double discount,
-    required double deliveryCharge,
-    required double subTotal,
-    required String name,
-    required String phone,
-    required Coordinate address,
-  }) async {
-    final newOrder = FOrder(
-      name: name,
-      phone: phone,
-      coordinate: address,
-      cart: cart,
-      created: DateTime.now(),
-      discount: discount,
-      deliveryCharge: deliveryCharge,
-      subTotal: subTotal,
-    );
+  void createOrder({required FOrder newOrder}) async {
     final List<FResult> responses = await Future.wait([
       _orderRepository.create(newOrder),
-      _foodRepository.fetchFoodById(cart.items.keys.first),
+      _foodRepository.fetchFoodById(newOrder.cart.items.keys.first),
     ]);
 
     for (var result in responses) {
@@ -126,5 +104,22 @@ class OrdersCubit extends FCubit<OrdersState> {
       emitError(e.runtimeType.toString());
       return const <FOrder>[];
     }
+  }
+
+  void onOrderDelivered(FOrder update) async {
+    final result = await _orderRepository.set(update);
+
+    if (result.isError) {
+      emitError(result.error!);
+      return;
+    }
+
+    emitValue(
+      state.copyWith(
+        processingOrders: state.processingOrders.toList()
+          ..removeWhere((order) => order.id == update.id),
+        deliveredOrders: [update, ...state.deliveredOrders],
+      ),
+    );
   }
 }

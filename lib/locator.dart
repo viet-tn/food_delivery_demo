@@ -6,6 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get_it/get_it.dart';
@@ -31,8 +32,10 @@ import 'modules/restaurant/cubit/restaurant_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
 import 'modules/signup/cubit/sign_up_cubit.dart';
 import 'modules/signup/screens/map_screen/cubit/map_screen_cubit.dart';
+import 'modules/tracking/cubit/order_tracking_cubit.dart';
 import 'repositories/domain_manager.dart';
 import 'repositories/payment/payment_repostiory.dart';
+import 'repositories/users/coordinate.dart';
 import 'utils/services/shared_preferences.dart';
 
 Future<void> initializeApp() async {
@@ -91,6 +94,7 @@ Future<void> _locator() async {
       userRepository: DomainManager().userRepository,
       cloudStorage: DomainManager().cloudStorage,
       authRepository: DomainManager().authRepository,
+      restaurantRepository: DomainManager().restaurantRepository,
     ),
   );
 
@@ -127,12 +131,14 @@ Future<void> _locator() async {
     () => CartCubit(
       cartRepository: DomainManager().cartRepository,
       foodRepository: DomainManager().foodRepository,
+      restaurantRepository: DomainManager().restaurantRepository,
     ),
   );
 
   GetIt.I.registerFactory<ChatCubit>(
     () => ChatCubit(
       chatRepository: DomainManager().chatRepository,
+      userRepository: DomainManager().userRepository,
     )..init(GetIt.I<AppCubit>().state.user!.id),
   );
   GetIt.I.registerFactory<ChatDetailCubit>(
@@ -164,7 +170,9 @@ Future<void> _locator() async {
   );
 
   GetIt.I.registerFactory<PaymentCubit>(
-    () => PaymentCubit(),
+    () => PaymentCubit(
+      GetIt.I<PaymentRepository>(),
+    ),
   );
 
   GetIt.I.registerFactory<FavoriteCubit>(
@@ -188,9 +196,20 @@ Future<void> _locator() async {
     ),
   );
 
+  GetIt.I.registerFactoryParam<OrderTrackingCubit, Coordinate, Coordinate>(
+    (Coordinate source, Coordinate destination) => OrderTrackingCubit(
+      source: source,
+      destination: destination,
+    )..init(),
+  );
+
   // External services
   GetIt.I.registerLazySingleton<GeoHasher>(
     () => GeoHasher(),
+  );
+
+  GetIt.I.registerLazySingleton<PolylinePoints>(
+    () => PolylinePoints(),
   );
 
   // Payment repository

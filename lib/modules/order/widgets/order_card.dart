@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import '../../../config/routes/coordinator.dart';
-import '../model/order.dart';
-import '../../../repositories/food/food_model.dart';
-import '../../../utils/helpers/text_helpers.dart';
-import '../../../utils/ui/network_image.dart';
-import '../../../widgets/buttons/gradient_button.dart';
 
+import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../gen/assets.gen.dart';
+import '../../../repositories/food/food_model.dart';
+import '../../../utils/helpers/text_helpers.dart';
 import '../../../utils/ui/card.dart';
+import '../../../utils/ui/network_image.dart';
+import '../../../widgets/buttons/gradient_button.dart';
 import '../../../widgets/chips/category_chip.dart';
+import '../model/order.dart';
 
 class OrderCard extends StatelessWidget {
   const OrderCard({

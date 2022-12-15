@@ -33,4 +33,8 @@ extension StringExtension on String {
     }
     return '$minutes minute${minutes == 1 ? '' : 's'}';
   }
+
+  static String toKm(int meters) {
+    return '${(meters / 1000).toStringAsFixed(1)} km';
+  }
 }

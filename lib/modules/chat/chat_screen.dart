@@ -23,35 +23,32 @@ class ChatScreen extends StatelessWidget {
         FCoordinator.goNamed(Routes.home.name);
         return false;
       },
-      child: BlocProvider(
-        create: (context) => GetIt.I<ChatCubit>(),
-        child: ListenError<ChatCubit>(
-          child: FScaffold(
-            body: Column(
-              children: [
-                const _AppBar(),
-                Expanded(
-                  child: BlocBuilder<ChatCubit, ChatState>(
-                    buildWhen: (previous, current) =>
-                        previous.status != current.status ||
-                        previous.chats != current.chats,
-                    builder: (context, state) {
-                      return state.chats.isEmpty
-                          ? SizedBox.square(
-                              dimension: 300.0,
-                              child: SvgPicture.asset(
-                                Assets.images.illustrations.chat,
-                              ),
-                            )
-                          : ChatBody(
-                              chats: state.chats,
-                              myUserId: GetIt.I<LoginCubit>().state.user.id,
-                            );
-                    },
-                  ),
+      child: ListenError<ChatCubit>(
+        child: FScaffold(
+          body: Column(
+            children: [
+              const _AppBar(),
+              Expanded(
+                child: BlocBuilder<ChatCubit, ChatState>(
+                  buildWhen: (previous, current) =>
+                      previous.status != current.status ||
+                      previous.chats != current.chats,
+                  builder: (context, state) {
+                    return state.chats.isEmpty
+                        ? SizedBox.square(
+                            dimension: 300.0,
+                            child: SvgPicture.asset(
+                              Assets.images.illustrations.chat,
+                            ),
+                          )
+                        : ChatBody(
+                            chats: state.chats,
+                            myUserId: GetIt.I<LoginCubit>().state.user.id,
+                          );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

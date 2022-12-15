@@ -11,7 +11,7 @@ class FOrder extends Equatable {
     this.status = OrderStatus.processing,
     required this.name,
     required this.phone,
-    required this.coordinate,
+    required this.userPosition,
     required this.cart,
     required this.created,
     required this.discount,
@@ -23,7 +23,7 @@ class FOrder extends Equatable {
   final OrderStatus status;
   final String name;
   final String phone;
-  final Coordinate coordinate;
+  final Coordinate userPosition;
   final FCart cart;
   final DateTime created;
   final double discount;
@@ -36,7 +36,7 @@ class FOrder extends Equatable {
   List<Object?> get props => [
         id,
         status,
-        coordinate,
+        userPosition,
         cart,
         created,
         discount,
@@ -49,7 +49,7 @@ class FOrder extends Equatable {
     OrderStatus? status,
     String? name,
     String? phone,
-    Coordinate? coordinate,
+    Coordinate? userPosition,
     FCart? cart,
     DateTime? created,
     double? discount,
@@ -61,7 +61,7 @@ class FOrder extends Equatable {
       status: status ?? this.status,
       name: name ?? this.name,
       phone: phone ?? this.phone,
-      coordinate: coordinate ?? this.coordinate,
+      userPosition: userPosition ?? this.userPosition,
       cart: cart ?? this.cart,
       created: created ?? this.created,
       discount: discount ?? this.discount,
@@ -76,7 +76,7 @@ class FOrder extends Equatable {
       'status': status.name,
       'name': name,
       'phone': phone,
-      'coordinate': coordinate.toMap(),
+      'userPosition': userPosition.toMap(),
       'cart': cart.toMap(),
       'created': created,
       'discount': discount,
@@ -91,7 +91,7 @@ class FOrder extends Equatable {
       status: OrderStatus.values.byName(map['status']),
       name: map['name'],
       phone: map['phone'],
-      coordinate: Coordinate.fromMap(map['coordinate']),
+      userPosition: Coordinate.fromMap(map['userPosition']),
       cart: FCart.fromMap(map['cart']),
       created: map['created'].toDate(),
       discount: map['discount'],

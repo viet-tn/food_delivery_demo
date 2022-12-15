@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../utils/helpers/text_helpers.dart';
 
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
+import '../../../utils/helpers/text_helpers.dart';
 import '../../../utils/ui/card.dart';
 import '../../../utils/ui/network_image.dart';
 

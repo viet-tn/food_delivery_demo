@@ -1,9 +1,8 @@
-import '../../../repositories/maps/search/places_search_repository.dart';
-
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../repositories/food/food_repository.dart';
+import '../../../repositories/maps/search/places_search_repository.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../repositories/restaurants/restaurant_repository.dart';
 
@@ -31,12 +30,17 @@ class HomeCubit extends FCubit<HomeState> {
 
     final update = <FRestaurant>[];
     await Future.forEach(state.restaurants, (restaurant) async {
-      final distance = await _placesSearchRepository.calculateDistance(
+      final matrix = await _placesSearchRepository.calculateDistance(
           restaurant.coordinate.latitude,
           restaurant.coordinate.longitude,
           latitudeSrc,
           longitudeSrc);
-      update.add(restaurant.copyWith(duration: distance[1]));
+      update.add(
+        restaurant.copyWith(
+          distance: matrix[0],
+          duration: matrix[1],
+        ),
+      );
     });
 
     emitValue(

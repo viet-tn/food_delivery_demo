@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../result.dart';
 
 import 'user_model.dart';
 import 'user_repository.dart';
@@ -15,10 +16,9 @@ class UserRepositoryImpl extends UserRepository {
         );
 
   @override
-  Future<String> getBase64ProfileImage(String userId) async {
-    final querySnapshot = await ref.where('id', isEqualTo: userId).get();
-    final user = querySnapshot.docs.first.data();
-    return user.photo!;
+  Future<String> getImage(String userId) async {
+    final user = await ref.doc(userId).get();
+    return user.data()!.photo ?? '';
   }
 
   @override
@@ -26,5 +26,12 @@ class UserRepositoryImpl extends UserRepository {
     final querySnapshot = await ref.where('id', isEqualTo: userId).get();
     final user = querySnapshot.docs.first.data();
     return '${user.firstName!} ${user.lastName!}';
+  }
+
+  @override
+  Future<FResult<FUser>> getShipper() async {
+    // simulate get shipper
+    const shipperId = 'XjuKAeSNkYNj5DhKINiOUapq0Rl2';
+    return get(shipperId);
   }
 }

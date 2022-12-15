@@ -1,11 +1,13 @@
 import 'payment_model.dart';
 
+enum StripeMode { payment, setup }
+
 class FStripe extends FPayment {
   FStripe({
     super.id,
-    required super.amount,
+    super.amount,
     this.client = 'mobile',
-    this.mode = 'payment',
+    this.mode = StripeMode.payment,
     this.currency = 'USD',
     this.customerId,
     this.ephemeralKeySecret,
@@ -14,8 +16,8 @@ class FStripe extends FPayment {
   });
 
   final String client;
-  final String mode;
-  final String currency;
+  final StripeMode mode;
+  final String? currency;
   final String? customerId;
   final String? ephemeralKeySecret;
   final String? paymentIntentClientSecret;
@@ -26,7 +28,7 @@ class FStripe extends FPayment {
     String? id,
     int? amount,
     String? client,
-    String? mode,
+    StripeMode? mode,
     String? currency,
     String? customerId,
     String? ephemeralKeySecret,
@@ -52,7 +54,7 @@ class FStripe extends FPayment {
       'id': id,
       'amount': amount,
       'client': client,
-      'mode': mode,
+      'mode': mode.name,
       'currency': currency,
       'customerId': customerId,
       'ephemeralKeySecret': ephemeralKeySecret,
@@ -66,7 +68,7 @@ class FStripe extends FPayment {
       id: map['id'],
       amount: map['amount'],
       client: map['client'],
-      mode: map['mode'],
+      mode: StripeMode.values.byName(map['mode']),
       currency: map['currency'],
       customerId: map['customerId'],
       ephemeralKeySecret: map['ephemeralKeySecret'],

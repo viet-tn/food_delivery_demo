@@ -31,10 +31,12 @@ import '../../modules/signup/screens/set_location_screen.dart';
 import '../../modules/signup/screens/upload_photo_screen.dart';
 import '../../modules/signup/screens/verification_screen.dart';
 import '../../modules/signup/sign_up_screen.dart';
+import '../../modules/tracking/order_tracking_screen.dart';
 import '../../modules/voucher/voucher_screen.dart';
 import '../../repositories/domain_manager.dart';
 import '../../repositories/food/food_model.dart';
 import '../../repositories/restaurants/restaurant_model.dart';
+import '../../repositories/users/coordinate.dart';
 import '../../repositories/users/user_model.dart';
 import '../../utils/helpers/resfresh_stream.dart';
 import '../../utils/services/shared_preferences.dart';
@@ -71,6 +73,7 @@ enum Routes {
   voucher,
   orders,
   orderDetails,
+  orderTracking,
 }
 
 class FCoordinator {
@@ -451,6 +454,21 @@ final appRouter = GoRouter(
         fullscreenDialog: true,
         child: VoucherScreen(),
       ),
+    ),
+    GoRoute(
+      name: Routes.orderTracking.name,
+      path: '/tracking',
+      parentNavigatorKey: FCoordinator.navigatorKey,
+      pageBuilder: (_, state) {
+        final params = state.extra as List<Coordinate>;
+        return MaterialPage(
+          fullscreenDialog: true,
+          child: OrderTrackingScreen(
+            source: params[0],
+            destination: params[1],
+          ),
+        );
+      },
     ),
   ],
 );
