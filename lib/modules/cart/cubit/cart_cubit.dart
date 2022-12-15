@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import '../../../repositories/restaurants/restaurant_repository.dart';
-
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/cart/cart_model.dart';
@@ -10,6 +8,7 @@ import '../../../repositories/cart/item_model.dart';
 import '../../../repositories/cart/mutable_cart.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../repositories/food/food_repository.dart';
+import '../../../repositories/restaurants/restaurant_repository.dart';
 
 part 'cart_state.dart';
 

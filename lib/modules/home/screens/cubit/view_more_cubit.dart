@@ -67,6 +67,8 @@ class ViewMoreCubit extends FCubit<ViewMoreState> {
       return emitError(result.error!);
     }
 
+    if (result.data!.isEmpty) return;
+
     final update = await _updateDurationAndEmitValue(result.data!, coord);
     emit(state.copyWith(restaurants: [...state.restaurants!, ...update]));
   }

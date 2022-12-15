@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/ui_parameters.dart';
@@ -23,13 +22,12 @@ class RestaurantsScreen extends StatefulWidget {
 
 class _RestaurantsScreenState extends State<RestaurantsScreen> {
   late final _scrollController = ScrollController();
-  late final _cubit = GetIt.I<ViewMoreCubit>();
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    _cubit.fetchFistNearestRestaurantBatch();
+    context.read<ViewMoreCubit>().fetchFistNearestRestaurantBatch();
     _scrollController.addListener(_scrollListener);
   }
 
@@ -41,15 +39,15 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   }
 
   void _scrollListener() {
-    if (_scrollController.position.pixels <
-        _scrollController.position.maxScrollExtent - 400.0) {
-      return;
-    }
     _timer?.cancel();
     _timer = Timer(
-      const Duration(milliseconds: 200),
+      const Duration(milliseconds: 100),
       () {
-        _cubit.fetchNextNearestRestaurantBatch();
+        if (_scrollController.position.pixels <
+            _scrollController.position.maxScrollExtent - 200.0) {
+          return;
+        }
+        context.read<ViewMoreCubit>().fetchNextNearestRestaurantBatch();
         log('fetchNextNearestRestaurantBatch');
       },
     );
@@ -58,7 +56,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   @override
   Widget build(BuildContext context) {
     return ListenError<ViewMoreCubit>(
-      bloc: _cubit,
       child: FScaffold(
         body: Column(
           children: [
@@ -68,7 +65,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
             ),
             Flexible(
               child: BlocBuilder<ViewMoreCubit, ViewMoreState>(
-                bloc: _cubit,
                 buildWhen: (previous, current) =>
                     previous.status != current.status ||
                     previous.restaurants?.length != current.restaurants?.length,

@@ -28,6 +28,8 @@ class HomeCubit extends FCubit<HomeState> {
       fetchNearestRestaurant(latitudeSrc, longitudeSrc),
     ]);
 
+    emitValue();
+
     final update = <FRestaurant>[];
     await Future.forEach(state.restaurants, (restaurant) async {
       final matrix = await _placesSearchRepository.calculateDistance(

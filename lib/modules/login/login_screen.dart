@@ -51,9 +51,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset(
-                        Assets.images.splash.logo.path,
-                        fit: BoxFit.cover,
+                      gapH32,
+                      SizedBox.square(
+                        dimension: Sizes.logoDimension,
+                        child: Image.asset(
+                          Assets.images.splash.logo.path,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                       gapH32,
                       const Text(

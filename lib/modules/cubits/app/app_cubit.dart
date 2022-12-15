@@ -1,3 +1,5 @@
+import '../../../repositories/maps/search/places_search_repository.dart';
+
 import '../../order/data/order_repository.dart';
 import '../../../repositories/restaurants/restaurant_repository.dart';
 import '../../../repositories/result.dart';
@@ -24,16 +26,19 @@ class AppCubit extends FCubit<AppState> {
     required UserRepository userRepository,
     required AuthRepository authRepository,
     required RestaurantRepository restaurantRepository,
+    required PlacesSearchRepository placesSearchRepository,
   })  : _cloudStorage = cloudStorage,
         _userRepository = userRepository,
         _authRepository = authRepository,
         _restaurantRepository = restaurantRepository,
+        _placesSearchRepository = placesSearchRepository,
         super(const AppState());
 
   final CloudStorage _cloudStorage;
   final UserRepository _userRepository;
   final AuthRepository _authRepository;
   final RestaurantRepository _restaurantRepository;
+  final PlacesSearchRepository _placesSearchRepository;
 
   void init(FUser user) async {
     emitValue(state.copyWith(user: user));
@@ -115,7 +120,15 @@ class AppCubit extends FCubit<AppState> {
   }
 
   FOrder onOrderDelivered() {
-    final update = state.order!.copyWith(status: OrderStatus.delivered);
+    return _onOrderStatusChanged(OrderStatus.delivered);
+  }
+
+  void onOrderCanceled() {
+    _onOrderStatusChanged(OrderStatus.cancelled);
+  }
+
+  FOrder _onOrderStatusChanged(OrderStatus status) {
+    final update = state.order!.copyWith(status: status);
     emitValue(
       state.copyWith(
         order: update,
@@ -130,21 +143,32 @@ class AppCubit extends FCubit<AppState> {
       _userRepository.getShipper(),
     ]);
 
-    if (results[0].isError) {
+    final restaurantResult = results[0] as FResult<FRestaurant>;
+    final shipperResult = results[1] as FResult<FUser>;
+
+    if (restaurantResult.isError) {
       emitError(results[0].error!);
       return;
     }
 
-    if (results[1].isError) {
+    if (shipperResult.isError) {
       emitError(results[1].error!);
       return;
     }
 
+    final deliveryTime = await _placesSearchRepository.calculateDistance(
+      restaurantResult.data!.coordinate.latitude,
+      restaurantResult.data!.coordinate.longitude,
+      order.userPosition.latitude,
+      order.userPosition.longitude,
+    );
+
     emitValue(
       state.copyWith(
         order: order,
-        restaurant: results[0].data!,
-        shipper: results[1].data!,
+        restaurant: restaurantResult.data!,
+        shipper: shipperResult.data!,
+        deliveryTime: deliveryTime[1],
       ),
     );
   }

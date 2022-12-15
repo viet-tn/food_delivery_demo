@@ -32,12 +32,15 @@ class SignUpScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    gapH64,
-                    Image.asset(
-                      Assets.images.splash.logo.path,
-                      fit: BoxFit.cover,
+                    gapH32,
+                    SizedBox.square(
+                      dimension: Sizes.logoDimension,
+                      child: Image.asset(
+                        Assets.images.splash.logo.path,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    gapH64,
+                    gapH32,
                     const Text(
                       'Sign Up For Free',
                       style: TextStyle(
@@ -45,7 +48,7 @@ class SignUpScreen extends StatelessWidget {
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                    gapH48,
+                    gapH12,
                     SignUpForm(
                       onSubmittedCreateAccount: (email, password) =>
                           context.read<SignUpCubit>().onSubmittedCreateAccount(

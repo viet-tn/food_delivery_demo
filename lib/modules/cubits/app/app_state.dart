@@ -8,12 +8,14 @@ class AppState extends FState {
     this.order,
     this.restaurant,
     this.shipper,
+    this.deliveryTime,
   });
 
   final FUser? user;
   final FOrder? order;
   final FRestaurant? restaurant;
   final FUser? shipper;
+  final int? deliveryTime;
 
   @override
   List<Object?> get props => [
@@ -22,6 +24,7 @@ class AppState extends FState {
         order,
         restaurant,
         shipper,
+        deliveryTime,
       ];
 
   @override
@@ -32,6 +35,7 @@ class AppState extends FState {
     FOrder? order,
     FRestaurant? restaurant,
     FUser? shipper,
+    int? deliveryTime,
   }) {
     return AppState(
       status: status ?? this.status,
@@ -40,6 +44,7 @@ class AppState extends FState {
       order: order ?? this.order,
       restaurant: restaurant ?? this.restaurant,
       shipper: shipper ?? this.shipper,
+      deliveryTime: deliveryTime ?? this.deliveryTime,
     );
   }
 }

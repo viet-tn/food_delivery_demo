@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubits/app/app_cubit.dart';
+import '../cubit/orders_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 
@@ -154,7 +156,29 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         );
                       },
                     ),
-                    gapH12,
+                    gapH64,
+                    widget.order.status == OrderStatus.processing
+                        ? SizedBox.fromSize(
+                            size: const Size.fromHeight(50.0),
+                            child: OutlinedButton(
+                              onPressed: () =>
+                                  context.read<OrdersCubit>().cancelOrder(
+                                widget.order,
+                                onCancelSucceeded: () {
+                                  context.read<AppCubit>().onOrderCanceled();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(color: Colors.red)),
+                              child: Text(
+                                'Cancel Order',
+                                style: FTextStyles.button
+                                    .copyWith(color: Colors.red),
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               ),

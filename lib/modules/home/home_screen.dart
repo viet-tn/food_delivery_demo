@@ -64,6 +64,7 @@ class HomeScreen extends StatelessWidget {
                       source: state.restaurant!.coordinate,
                       destination: state.order!.userPosition,
                       shipper: state.shipper!,
+                      deliveryTime: state.deliveryTime,
                     );
                   },
                 ),

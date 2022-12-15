@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../modules/cubits/app/app_cubit.dart';
 import '../config/routes/coordinator.dart';
 
 import '../constants/ui/colors.dart';
@@ -37,13 +39,25 @@ class PaymentSuccessfulScreen extends StatelessWidget {
                 padding: Ui.screenPaddingHorizontal,
                 child: Column(
                   children: [
-                    GradientButton(
-                      width: double.infinity,
-                      onPressed: () {},
-                      child: const Text(
-                        'Track order status',
-                        style: FTextStyles.button,
-                      ),
+                    BlocBuilder<AppCubit, AppState>(
+                      builder: (context, state) {
+                        return GradientButton(
+                          width: double.infinity,
+                          onPressed: () {
+                            FCoordinator.pushNamed(
+                              Routes.orderTracking.name,
+                              extra: [
+                                state.restaurant!.coordinate,
+                                state.order!.userPosition,
+                              ],
+                            );
+                          },
+                          child: const Text(
+                            'Track order status',
+                            style: FTextStyles.button,
+                          ),
+                        );
+                      },
                     ),
                     gapH12,
                     SizedBox.fromSize(

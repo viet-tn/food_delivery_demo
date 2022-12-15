@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../gen/assets.gen.dart';
 
 import '../../../constants/ui/sizes.dart';
+import '../../../gen/assets.gen.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../utils/helpers/iterable_helpers.dart';
 import '../cubit/orders_cubit.dart';

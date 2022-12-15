@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import '../../../repositories/users/user_repository.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
@@ -8,6 +7,7 @@ import '../../../base/state.dart';
 import '../../../repositories/chat/chat_model.dart';
 import '../../../repositories/chat/chat_repository.dart';
 import '../../../repositories/chat/messages/message_model.dart';
+import '../../../repositories/users/user_repository.dart';
 import '../../login/cubit/login_cubit.dart';
 
 part 'chat_state.dart';

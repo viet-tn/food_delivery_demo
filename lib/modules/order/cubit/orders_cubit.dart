@@ -122,4 +122,25 @@ class OrdersCubit extends FCubit<OrdersState> {
       ),
     );
   }
+
+  void cancelOrder(FOrder processingOrder,
+      {required void Function() onCancelSucceeded}) async {
+    final update = processingOrder.copyWith(status: OrderStatus.cancelled);
+    final result = await _orderRepository.set(update);
+
+    if (result.isError) {
+      emitError(result.error!);
+      return;
+    }
+
+    onCancelSucceeded();
+
+    emitValue(
+      state.copyWith(
+        processingOrders: state.processingOrders.toList()
+          ..removeWhere((order) => order.id == update.id),
+        cancelledOrders: [update, ...state.cancelledOrders],
+      ),
+    );
+  }
 }

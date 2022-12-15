@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../chat/cubit/chat_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../base/state.dart';
@@ -14,6 +13,7 @@ import '../../utils/ui/scaffold.dart';
 import '../../widgets/app_bar.dart';
 import '../cart/cubit/cart_cubit.dart';
 import '../cart/widgets/cart_total_infomation.dart';
+import '../chat/cubit/chat_cubit.dart';
 import '../cubits/app/app_cubit.dart';
 import '../order/cubit/orders_cubit.dart';
 import '../order/model/order.dart';

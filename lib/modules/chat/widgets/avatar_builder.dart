@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../utils/ui/network_image.dart';
 
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../repositories/domain_manager.dart';
+import '../../../utils/ui/network_image.dart';
 
 class AvatarBuilder extends StatelessWidget {
   const AvatarBuilder({

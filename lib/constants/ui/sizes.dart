@@ -20,6 +20,8 @@ class Sizes {
 
   static const orderCardHeight = 100.0;
   static const orderDetailsCardHeight = 100.0;
+
+  static var logoDimension = 150.0;
 }
 
 /// Constant gap widths

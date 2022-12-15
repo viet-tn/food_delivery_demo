@@ -72,7 +72,7 @@ class RestaurantRepositoryImpl extends BaseCollectionReference<FRestaurant>
       return FResult.success(const <FRestaurant>[]);
     }
     return FResult.success(
-        result.sublist(index + 1, min(index + limit, result.length)));
+        result.sublist(index + 1, min(index + limit + 1, result.length)));
   }
 
   @override

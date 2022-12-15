@@ -19,15 +19,20 @@ class OtpInputForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final otp = List.generate(otpLetterCount, (_) => '');
     return Form(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(
-          otpLetterCount,
-          (index) => LetterInput(
-            onLetterChanged: (char) {
-              otp[index] = char;
-              onOtpChanged(otp.join());
-            },
+      child: FittedBox(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(
+            otpLetterCount,
+            (index) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: LetterInput(
+                onLetterChanged: (char) {
+                  otp[index] = char;
+                  onOtpChanged(otp.join());
+                },
+              ),
+            ),
           ),
         ),
       ),

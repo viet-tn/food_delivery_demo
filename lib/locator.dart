@@ -95,6 +95,7 @@ Future<void> _locator() async {
       cloudStorage: DomainManager().cloudStorage,
       authRepository: DomainManager().authRepository,
       restaurantRepository: DomainManager().restaurantRepository,
+      placesSearchRepository: DomainManager().placesSearchRepository,
     ),
   );
 

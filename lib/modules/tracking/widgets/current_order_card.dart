@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../utils/helpers/text_helpers.dart';
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../repositories/users/user_model.dart';
 import '../../../utils/ui/network_image.dart';
@@ -17,11 +18,13 @@ class CurrentOrderCard extends StatelessWidget {
     required this.source,
     required this.destination,
     required this.shipper,
+    this.deliveryTime,
   });
 
   final Coordinate source;
   final Coordinate destination;
   final FUser shipper;
+  final int? deliveryTime;
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +53,12 @@ class CurrentOrderCard extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  '15 - 25 mins',
-                  style: FTextStyles.heading3,
-                ),
+                deliveryTime == null
+                    ? const SizedBox()
+                    : Text(
+                        StringExtension.toTime(deliveryTime!),
+                        style: FTextStyles.heading3,
+                      ),
                 Text(
                   'Estimated delivery time',
                   style: FTextStyles.label.copyWith(fontSize: 12.0),

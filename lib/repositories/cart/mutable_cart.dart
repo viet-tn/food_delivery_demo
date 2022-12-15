@@ -1,5 +1,4 @@
 import '../restaurants/restaurant_model.dart';
-
 import 'cart_model.dart';
 import 'item_model.dart';
 
