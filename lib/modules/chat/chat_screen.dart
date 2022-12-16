@@ -13,8 +13,15 @@ import '../login/cubit/login_cubit.dart';
 import 'cubit/chat_cubit.dart';
 import 'widgets/widgets.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
+
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  late final _cubit = GetIt.I<ChatCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +31,14 @@ class ChatScreen extends StatelessWidget {
         return false;
       },
       child: ListenError<ChatCubit>(
+        bloc: _cubit,
         child: FScaffold(
           body: Column(
             children: [
               const _AppBar(),
               Expanded(
                 child: BlocBuilder<ChatCubit, ChatState>(
+                  bloc: _cubit,
                   buildWhen: (previous, current) =>
                       previous.status != current.status ||
                       previous.chats != current.chats,

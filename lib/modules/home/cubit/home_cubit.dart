@@ -47,7 +47,7 @@ class HomeCubit extends FCubit<HomeState> {
 
     emitValue(
       state.copyWith(
-        restaurants: update,
+        restaurants: update..sort((a, b) => a.distance!.compareTo(b.distance!)),
       ),
     );
   }

@@ -42,7 +42,8 @@ class PaymentCubit extends FCubit<PaymentState> {
                 paymentIntentClientSecret: stripe.paymentIntentClientSecret,
                 merchantDisplayName: 'Ninja App',
                 googlePay: const PaymentSheetGooglePay(
-                  merchantCountryCode: 'USD',
+                  merchantCountryCode: 'USA',
+                  currencyCode: 'USD',
                   testEnv: true,
                 ),
               ),

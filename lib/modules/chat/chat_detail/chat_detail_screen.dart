@@ -104,17 +104,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     ),
                     Padding(
                       padding: Ui.screenPadding,
-                      child: SizedBox.fromSize(
-                        size: const Size.fromHeight(80.0),
-                        child: BlocBuilder<ChatDetailCubit, ChatDetailState>(
-                          buildWhen: (_, __) => false,
-                          builder: (context, state) {
-                            return UserStatus(
-                              userId: state.chatWithUserId!,
-                              lastSeen: 0,
-                            );
-                          },
-                        ),
+                      child: BlocBuilder<ChatDetailCubit, ChatDetailState>(
+                        buildWhen: (_, __) => false,
+                        builder: (context, state) {
+                          return UserStatus(
+                            userId: state.chatWithUserId!,
+                            lastSeen: 0,
+                          );
+                        },
                       ),
                     ),
                   ],

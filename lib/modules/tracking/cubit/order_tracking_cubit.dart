@@ -56,7 +56,7 @@ class OrderTrackingCubit extends FCubit<OrderTrackingState> {
     // polylinesCoordinates
     timer?.cancel();
     timer = Timer.periodic(
-      const Duration(milliseconds: 50),
+      const Duration(milliseconds: 100),
       (_) async {
         if (state.polylinesCoordinates.isEmpty) {
           onOrderDelivered();
@@ -84,7 +84,7 @@ class OrderTrackingCubit extends FCubit<OrderTrackingState> {
 
 List<LatLng> _polylineGenerator(List<LatLng> src) {
   List<LatLng> result = [];
-  var threshHold = 1e-3; //m
+  var threshHold = 1e-4; //m
   for (var i = 0; i < src.length - 1; i++) {
     result.add(src[i]);
     final relativeDistance = _calulateRelativeDistance(src[i], src[i + 1]);

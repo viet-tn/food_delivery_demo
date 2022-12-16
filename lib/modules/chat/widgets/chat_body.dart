@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../config/routes/coordinator.dart';
@@ -35,9 +34,7 @@ class ChatBody extends StatelessWidget {
             padding: Ui.screenPadding,
             child: ChatCard(
               onPressed: () {
-                context
-                    .read<ChatCubit>()
-                    .readMessage(chat.id!, chat.lastestMessage);
+                GetIt.I<ChatCubit>().readMessage(chat.id!, chat.lastestMessage);
                 FCoordinator.goNamed(
                   Routes.chatDetail.name,
                   params: {

@@ -72,6 +72,11 @@ class AppCubit extends FCubit<AppState> {
 
   void updateUserState(FUser user) {
     emitValue(state.copyWith(user: user));
+    _userRepository.set(user);
+    GetIt.I<HomeCubit>().init(
+      user.coordinates.first.latitude,
+      user.coordinates.first.longitude,
+    );
   }
 
   Future<void> updateUserToDatabase([String? imgUrl]) async {
