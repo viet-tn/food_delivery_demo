@@ -140,7 +140,7 @@ Future<void> _locator() async {
     () => ChatCubit(
       chatRepository: DomainManager().chatRepository,
       userRepository: DomainManager().userRepository,
-    )..init(GetIt.I<AppCubit>().state.user!.id),
+    ),
   );
   GetIt.I.registerFactory<ChatDetailCubit>(
     () => ChatDetailCubit(

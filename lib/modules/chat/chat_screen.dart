@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_delivery/modules/cubits/app/app_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../config/routes/coordinator.dart';
@@ -21,7 +22,11 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  late final _cubit = GetIt.I<ChatCubit>();
+  @override
+  void initState() {
+    super.initState();
+    context.read<ChatCubit>().init(context.read<AppCubit>().state.user!.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +36,14 @@ class _ChatScreenState extends State<ChatScreen> {
         return false;
       },
       child: ListenError<ChatCubit>(
-        bloc: _cubit,
+        // bloc: _cubit,
         child: FScaffold(
           body: Column(
             children: [
               const _AppBar(),
               Expanded(
                 child: BlocBuilder<ChatCubit, ChatState>(
-                  bloc: _cubit,
+                  // bloc: _cubit,
                   buildWhen: (previous, current) =>
                       previous.status != current.status ||
                       previous.chats != current.chats,

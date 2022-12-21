@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'config/routes/coordinator.dart';
 import 'config/themes/app_theme.dart';
 import 'modules/cart/cubit/cart_cubit.dart';
+import 'modules/chat/cubit/chat_cubit.dart';
 import 'modules/cubits/app/app_cubit.dart';
 import 'modules/cubits/favorite/favorite_cubit.dart';
 import 'modules/food/cubit/food_cubit.dart';
@@ -50,6 +51,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => GetIt.I<FoodCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => GetIt.I<ChatCubit>(),
         ),
         BlocProvider(
           create: (_) => GetIt.I<ViewMoreCubit>(),

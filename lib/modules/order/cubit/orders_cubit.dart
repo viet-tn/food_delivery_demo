@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../repositories/food/food_repository.dart';
 import '../../../repositories/result.dart';
+import '../../cubits/app/app_cubit.dart';
 import '../data/order_repository.dart';
 import '../model/order.dart';
 
@@ -59,6 +61,8 @@ class OrdersCubit extends FCubit<OrdersState> {
         return;
       }
     }
+
+    GetIt.I<AppCubit>().getProcessingOrderInfo(responses[0].data!);
 
     emitValue(
       state.copyWith(

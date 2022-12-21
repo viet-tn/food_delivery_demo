@@ -21,7 +21,10 @@ class Coordinate extends Equatable {
     return <String, dynamic>{
       'address': address,
       'position': {
-        'geopoint': GeoPoint(latitude, longitude),
+        'geoPoint': {
+          'latitude': latitude,
+          'longitude': longitude,
+        },
       },
     };
   }

@@ -26,6 +26,7 @@ class ChatRepositoryImpl extends BaseCollectionReference<FChat>
       if (chat == null) {
         querySnapshot = await ref
             .where('userIds', arrayContains: userId)
+            .orderBy('created')
             .limit(limit)
             .get();
       } else {
@@ -33,6 +34,7 @@ class ChatRepositoryImpl extends BaseCollectionReference<FChat>
             await ref.where('id', isEqualTo: chat.id).get();
         querySnapshot = await ref
             .where('userIds', arrayContains: userId)
+            .orderBy('created')
             .startAfterDocument(documentSnapshot.docs.first)
             .limit(limit)
             .get();

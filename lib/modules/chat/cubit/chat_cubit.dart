@@ -31,10 +31,7 @@ class ChatCubit extends FCubit<ChatState> {
       (event) {
         emitValue(
           state.copyWith(
-            chats: event.toList()
-              ..sort(
-                (a, b) => a.created.compareTo(b.created),
-              ),
+            chats: event.toList(),
           ),
         );
       },

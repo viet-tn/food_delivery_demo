@@ -119,15 +119,15 @@ class CheckoutScreen extends StatelessWidget {
     context.read<PaymentCubit>().onCheckoutPressed(
       state.total * 100, // convert dolar to cent
       onPaymentSuccessful: () {
-        GetIt.I<AppCubit>().getProcessingOrderInfo(newOrder);
         FCoordinator.context.read<CartCubit>().clear();
         FCoordinator.context.read<ChatCubit>().createChat(
               GetIt.I<AppCubit>().state.user!.id,
             );
+        FCoordinator.context
+            .read<OrdersCubit>()
+            .createOrder(newOrder: newOrder);
         FCoordinator.showPaymentSuccessfulScreen();
       },
     );
-
-    context.read<OrdersCubit>().createOrder(newOrder: newOrder);
   }
 }
