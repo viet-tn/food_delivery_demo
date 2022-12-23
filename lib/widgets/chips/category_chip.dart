@@ -7,20 +7,25 @@ class CategoryChip extends StatelessWidget {
   const CategoryChip({
     super.key,
     required this.text,
+    this.padding = const EdgeInsets.all(10),
+    this.textStyle,
   });
 
   final String text;
+  final EdgeInsets padding;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
     return Chip(
       backgroundColor: FColors.lightGreen.withOpacity(.2),
-      padding: const EdgeInsets.all(10),
+      padding: padding,
       label: Text(
         text,
-        style: FTextStyles.label.copyWith(
-          color: FColors.green,
-        ),
+        style: textStyle ??
+            FTextStyles.label.copyWith(
+              color: FColors.green,
+            ),
       ),
     );
   }

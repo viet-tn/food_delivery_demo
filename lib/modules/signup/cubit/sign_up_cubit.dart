@@ -3,13 +3,12 @@ import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
-import '../../../config/routes/coordinator.dart';
 import '../../../repositories/auth/auth_repository.dart';
 import '../../../repositories/cloud_storage/cloud_storage.dart';
 import '../../../repositories/users/coordinate.dart';
 import '../../../repositories/users/user_model.dart';
 import '../../../repositories/users/user_repository.dart';
-import '../../cubit/app_cubit.dart';
+import '../../cubits/app/app_cubit.dart';
 import '../../login/cubit/login_cubit.dart';
 import '../../login/models/email_input.dart';
 import '../models/sign_up_password_input.dart';
@@ -38,10 +37,10 @@ class SignUpCubit extends FCubit<SignUpState> {
     emit(state.copyWith(password: SignUpPasswordInput.dirty(value)));
   }
 
-  Future<void> onSubmittedCreateAccount({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> onSubmittedCreateAccount(
+      {required String email,
+      required String password,
+      required void Function() onCreateAccountSuccessful}) async {
     emitLoading();
     final result = await _authRepository.createUserWithEmailAndPassword(
         email: email, password: password);
@@ -53,10 +52,15 @@ class SignUpCubit extends FCubit<SignUpState> {
     final loginCubit = GetIt.I<LoginCubit>();
     loginCubit.onCreateUserOnAuthenDbSuccess(result.data!);
     emit(state.copyWith(user: loginCubit.state.user.copyWith(email: email)));
+    onCreateAccountSuccessful();
   }
 
   Future<void> onBioSubmitted(
-      String firstName, String lastName, String phone) async {
+    String firstName,
+    String lastName,
+    String phone, {
+    required void Function() onCodeSentSuccess,
+  }) async {
     emitLoading();
     final update = state.user.copyWith(
       id: _authRepository.currentUser!.id,
@@ -65,10 +69,10 @@ class SignUpCubit extends FCubit<SignUpState> {
       phone: phone,
     );
     emitValue(state.copyWith(user: update));
-    await verifyPhoneNumber();
+    await verifyPhoneNumber(onCodeSentSuccess);
   }
 
-  Future<void> verifyPhoneNumber() async {
+  Future<void> verifyPhoneNumber(void Function() onCodeSentSuccess) async {
     emitLoading();
     return await _authRepository.verifyPhoneNumber(
       phoneNumber: state.user.phone!,
@@ -76,7 +80,7 @@ class SignUpCubit extends FCubit<SignUpState> {
         emitValue(state.copyWith(
           verificationId: verificationId,
         ));
-        FCoordinator.showVerificationScreen();
+        onCodeSentSuccess();
       },
       onVerificationFailed: (e) {
         emitError((e as FirebaseAuthException).message!);
@@ -84,7 +88,8 @@ class SignUpCubit extends FCubit<SignUpState> {
     );
   }
 
-  Future<void> onOtpPhoneConfirm(String otp) async {
+  Future<void> onOtpPhoneConfirm(String otp,
+      {required void Function() onOtpPassed}) async {
     emitLoading();
     final result = await _authRepository.otpConfirm(
         verificationId: state.verificationId!, otp: otp);
@@ -93,15 +98,11 @@ class SignUpCubit extends FCubit<SignUpState> {
     }
 
     emitValue(state.copyWith(user: state.user.copyWith(isVerified: true)));
-    // TODO: Write verified status into firestore
-    return FCoordinator.showUploadPhotoScreen();
+    onOtpPassed();
   }
 
-  void onPaymentComplete() {
-    FCoordinator.showUploadPhotoScreen();
-  }
-
-  void onSelectImageComplete(String imgPath) async {
+  void onSelectImageComplete(String imgPath,
+      {required void Function() onUploadAvatarCompleted}) async {
     emitLoading();
     try {
       final imgUrl = await _cloudStorage.uploadAvatar(state.user.id, imgPath);
@@ -113,7 +114,7 @@ class SignUpCubit extends FCubit<SignUpState> {
           ),
         ),
       );
-      FCoordinator.showSetLocationScreen();
+      onUploadAvatarCompleted();
     } catch (e) {
       emitError(e.runtimeType.toString());
     }
@@ -126,7 +127,7 @@ class SignUpCubit extends FCubit<SignUpState> {
           coordinates: <Coordinate>[
             Coordinate(
               latitude: lat,
-              longtitude: lon,
+              longitude: lon,
               address: address,
             )
           ],
@@ -144,7 +145,7 @@ class SignUpCubit extends FCubit<SignUpState> {
     return true;
   }
 
-  Future<void> onSignUpComplete() async {
+  Future<void> onSignUpComplete(void Function() onSignUpCompleted) async {
     emitLoading();
     final result = await _userRepository.set(state.user);
 
@@ -156,6 +157,6 @@ class SignUpCubit extends FCubit<SignUpState> {
     GetIt.I<AppCubit>().init(result.data!);
     final loginCubit = GetIt.I<LoginCubit>();
     loginCubit.emitValue(loginCubit.state.copyWith(user: result.data!));
-    FCoordinator.showCongratsScreen();
+    onSignUpCompleted();
   }
 }

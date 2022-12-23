@@ -64,6 +64,9 @@ class $AssetsIconsGen {
   AssetGenImage get notifiaction =>
       const AssetGenImage('assets/icons/notifiaction.png');
 
+  /// File path: assets/icons/order.png
+  AssetGenImage get order => const AssetGenImage('assets/icons/order.png');
+
   /// File path: assets/icons/pin.png
   AssetGenImage get pin => const AssetGenImage('assets/icons/pin.png');
 
@@ -79,6 +82,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/send.png
   AssetGenImage get send => const AssetGenImage('assets/icons/send.png');
+
+  /// File path: assets/icons/shipper.png
+  AssetGenImage get shipper => const AssetGenImage('assets/icons/shipper.png');
 
   /// File path: assets/icons/shopping_bag.png
   AssetGenImage get shoppingBag =>
@@ -114,11 +120,13 @@ class $AssetsIconsGen {
         lock,
         message,
         notifiaction,
+        order,
         pin,
         profile,
         profileNav,
         search,
         send,
+        shipper,
         shoppingBag,
         star,
         starFull,
@@ -130,12 +138,15 @@ class $AssetsImagesGen {
   const $AssetsImagesGen();
 
   $AssetsImagesBannerGen get banner => const $AssetsImagesBannerGen();
+  $AssetsImagesIllustrationsGen get illustrations =>
+      const $AssetsImagesIllustrationsGen();
   $AssetsImagesOnboardingGen get onboarding =>
       const $AssetsImagesOnboardingGen();
   $AssetsImagesPaymentGen get payment => const $AssetsImagesPaymentGen();
   $AssetsImagesRestaurantsGen get restaurants =>
       const $AssetsImagesRestaurantsGen();
   $AssetsImagesSplashGen get splash => const $AssetsImagesSplashGen();
+  $AssetsImagesVoucherGen get voucher => const $AssetsImagesVoucherGen();
 }
 
 class $AssetsMapstylesGen {
@@ -144,8 +155,12 @@ class $AssetsMapstylesGen {
   /// File path: assets/mapstyles/mapstyle_default.json
   String get mapstyleDefault => 'assets/mapstyles/mapstyle_default.json';
 
+  /// File path: assets/mapstyles/order_tracking_mapstyle.json
+  String get orderTrackingMapstyle =>
+      'assets/mapstyles/order_tracking_mapstyle.json';
+
   /// List of all assets
-  List<String> get values => [mapstyleDefault];
+  List<String> get values => [mapstyleDefault, orderTrackingMapstyle];
 }
 
 class $AssetsImagesBannerGen {
@@ -161,6 +176,39 @@ class $AssetsImagesBannerGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [banner, priceInfo];
+}
+
+class $AssetsImagesIllustrationsGen {
+  const $AssetsImagesIllustrationsGen();
+
+  /// File path: assets/images/illustrations/cart.svg
+  String get cart => 'assets/images/illustrations/cart.svg';
+
+  /// File path: assets/images/illustrations/chat.svg
+  String get chat => 'assets/images/illustrations/chat.svg';
+
+  /// File path: assets/images/illustrations/cooking.svg
+  String get cooking => 'assets/images/illustrations/cooking.svg';
+
+  /// File path: assets/images/illustrations/empty.svg
+  String get empty => 'assets/images/illustrations/empty.svg';
+
+  /// File path: assets/images/illustrations/favorite.svg
+  String get favorite => 'assets/images/illustrations/favorite.svg';
+
+  /// File path: assets/images/illustrations/on_the_way.svg
+  String get onTheWay => 'assets/images/illustrations/on_the_way.svg';
+
+  /// File path: assets/images/illustrations/payment.png
+  AssetGenImage get payment =>
+      const AssetGenImage('assets/images/illustrations/payment.png');
+
+  /// File path: assets/images/illustrations/sad.svg
+  String get sad => 'assets/images/illustrations/sad.svg';
+
+  /// List of all assets
+  List<dynamic> get values =>
+      [cart, chat, cooking, empty, favorite, onTheWay, payment, sad];
 }
 
 class $AssetsImagesOnboardingGen {
@@ -242,6 +290,21 @@ class $AssetsImagesSplashGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [bgPattern, logo];
+}
+
+class $AssetsImagesVoucherGen {
+  const $AssetsImagesVoucherGen();
+
+  /// File path: assets/images/voucher/voucher_1.png
+  AssetGenImage get voucher1 =>
+      const AssetGenImage('assets/images/voucher/voucher_1.png');
+
+  /// File path: assets/images/voucher/voucher_2.png
+  AssetGenImage get voucher2 =>
+      const AssetGenImage('assets/images/voucher/voucher_2.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [voucher1, voucher2];
 }
 
 class Assets {

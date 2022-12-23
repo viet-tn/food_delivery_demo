@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
+import '../../../utils/helpers/text_helpers.dart';
 import '../../../utils/ui/card.dart';
 import '../../../utils/ui/network_image.dart';
 
@@ -39,12 +40,14 @@ class RestaurantCard extends StatelessWidget {
               style: FTextStyles.heading4,
             ),
             gapH4,
-            Text(
-              '999 Mins',
-              style: FTextStyles.label.copyWith(
-                color: Colors.grey,
-              ),
-            ),
+            restaurant.duration == null
+                ? const SizedBox()
+                : Text(
+                    StringExtension.toTime(restaurant.duration!),
+                    style: FTextStyles.label.copyWith(
+                      color: Colors.grey,
+                    ),
+                  ),
             gapH32,
           ],
         ),

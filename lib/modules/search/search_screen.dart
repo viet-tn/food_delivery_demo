@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../constants/ui/sizes.dart';
+import '../../constants/ui/text_style.dart';
 import '../../constants/ui/ui_parameters.dart';
+import '../../gen/assets.gen.dart';
 import '../../utils/ui/scaffold.dart';
 import '../../widgets/food_list_view.dart';
 import '../home/widgets/home_app_bar.dart';
@@ -88,11 +91,31 @@ class _SearchScreenState extends State<SearchScreen> {
                 previous.foods != current.foods,
             builder: (context, state) {
               return Expanded(
-                child: FoodListView(
-                  controller: _searchScrollController,
-                  foods: state.foods,
-                  isLoading: state.status.isLoading,
-                ),
+                child: state.foods.isEmpty
+                    ? SingleChildScrollView(
+                        child: Center(
+                          child: Column(
+                            children: [
+                              SizedBox.square(
+                                dimension: 250.0,
+                                child: SvgPicture.asset(
+                                    Assets.images.illustrations.sad),
+                              ),
+                              Text(
+                                'Food not found',
+                                style: FTextStyles.heading5.copyWith(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : FoodListView(
+                        controller: _searchScrollController,
+                        foods: state.foods,
+                        isLoading: state.status.isLoading,
+                      ),
               );
             },
           ),

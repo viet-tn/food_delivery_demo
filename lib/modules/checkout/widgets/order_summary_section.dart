@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 import '../../../constants/ui/sizes.dart';
-import 'brief_order_card.dart';
-import 'editable_section_bar.dart';
 import '../../../repositories/cart/cart_model.dart';
 import '../../../repositories/food/food_model.dart';
+import 'brief_order_card.dart';
+import 'editable_section_bar.dart';
 
 class OrderSummarySection extends StatelessWidget {
   const OrderSummarySection({

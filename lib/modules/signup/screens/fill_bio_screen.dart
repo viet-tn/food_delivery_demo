@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../config/routes/coordinator.dart';
 import '../../../utils/ui/listen_error.dart';
 import '../cubit/sign_up_cubit.dart';
 import '../widgets/bio_form.dart';
@@ -44,9 +45,12 @@ class _FillBioScreenState extends State<FillBioScreen> {
         child: SignUpFlowScreen(
           onNextPressed: () async {
             if (_formKey.currentState!.validate()) {
-              await context
-                  .read<SignUpCubit>()
-                  .onBioSubmitted(_firstName, _lastName, _phoneNumber);
+              await context.read<SignUpCubit>().onBioSubmitted(
+                    _firstName,
+                    _lastName,
+                    _phoneNumber,
+                    onCodeSentSuccess: FCoordinator.showVerificationScreen,
+                  );
             }
           },
           showBackButton: false,

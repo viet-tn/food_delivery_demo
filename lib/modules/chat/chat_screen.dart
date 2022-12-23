@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../config/routes/coordinator.dart';
 import '../../constants/ui/text_style.dart';
 import '../../constants/ui/ui_parameters.dart';
+import '../../gen/assets.gen.dart';
 import '../../utils/ui/listen_error.dart';
 import '../../utils/ui/scaffold.dart';
 import '../login/cubit/login_cubit.dart';
@@ -15,8 +18,11 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetIt.I<ChatCubit>(),
+    return WillPopScope(
+      onWillPop: () async {
+        FCoordinator.goNamed(Routes.home.name);
+        return false;
+      },
       child: ListenError<ChatCubit>(
         child: FScaffold(
           body: Column(
@@ -28,10 +34,17 @@ class ChatScreen extends StatelessWidget {
                       previous.status != current.status ||
                       previous.chats != current.chats,
                   builder: (context, state) {
-                    return ChatBody(
-                      chats: state.chats,
-                      myUserId: GetIt.I<LoginCubit>().state.user.id,
-                    );
+                    return state.chats.isEmpty
+                        ? SizedBox.square(
+                            dimension: 300.0,
+                            child: SvgPicture.asset(
+                              Assets.images.illustrations.chat,
+                            ),
+                          )
+                        : ChatBody(
+                            chats: state.chats,
+                            myUserId: GetIt.I<LoginCubit>().state.user.id,
+                          );
                   },
                 ),
               ),

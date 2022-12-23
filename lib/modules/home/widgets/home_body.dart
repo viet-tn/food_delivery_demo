@@ -21,11 +21,9 @@ class HomeBody extends StatelessWidget {
               buildWhen: (previous, current) =>
                   previous.status != current.status,
               builder: (context, state) {
-                return Padding(
+                return const Padding(
                   padding: Ui.screenPaddingHorizontal,
-                  child: HomeBannerSection(
-                    isLoading: state.status.isLoading,
-                  ),
+                  child: HomeBannerSection(),
                 );
               },
             ),
@@ -36,7 +34,8 @@ class HomeBody extends StatelessWidget {
                   previous.restaurants != current.restaurants,
               builder: (context, state) {
                 return NearestRestaurantSection(
-                  isLoading: state.status.isLoading,
+                  isLoading:
+                      state.status.isLoading && state.restaurants.isEmpty,
                   restaurants: state.restaurants,
                 );
               },
@@ -47,7 +46,7 @@ class HomeBody extends StatelessWidget {
                   previous.foods != current.foods,
               builder: (_, state) {
                 return PopularFoodSection(
-                  isLoading: state.status.isLoading,
+                  isLoading: state.status.isLoading && state.foods.isEmpty,
                   foods: state.foods,
                 );
               },

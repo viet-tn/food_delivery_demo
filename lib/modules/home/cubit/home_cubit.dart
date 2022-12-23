@@ -2,6 +2,7 @@ import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../repositories/food/food_repository.dart';
+import '../../../repositories/maps/search/places_search_repository.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../repositories/restaurants/restaurant_repository.dart';
 
@@ -11,21 +12,48 @@ class HomeCubit extends FCubit<HomeState> {
   HomeCubit({
     required RestaurantRepository restaurantRepository,
     required FoodRepository foodRepository,
+    required PlacesSearchRepository placesSearchRepository,
   })  : _restaurantRepository = restaurantRepository,
         _foodRepository = foodRepository,
+        _placesSearchRepository = placesSearchRepository,
         super(const HomeState());
-
-  void init() async {
-    await fetchFistPopularFoodBatch();
-    await fetchNearestRestaurant();
-    emitValue();
-  }
 
   final RestaurantRepository _restaurantRepository;
   final FoodRepository _foodRepository;
+  final PlacesSearchRepository _placesSearchRepository;
 
-  Future<void> fetchNearestRestaurant() async {
-    final result = await _restaurantRepository.fetchNearestRestaurants();
+  void init(double latitudeSrc, double longitudeSrc) async {
+    await Future.wait([
+      fetchFistPopularFoodBatch(),
+      fetchNearestRestaurant(latitudeSrc, longitudeSrc),
+    ]);
+
+    final update = <FRestaurant>[];
+    await Future.forEach(state.restaurants, (restaurant) async {
+      final matrix = await _placesSearchRepository.calculateDistance(
+          restaurant.coordinate.latitude,
+          restaurant.coordinate.longitude,
+          latitudeSrc,
+          longitudeSrc);
+      update.add(
+        restaurant.copyWith(
+          distance: matrix[0],
+          duration: matrix[1],
+        ),
+      );
+    });
+
+    emitValue(
+      state.copyWith(
+        restaurants: update,
+      ),
+    );
+  }
+
+  Future<void> fetchNearestRestaurant(
+      double latitudeSrc, double longitudeSrc) async {
+    final result = await _restaurantRepository.fetchNearestRestaurants(
+        latitudeSrc, longitudeSrc);
 
     if (result.isError) {
       emitError(result.error!);

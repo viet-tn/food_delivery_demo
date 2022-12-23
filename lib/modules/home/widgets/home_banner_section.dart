@@ -6,7 +6,7 @@ import 'home_banner.dart';
 class HomeBannerSection extends StatelessWidget {
   const HomeBannerSection({
     super.key,
-    required this.isLoading,
+    this.isLoading = false,
   });
 
   final bool isLoading;

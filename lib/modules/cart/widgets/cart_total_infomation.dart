@@ -65,31 +65,33 @@ class CartTotalInformation extends StatelessWidget {
                 ),
               ),
               Text(
-                '${deliveryCharge.toInt()} \$',
+                '${deliveryCharge.toInt() == 0 ? 'Free' : deliveryCharge.toInt()} \$',
                 style: FTextStyles.heading5.copyWith(
                   color: Colors.white,
                 ),
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Discount',
-                style: FTextStyles.heading5.copyWith(
-                  color: Colors.white,
+          discount.toInt() == 0
+              ? const SizedBox()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Discount',
+                      style: FTextStyles.heading5.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      '− ${discount.toInt()} \$',
+                      style: FTextStyles.heading5.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              Text(
-                '${discount.toInt()} \$',
-                style: FTextStyles.heading5.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          gapH12,
+          gapH8,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -101,7 +103,7 @@ class CartTotalInformation extends StatelessWidget {
               ),
               Text(
                 '${max(0, (subTotal + deliveryCharge - discount).toInt())} \$',
-                style: FTextStyles.heading3.copyWith(
+                style: FTextStyles.heading5.copyWith(
                   color: Colors.white,
                 ),
               ),

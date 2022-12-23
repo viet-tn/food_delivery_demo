@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';
+import '../../../gen/assets.gen.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../utils/ui/card.dart';
 import '../../../utils/ui/network_image.dart';
@@ -21,8 +23,26 @@ class FavoriteSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return foodList.isEmpty
-        ? const Center(
-            child: Text('Empty list'),
+        ? Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox.square(
+                  dimension: 220.0,
+                  child: SvgPicture.asset(
+                    Assets.images.illustrations.favorite,
+                  ),
+                ),
+                Text(
+                  'Your favorite list is empty!',
+                  style: FTextStyles.body.copyWith(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                gapH32,
+              ],
+            ),
           )
         : Column(
             children: List.generate(

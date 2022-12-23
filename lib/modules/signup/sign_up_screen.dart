@@ -51,6 +51,8 @@ class SignUpScreen extends StatelessWidget {
                           context.read<SignUpCubit>().onSubmittedCreateAccount(
                                 email: email,
                                 password: password,
+                                onCreateAccountSuccessful:
+                                    FCoordinator.showBioScreen,
                               ),
                     ),
                     gapH12,

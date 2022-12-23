@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import '../../../repositories/restaurants/restaurant_repository.dart';
+
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/cart/cart_model.dart';
@@ -15,14 +17,17 @@ class CartCubit extends FCubit<CartState> {
   CartCubit({
     required CartRepository cartRepository,
     required FoodRepository foodRepository,
+    required RestaurantRepository restaurantRepository,
   })  : _cartRepository = cartRepository,
         _foodRepository = foodRepository,
+        _restaurantRepository = restaurantRepository,
         super(const CartState()) {
     init();
   }
 
   final CartRepository _cartRepository;
   final FoodRepository _foodRepository;
+  final RestaurantRepository _restaurantRepository;
 
   void init() async {
     final cartResult = await _cartRepository.fetchCart();
@@ -88,11 +93,19 @@ class CartCubit extends FCubit<CartState> {
 
   void addToCart(FFood food) async {
     emitLoading();
+    final restaurantResult = await _restaurantRepository.getByFoodId(food.id);
+
+    if (restaurantResult.isError) {
+      emitError(restaurantResult.error!);
+      return;
+    }
+
     final update = state.cart.addItem(
       Item(
         foodId: food.id,
         quantity: 1,
       ),
+      restaurantResult.data!,
     );
 
     final result = await _cartRepository.setCart(update);
@@ -110,7 +123,12 @@ class CartCubit extends FCubit<CartState> {
     );
   }
 
+  void onVoucherChanged(int amount) {
+    emitValue(state.copyWith(discount: amount));
+  }
+
   void clear() {
+    _cartRepository.clear();
     emitValue(const CartState());
   }
 }

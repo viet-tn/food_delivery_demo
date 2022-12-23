@@ -13,10 +13,9 @@ enum AppTheme {
 final appThemeData = {
   AppTheme.light: ThemeData(
     useMaterial3: true,
-    // fontFamily: GoogleFonts.libreFranklin().fontFamily,
+    fontFamily: GoogleFonts.roboto().fontFamily,
     brightness: Brightness.light,
     indicatorColor: FColors.lightGreen,
-
     inputDecorationTheme: const InputDecorationTheme(
       labelStyle: FTextStyles.label,
       contentPadding: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 20.0),
@@ -48,7 +47,7 @@ final appThemeData = {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         side: const BorderSide(
-          color: FColors.stroke,
+          color: FColors.green,
         ),
         shape: const RoundedRectangleBorder(
           borderRadius: Ui.borderRadius,

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,25 +15,34 @@ import '../../modules/forgot_password/forgot_password_screen.dart';
 import '../../modules/home/home_screen.dart';
 import '../../modules/home/screens/foods_screen.dart';
 import '../../modules/home/screens/restaurants_screen.dart';
+import '../../modules/login/cubit/login_cubit.dart';
 import '../../modules/login/login_screen.dart';
 import '../../modules/onboarding/onboarding_screen.dart';
+import '../../modules/order/model/order.dart';
+import '../../modules/order/order_details/order_details_screen.dart';
+import '../../modules/order/orders_screen.dart';
 import '../../modules/profile/edit_screen.dart';
 import '../../modules/profile/profile_screen.dart';
 import '../../modules/restaurant/restaurant_screen.dart';
 import '../../modules/search/search_screen.dart';
 import '../../modules/signup/screens/fill_bio_screen.dart';
-import '../../modules/signup/screens/fill_payment_screen.dart';
 import '../../modules/signup/screens/map_screen/map_screen.dart';
 import '../../modules/signup/screens/set_location_screen.dart';
 import '../../modules/signup/screens/upload_photo_screen.dart';
 import '../../modules/signup/screens/verification_screen.dart';
 import '../../modules/signup/sign_up_screen.dart';
+import '../../modules/tracking/order_tracking_screen.dart';
+import '../../modules/voucher/voucher_screen.dart';
 import '../../repositories/domain_manager.dart';
 import '../../repositories/food/food_model.dart';
 import '../../repositories/restaurants/restaurant_model.dart';
+import '../../repositories/users/coordinate.dart';
+import '../../repositories/users/user_model.dart';
+import '../../utils/helpers/resfresh_stream.dart';
 import '../../utils/services/shared_preferences.dart';
 import '../../utils/ui/scaffold_with_bottom_nav_bar.dart';
 import '../../widgets/congrats_screen.dart';
+import '../../widgets/payment_successful_screen.dart';
 import 'route_observer.dart';
 
 enum Routes {
@@ -60,6 +70,10 @@ enum Routes {
   foods,
   restaurants,
   checkout,
+  voucher,
+  orders,
+  orderDetails,
+  orderTracking,
 }
 
 class FCoordinator {
@@ -140,11 +154,15 @@ class FCoordinator {
     context.pushNamed(Routes.setLocation.name);
   }
 
-  static void showCongratsScreen(
-      [CongratsParams params = const CongratsParams()]) {
+  static void showCongratsScreen([CongratsParams? params]) {
     context.goNamed(
       Routes.congrats.name,
-      extra: params,
+      extra: params ??
+          CongratsParams(
+            onPressed: () {
+              FCoordinator.showHomeScreen();
+            },
+          ),
     );
   }
 
@@ -158,6 +176,14 @@ class FCoordinator {
 
   static void showRestaurantScreen(FRestaurant restaurant) {
     context.goNamed(Routes.restaurant.name, extra: restaurant);
+  }
+
+  static void showPaymentSuccessfulScreen() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const PaymentSuccessfulScreen(),
+        ));
   }
 
   static void showMapScreen(
@@ -180,6 +206,23 @@ final appRouter = GoRouter(
   navigatorKey: FCoordinator.navigatorKey,
   initialLocation: '/logIn',
   debugLogDiagnostics: true,
+  refreshListenable: UserRefreshStream(GetIt.I<LoginCubit>()),
+  redirect: (context, state) {
+    final isLoggedIn = DomainManager().authRepository.currentUser != null;
+    if (isLoggedIn) {
+      if (state.location.contains(RegExp(r'\/(onboarding|logIn|signUp)'))) {
+        return '/';
+      }
+      return null;
+    }
+
+    if (state.location == '/' ||
+        state.location.contains(RegExp(r'\/(profile|cart|chat)'))) {
+      return '/logIn';
+    }
+
+    return null;
+  },
   routes: [
     GoRoute(
       name: Routes.onboarding.name,
@@ -201,6 +244,16 @@ final appRouter = GoRouter(
           pageBuilder: (_, __) => const NoTransitionPage(
             child: HomeScreen(),
           ),
+          redirect: (context, state) {
+            if (context.read<LoginCubit>().state.user == FUser.empty) {
+              return null;
+            }
+
+            if (!context.read<LoginCubit>().state.user.isSetupComplete) {
+              return '/bio';
+            }
+            return null;
+          },
           routes: [
             GoRoute(
               path: 'restaurant',
@@ -271,6 +324,23 @@ final appRouter = GoRouter(
               pageBuilder: (context, state) => const MaterialPage(
                 fullscreenDialog: true,
                 child: CheckoutScreen(),
+              ),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: '/orders',
+          name: Routes.orders.name,
+          pageBuilder: (_, __) => const NoTransitionPage(
+            child: OrdersScreen(),
+          ),
+          routes: [
+            GoRoute(
+              parentNavigatorKey: FCoordinator.navigatorKey,
+              path: 'details',
+              name: Routes.orderDetails.name,
+              builder: (_, state) => OrderDetailsScreen(
+                order: state.extra as FOrder,
               ),
             ),
           ],
@@ -347,11 +417,6 @@ final appRouter = GoRouter(
           builder: (_, state) => const VerificationScreen(),
         ),
         GoRoute(
-          name: Routes.payment.name,
-          path: 'payment',
-          builder: (_, __) => const FillPaymentScreen(),
-        ),
-        GoRoute(
           name: Routes.uploadPhoto.name,
           path: 'uploadPhoto',
           builder: (_, __) => const UploadPhotoScreen(),
@@ -377,6 +442,30 @@ final appRouter = GoRouter(
             lat: lat ?? 10.7548026,
             lon: lon ?? 106.4109718,
             isSigningUp: (state.extra as bool?) ?? false,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      name: Routes.voucher.name,
+      path: '/voucher',
+      parentNavigatorKey: FCoordinator.navigatorKey,
+      pageBuilder: (_, __) => const MaterialPage(
+        fullscreenDialog: true,
+        child: VoucherScreen(),
+      ),
+    ),
+    GoRoute(
+      name: Routes.orderTracking.name,
+      path: '/tracking',
+      parentNavigatorKey: FCoordinator.navigatorKey,
+      pageBuilder: (_, state) {
+        final params = state.extra as List<Coordinate>;
+        return MaterialPage(
+          fullscreenDialog: true,
+          child: OrderTrackingScreen(
+            source: params[0],
+            destination: params[1],
           ),
         );
       },

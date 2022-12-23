@@ -30,9 +30,9 @@ class ItemQuantitySelector extends StatelessWidget {
           width: 30.0,
           borderRadius: 8.0,
           contentPadding: EdgeInsets.zero,
-          child: Text(
-            '—',
-            style: FTextStyles.heading3.copyWith(color: FColors.green),
+          child: const Icon(
+            Icons.remove,
+            color: FColors.green,
           ),
         ),
         gapW16,
@@ -47,12 +47,9 @@ class ItemQuantitySelector extends StatelessWidget {
           width: 30.0,
           borderRadius: 8.0,
           contentPadding: EdgeInsets.zero,
-          child: Text(
-            '+',
-            style: FTextStyles.body.copyWith(
-              color: Colors.white,
-              fontSize: 30.0,
-            ),
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
           ),
         )
       ],

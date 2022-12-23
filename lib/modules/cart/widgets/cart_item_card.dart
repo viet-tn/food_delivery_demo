@@ -13,8 +13,8 @@ import '../../../widgets/dialogs/alert_dialog.dart';
 import '../cubit/cart_cubit.dart';
 import 'item_quantity_selector.dart';
 
-class OrderCard extends StatelessWidget {
-  const OrderCard({
+class CartItemCard extends StatelessWidget {
+  const CartItemCard({
     super.key,
     this.onTap,
     required this.food,
@@ -52,6 +52,10 @@ class OrderCard extends StatelessWidget {
             key: UniqueKey(),
             direction: DismissDirection.endToStart,
             child: FCard(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 2.0,
+              ),
               onTap: onTap,
               child: Row(
                 children: [
@@ -65,42 +69,50 @@ class OrderCard extends StatelessWidget {
                   gapW12,
                   Expanded(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           food.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: FTextStyles.heading4,
+                          style: FTextStyles.heading5,
                         ),
                         Text(
                           food.description,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: FTextStyles.body.copyWith(color: Colors.grey),
+                          style: FTextStyles.label.copyWith(color: Colors.grey),
                         ),
-                        Text(
-                          '\$ ${food.price.toInt()}',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: FTextStyles.heading3.copyWith(
-                            color: FColors.green,
-                          ),
+                        gapH4,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '\$ ${food.price.toInt()}',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: FTextStyles.heading4.copyWith(
+                                color: FColors.green,
+                              ),
+                            ),
+                            ItemQuantitySelector(
+                              onQuantityChanged: (quantity) =>
+                                  context.read<CartCubit>().onQuantityChanged(
+                                        Item(
+                                          foodId: food.id,
+                                          quantity: quantity,
+                                        ),
+                                      ),
+                              onDeleteItem: () => context
+                                  .read<CartCubit>()
+                                  .onDeleteItem(food.id),
+                              quantity: quantity,
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ),
-                  ItemQuantitySelector(
-                    onQuantityChanged: (quantity) =>
-                        context.read<CartCubit>().onQuantityChanged(
-                              Item(
-                                foodId: food.id,
-                                quantity: quantity,
-                              ),
-                            ),
-                    onDeleteItem: () =>
-                        context.read<CartCubit>().onDeleteItem(food.id),
-                    quantity: quantity,
                   ),
                 ],
               ),

@@ -2,25 +2,34 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
-import '../../../repositories/payment/order_model.dart';
+import '../../../repositories/payment/payment_model.dart';
 import '../../../repositories/payment/payment_repostiory.dart';
 
 part 'payment_state.dart';
 
 class PaymentCubit extends FCubit<PaymentState> {
-  PaymentCubit() : super(const PaymentState(status: ScreenStatus.value));
+  PaymentCubit(
+    this._paymentRepository,
+  ) : super(
+          const PaymentState(status: ScreenStatus.value),
+        );
+
+  final PaymentRepository _paymentRepository;
 
   /// amount: dollar
-  void onCheckoutPressed(int amount) async {
+  void onCheckoutPressed(int amount,
+      {required void Function() onPaymentSuccessful}) async {
     emitLoading();
+
     late StreamSubscription subcription;
-    subcription = GetIt.I<PaymentRepository>()
+    subcription = _paymentRepository
         .createCheckoutSession(
-          FOrder(amount: amount),
+          FPayment(
+            amount: amount,
+          ),
         )
         .listen(null)
       ..onData(
@@ -51,6 +60,7 @@ class PaymentCubit extends FCubit<PaymentState> {
           final intent = await Stripe.instance
               .retrievePaymentIntent(stripe.paymentIntentClientSecret!);
           log(intent.status.name);
+          onPaymentSuccessful();
           subcription.cancel();
         },
       )

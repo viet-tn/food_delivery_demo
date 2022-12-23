@@ -85,7 +85,9 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                           style: FTextStyles.heading1,
                         ),
                         gapH20,
-                        const RestaurantRating(),
+                        RestaurantRating(
+                          meters: widget.restaurant.distance!,
+                        ),
                         gapH20,
                         const Text(
                           restaurantDescription,

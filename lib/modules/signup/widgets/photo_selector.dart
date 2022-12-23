@@ -32,8 +32,12 @@ class PhotoSelector extends StatelessWidget {
         gapH24,
         UploadPhotoButton(
           onTap: () async {
-            final file =
-                await ImagePicker().pickImage(source: ImageSource.camera);
+            final file = await ImagePicker().pickImage(
+              maxHeight: 600,
+              maxWidth: 600,
+              imageQuality: 80,
+              source: ImageSource.camera,
+            );
             onImgSelected(file?.path);
           },
           title: 'Take Photo',

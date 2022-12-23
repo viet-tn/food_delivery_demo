@@ -66,6 +66,10 @@ dependencies:
   url_launcher: ^6.1.7
   android_intent_plus: ^3.1.5
   flutter_stripe: ^7.0.0
+  flutter_svg: ^1.1.6
+  intl: ^0.17.0
+  path_provider: ^2.0.11
+  flutter_polyline_points: ^1.0.0
 
 # dependency_overrides:
 #   firebase_core_platform_interface: 4.5.1
@@ -231,6 +235,8 @@ flutter:
     - assets/images/onboarding/
     - assets/images/banner/
     - assets/images/restaurants/
+    - assets/images/illustrations/
+    - assets/images/voucher/
     - assets/icons/
     - assets/mapstyles/
 

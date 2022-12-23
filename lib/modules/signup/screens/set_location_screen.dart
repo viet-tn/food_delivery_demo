@@ -25,7 +25,9 @@ class SetLocationScreen extends StatelessWidget {
                 final isSuccess =
                     context.read<SignUpCubit>().onSetLocationComplete();
                 if (isSuccess) {
-                  context.read<SignUpCubit>().onSignUpComplete();
+                  context
+                      .read<SignUpCubit>()
+                      .onSignUpComplete(FCoordinator.showCongratsScreen);
                 }
               },
               title: 'Set Your Location ',

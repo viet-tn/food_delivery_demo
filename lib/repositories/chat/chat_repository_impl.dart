@@ -14,7 +14,7 @@ class ChatRepositoryImpl extends BaseCollectionReference<FChat>
                 fromFirestore: (snapshot, _) => FChat.fromMap(snapshot.data()!),
                 toFirestore: (value, _) => value.toMap(),
               ),
-          getID: (chat) => chat.id,
+          getID: (chat) => chat.id!,
           setID: (chat, id) => chat.copyWith(id: id),
         );
 
@@ -44,15 +44,16 @@ class ChatRepositoryImpl extends BaseCollectionReference<FChat>
   }
 
   @override
-  Future<FResult<FChat>> createChat(FChat chat) {
-    // TODO: implement createChat
-    throw UnimplementedError();
+  Future<FResult<FChat>> createChat(FChat chat) async {
+    return super.add(chat);
   }
 
   @override
   Stream<List<FChat>> getStreamChat(String userId) async* {
-    await for (var snapshot
-        in ref.where('userIds', arrayContains: userId).snapshots()) {
+    await for (var snapshot in ref
+        .where('userIds', arrayContains: userId)
+        .orderBy('created', descending: true)
+        .snapshots()) {
       if (snapshot.docs.isEmpty) {
         yield const <FChat>[];
         continue;

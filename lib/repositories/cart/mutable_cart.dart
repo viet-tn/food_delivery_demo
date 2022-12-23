@@ -1,3 +1,5 @@
+import '../restaurants/restaurant_model.dart';
+
 import 'cart_model.dart';
 import 'item_model.dart';
 
@@ -11,7 +13,7 @@ extension MutableCart on FCart {
   }
 
   /// add an item to the cart by *updating* the quantity if it already exists
-  FCart addItem(Item item) {
+  FCart addItem(Item item, FRestaurant restaurantId) {
     final copy = Map<String, int>.from(items);
     // * update item quantity. Read this for more details:
     // * https://codewithandrea.com/tips/dart-map-update-method/
