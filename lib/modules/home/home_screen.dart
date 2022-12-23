@@ -61,6 +61,7 @@ class HomeScreen extends StatelessWidget {
                     }
 
                     return CurrentOrderCard(
+                      chatId: state.order!.id!,
                       source: state.restaurant!.coordinate,
                       destination: state.order!.userPosition,
                       shipper: state.shipper!,

@@ -70,6 +70,7 @@ dependencies:
   intl: ^0.17.0
   path_provider: ^2.0.11
   flutter_polyline_points: ^1.0.0
+  uuid: ^3.0.7
 
 # dependency_overrides:
 #   firebase_core_platform_interface: 4.5.1

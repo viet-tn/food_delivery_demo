@@ -21,7 +21,7 @@ class OrderRepository extends BaseCollectionReference<FOrder> {
   final String uid;
 
   Future<FResult<FOrder>> create(FOrder order) {
-    return add(order);
+    return set(order);
   }
 
   Future<FResult<List<FOrder>>> fetchOrdersByStatus(

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../modules/cubits/app/app_cubit.dart';
-import '../config/routes/coordinator.dart';
 
+import '../config/routes/coordinator.dart';
 import '../constants/ui/colors.dart';
 import '../constants/ui/sizes.dart';
 import '../constants/ui/text_style.dart';
 import '../constants/ui/ui_parameters.dart';
 import '../gen/assets.gen.dart';
+import '../modules/cubits/app/app_cubit.dart';
 import '../utils/ui/scaffold.dart';
 import 'buttons/gradient_button.dart';
 

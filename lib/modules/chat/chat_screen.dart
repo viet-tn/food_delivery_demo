@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_delivery/modules/cubits/app/app_cubit.dart';
+import '../cubits/app/app_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../config/routes/coordinator.dart';

@@ -38,7 +38,8 @@ class ChatCubit extends FCubit<ChatState> {
     );
   }
 
-  Future<void> createChat(String userId) async {
+  Future<void> createChat(
+      {required String userId, required String orderId}) async {
     emitLoading();
 
     final shipperResult = await _userRepository.getShipper();
@@ -50,6 +51,7 @@ class ChatCubit extends FCubit<ChatState> {
 
     final result = await _chatRepository.createChat(
       FChat(
+        id: orderId,
         userIds: [userId, shipperResult.data!.id],
         created: DateTime.now(),
       ),

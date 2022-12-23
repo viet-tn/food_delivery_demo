@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../modules/cart/cart_screen.dart';
 import '../../modules/chat/chat_detail/chat_detail_screen.dart';
-import '../../modules/chat/chat_screen.dart';
 import '../../modules/checkout/checkout_screen.dart';
 import '../../modules/food/food_screen.dart';
 import '../../modules/forgot_password/email_sent_screen.dart';
@@ -62,7 +61,6 @@ enum Routes {
   editProfile,
   food,
   restaurant,
-  chatDetail,
   search,
   map,
   forgotPassword,
@@ -345,25 +343,16 @@ final appRouter = GoRouter(
             ),
           ],
         ),
-        GoRoute(
-          name: Routes.chat.name,
-          path: '/chat',
-          pageBuilder: (_, __) => const NoTransitionPage(
-            child: ChatScreen(),
-          ),
-          routes: [
-            GoRoute(
-              name: Routes.chatDetail.name,
-              path: 'detail:chatId&:chatWithUserId',
-              parentNavigatorKey: FCoordinator.navigatorKey,
-              builder: (_, state) => ChatDetailScreen(
-                chatId: state.params['chatId']!,
-                chatWithUserId: state.params['chatWithUserId']!,
-              ),
-            ),
-          ],
-        ),
       ],
+    ),
+    GoRoute(
+      name: Routes.chat.name,
+      path: '/chat:chatId&:chatWithUserId',
+      parentNavigatorKey: FCoordinator.navigatorKey,
+      builder: (_, state) => ChatDetailScreen(
+        chatId: state.params['chatId']!,
+        chatWithUserId: state.params['chatWithUserId']!,
+      ),
     ),
     GoRoute(
       name: Routes.logIn.name,

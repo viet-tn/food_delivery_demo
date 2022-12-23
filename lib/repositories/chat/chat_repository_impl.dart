@@ -47,7 +47,7 @@ class ChatRepositoryImpl extends BaseCollectionReference<FChat>
 
   @override
   Future<FResult<FChat>> createChat(FChat chat) async {
-    return super.add(chat);
+    return super.set(chat);
   }
 
   @override

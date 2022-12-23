@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../base/state.dart';
 import '../../config/routes/coordinator.dart';
@@ -106,6 +107,7 @@ class CheckoutScreen extends StatelessWidget {
     final user = GetIt.I<AppCubit>().state.user!;
 
     final newOrder = FOrder(
+      id: const Uuid().v1(),
       name: '${user.firstName!} ${user.lastName!}',
       phone: user.phone!,
       userPosition: user.coordinates.first,
@@ -121,7 +123,8 @@ class CheckoutScreen extends StatelessWidget {
       onPaymentSuccessful: () {
         FCoordinator.context.read<CartCubit>().clear();
         FCoordinator.context.read<ChatCubit>().createChat(
-              GetIt.I<AppCubit>().state.user!.id,
+              userId: GetIt.I<AppCubit>().state.user!.id,
+              orderId: newOrder.id!,
             );
         FCoordinator.context
             .read<OrdersCubit>()

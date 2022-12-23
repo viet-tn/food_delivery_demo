@@ -1,21 +1,19 @@
-import '../../../repositories/maps/search/places_search_repository.dart';
-
-import '../../order/data/order_repository.dart';
-import '../../../repositories/restaurants/restaurant_repository.dart';
-import '../../../repositories/result.dart';
-
-import '../../order/model/order.dart';
-import '../../../repositories/restaurants/restaurant_model.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/auth/auth_repository.dart';
 import '../../../repositories/cloud_storage/cloud_storage.dart';
+import '../../../repositories/maps/search/places_search_repository.dart';
+import '../../../repositories/restaurants/restaurant_model.dart';
+import '../../../repositories/restaurants/restaurant_repository.dart';
+import '../../../repositories/result.dart';
 import '../../../repositories/users/user_model.dart';
 import '../../../repositories/users/user_repository.dart';
 import '../../home/cubit/home_cubit.dart';
 import '../../login/cubit/login_cubit.dart';
+import '../../order/data/order_repository.dart';
+import '../../order/model/order.dart';
 import '../../signup/cubit/sign_up_cubit.dart';
 
 part 'app_state.dart';

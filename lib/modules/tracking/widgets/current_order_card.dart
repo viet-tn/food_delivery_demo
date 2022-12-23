@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
-import '../../../utils/helpers/text_helpers.dart';
-import '../../../constants/ui/ui_parameters.dart';
-import '../../../repositories/users/user_model.dart';
-import '../../../utils/ui/network_image.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
+import '../../../constants/ui/ui_parameters.dart';
 import '../../../repositories/users/coordinate.dart';
+import '../../../repositories/users/user_model.dart';
+import '../../../utils/helpers/text_helpers.dart';
 import '../../../utils/ui/card.dart';
+import '../../../utils/ui/network_image.dart';
 import '../../../widgets/buttons/icon_button.dart';
 
 class CurrentOrderCard extends StatelessWidget {
   const CurrentOrderCard({
     super.key,
+    required this.chatId,
     required this.source,
     required this.destination,
     required this.shipper,
     this.deliveryTime,
   });
 
+  final String chatId;
   final Coordinate source;
   final Coordinate destination;
   final FUser shipper;
@@ -69,7 +72,15 @@ class CurrentOrderCard extends StatelessWidget {
           Row(
             children: [
               FIconButton(
-                onPressed: () {},
+                onPressed: () {
+                  FCoordinator.pushNamed(
+                    Routes.chat.name,
+                    params: {
+                      'chatId': chatId,
+                      'chatWithUserId': shipper.id,
+                    },
+                  );
+                },
                 icon: const Icon(
                   Icons.message_outlined,
                   color: FColors.green,
@@ -77,7 +88,7 @@ class CurrentOrderCard extends StatelessWidget {
               ),
               gapW4,
               FIconButton(
-                onPressed: () {},
+                onPressed: () => launchUrlString('tel://${shipper.phone!}'),
                 icon: const Icon(
                   Icons.call_outlined,
                   color: FColors.green,
