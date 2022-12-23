@@ -21,6 +21,7 @@ class SetLocationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width - 30.0,
       margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 28.0),
       padding: const EdgeInsets.all(12.0),
       decoration: const BoxDecoration(
@@ -29,7 +30,6 @@ class SetLocationButton extends StatelessWidget {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -52,7 +52,7 @@ class SetLocationButton extends StatelessWidget {
               ),
             ],
           ),
-          gapH12,
+          gapH20,
           GradientButton(
             onPressed: isLoading ? null : onPressed,
             width: double.infinity,

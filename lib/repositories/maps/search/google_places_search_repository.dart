@@ -44,7 +44,7 @@ class GooglePlacesSearchRepository implements PlacesSearchRepository {
           name: element['name'],
           address: element['formatted_address'],
           latitude: element['geometry']['location']['lat'],
-          longtitude: element['geometry']['location']['lng'],
+          longitude: element['geometry']['location']['lng'],
         ),
       );
     }

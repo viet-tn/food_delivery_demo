@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../widgets/buttons/icon_button.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -86,38 +87,62 @@ class _MapScreenState extends State<MapScreen> {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: BlocBuilder<MapScreenCubit, MapScreenState>(
-                  buildWhen: (previous, current) =>
-                      previous.status != current.status ||
-                      previous.lat != current.lat ||
-                      previous.lon != current.lon,
-                  builder: (context, state) {
-                    return SetLocationButton(
-                      isLoading: state.status.isLoading,
-                      onPressed: () {
-                        widget.isSigningUp
-                            ? context
-                                .read<SignUpCubit>()
-                                .onSetLocationButtonPressed(
-                                    state.lat!, state.lon!, state.address!)
-                            : context.read<AppCubit>().updateUserState(
-                                  context.read<AppCubit>().state.user!.copyWith(
-                                    coordinates: [
-                                      Coordinate(
-                                        latitude: state.lat!,
-                                        longitude: state.lon!,
-                                        address: state.address!,
-                                      )
-                                    ],
-                                  ),
-                                );
-                        Navigator.pop(context);
+              Positioned(
+                bottom: 0.0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: FIconButton(
+                        onPressed: () {
+                          _moveToLocation(widget.lat, widget.lon);
+                        },
+                        icon: const FittedBox(
+                          child: Icon(
+                            Icons.explore_outlined,
+                            color: Colors.green,
+                            size: 50,
+                          ),
+                        ),
+                      ),
+                    ),
+                    BlocBuilder<MapScreenCubit, MapScreenState>(
+                      buildWhen: (previous, current) =>
+                          previous.status != current.status ||
+                          previous.lat != current.lat ||
+                          previous.lon != current.lon,
+                      builder: (context, state) {
+                        return SetLocationButton(
+                          isLoading: state.status.isLoading,
+                          onPressed: () {
+                            widget.isSigningUp
+                                ? context
+                                    .read<SignUpCubit>()
+                                    .onSetLocationButtonPressed(
+                                        state.lat!, state.lon!, state.address!)
+                                : context.read<AppCubit>().updateUserState(
+                                      context
+                                          .read<AppCubit>()
+                                          .state
+                                          .user!
+                                          .copyWith(
+                                        coordinates: [
+                                          Coordinate(
+                                            latitude: state.lat!,
+                                            longitude: state.lon!,
+                                            address: state.address!,
+                                          )
+                                        ],
+                                      ),
+                                    );
+                            Navigator.pop(context);
+                          },
+                          location: state.address,
+                        );
                       },
-                      location: state.address,
-                    );
-                  },
+                    ),
+                  ],
                 ),
               ),
               Positioned(
@@ -131,9 +156,8 @@ class _MapScreenState extends State<MapScreen> {
                         controller: _searchTextEditingController,
                         suggestions: state.suggestions,
                         onTitleTapped: (place) {
-                          _cubit.onTitleTapped(
-                              place.latitude, place.longtitude);
-                          _moveToLocation(place.latitude, place.longtitude);
+                          _cubit.onTitleTapped(place.latitude, place.longitude);
+                          _moveToLocation(place.latitude, place.longitude);
                         },
                       );
                     },
@@ -154,11 +178,11 @@ class _MapScreenState extends State<MapScreen> {
     _mapController.setMapStyle(style);
   }
 
-  void _moveToLocation(double latitude, double longtitude) {
+  void _moveToLocation(double latitude, double longitude) {
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: LatLng(latitude, longtitude),
+          target: LatLng(latitude, longitude),
           zoom: 18.0,
         ),
       ),
