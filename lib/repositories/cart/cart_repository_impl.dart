@@ -30,4 +30,9 @@ class CartRepositoryImpl implements CartRepository {
       return FResult.error(e.runtimeType.toString());
     }
   }
+
+  @override
+  void clear() {
+    _sharedPreferences.setString(_localRepositoryKey, const FCart().toJson());
+  }
 }

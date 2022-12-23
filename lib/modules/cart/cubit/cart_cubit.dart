@@ -1,73 +1,116 @@
+import 'dart:math';
+
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/cart/cart_model.dart';
+import '../../../repositories/cart/cart_repository.dart';
 import '../../../repositories/cart/item_model.dart';
+import '../../../repositories/cart/mutable_cart.dart';
 import '../../../repositories/food/food_model.dart';
-import '../../cubit/app_cubit.dart';
+import '../../../repositories/food/food_repository.dart';
 
 part 'cart_state.dart';
 
 class CartCubit extends FCubit<CartState> {
   CartCubit({
-    required AppCubit appCubit,
-  })  : _appCubit = appCubit,
+    required CartRepository cartRepository,
+    required FoodRepository foodRepository,
+  })  : _cartRepository = cartRepository,
+        _foodRepository = foodRepository,
         super(const CartState()) {
     init();
   }
 
-  final AppCubit _appCubit;
+  final CartRepository _cartRepository;
+  final FoodRepository _foodRepository;
 
   void init() async {
-    final cart = _appCubit.state.cart!;
-    final foodList = _appCubit.state.cartFoodList;
+    final cartResult = await _cartRepository.fetchCart();
 
-    final subTotal = foodList.fold(
-      0,
-      (previousValue, element) =>
-          previousValue + element.price.toInt() * (cart.items[element.id] ?? 0),
-    );
+    if (cartResult.isError) {
+      emitError(cartResult.error!);
+      return;
+    }
+
+    final cart = cartResult.data!;
+
+    final foodsResult =
+        await _foodRepository.fetchFoodsByIds(cart.items.keys.toList());
+
+    if (foodsResult.isError) {
+      emitError(foodsResult.error!);
+      return;
+    }
+
+    final foodList = foodsResult.data!;
 
     return emitValue(state.copyWith(
       cart: cart,
       foods: foodList,
-      subTotal: subTotal,
     ));
   }
 
   Future<void> onQuantityChanged(Item item) async {
-    emitLoading();
-    final update = await _appCubit.onCartQuantityChanged(item);
+    final update = state.cart.setItem(item);
+    final result = await _cartRepository.setCart(update);
+
+    if (result.isError) {
+      emitError(result.error!);
+      return;
+    }
 
     emitValue(
       state.copyWith(
         cart: update,
-        subTotal: _subTotalCalculator(update, state.foods),
       ),
     );
   }
 
   Future<void> onDeleteItem(String foodId) async {
     emitLoading();
-    final updateCart = await _appCubit.onCartItemDeleted(foodId);
-    final updateFoods = [
-      for (var food in state.foods)
-        if (food.id != foodId) food
-    ];
+    final update = state.cart.removeItemById(foodId);
+    final result = await _cartRepository.setCart(update);
+
+    if (result.isError) {
+      emitError(result.error!);
+      return;
+    }
+
+    final foodList = state.foods..removeWhere((food) => food.id == foodId);
 
     emitValue(
       state.copyWith(
-        cart: updateCart,
-        foods: updateFoods,
-        subTotal: _subTotalCalculator(updateCart, updateFoods),
+        cart: update,
+        foods: foodList,
       ),
     );
   }
 
-  int _subTotalCalculator(FCart cart, List<FFood> foodList) {
-    return foodList.fold(
-      0,
-      (previousValue, element) =>
-          previousValue + element.price.toInt() * (cart.items[element.id] ?? 0),
+  void addToCart(FFood food) async {
+    emitLoading();
+    final update = state.cart.addItem(
+      Item(
+        foodId: food.id,
+        quantity: 1,
+      ),
     );
+
+    final result = await _cartRepository.setCart(update);
+
+    if (result.isError) {
+      emitError(result.error!);
+      return;
+    }
+
+    emitValue(
+      state.copyWith(
+        cart: update,
+        foods: [...state.foods, food],
+      ),
+    );
+  }
+
+  void clear() {
+    emitValue(const CartState());
   }
 }

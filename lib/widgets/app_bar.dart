@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'buttons/back_button.dart';
 
+import '../config/routes/coordinator.dart';
 import '../constants/ui/text_style.dart';
+import 'buttons/back_button.dart';
 
 class FAppBar extends StatelessWidget {
   const FAppBar({
@@ -20,13 +21,17 @@ class FAppBar extends StatelessWidget {
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [
-          FBackButton(
-            onPressed: onPressed,
-          ),
+          FCoordinator.canPop()
+              ? FBackButton(
+                  onPressed: onPressed,
+                )
+              : const SizedBox(),
           Center(
             child: Text(
               title,
-              style: FTextStyles.heading3,
+              style: FTextStyles.heading3.copyWith(
+                color: const Color(0xFF754B30),
+              ),
             ),
           ),
         ],

@@ -5,19 +5,16 @@ class FoodState extends FState {
     super.status,
     super.errorMessage,
     this.food,
-    this.isAddedToCart = false,
     this.isAddToFavoriteList = false,
   });
 
   final FFood? food;
-  final bool isAddedToCart;
   final bool isAddToFavoriteList;
 
   @override
   List<Object?> get props => [
         ...super.props,
         food,
-        isAddedToCart,
         isAddToFavoriteList,
       ];
 
@@ -33,7 +30,6 @@ class FoodState extends FState {
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       food: food ?? this.food,
-      isAddedToCart: isAddedToCart ?? this.isAddedToCart,
       isAddToFavoriteList: isAddToFavoriteList ?? this.isAddToFavoriteList,
     );
   }

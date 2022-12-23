@@ -21,7 +21,6 @@ class FoodCubit extends FCubit<FoodState> {
     emitValue(
       state.copyWith(
         food: food,
-        isAddedToCart: _appCubit.state.cart!.items.containsKey(food.id),
         isAddToFavoriteList:
             _appCubit.state.favoriteList!.foodIds.contains(food.id),
       ),
@@ -39,14 +38,6 @@ class FoodCubit extends FCubit<FoodState> {
 
     emitValue(state.copyWith(food: result.data!));
     return result.data!;
-  }
-
-  Future<void> addToCart() async {
-    emitLoading();
-
-    final isAddedToCart = await _appCubit.addToCart(state.food!);
-
-    emitValue(state.copyWith(isAddedToCart: isAddedToCart));
   }
 
   void toggleFavoriteList(bool isDelete) async {

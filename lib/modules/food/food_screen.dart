@@ -17,6 +17,7 @@ import '../../widgets/buttons/gradient_button.dart';
 import '../../widgets/buttons/icon_button.dart';
 import '../../widgets/chips/category_chip.dart';
 import '../../widgets/testimonial_section.dart';
+import '../cart/cubit/cart_cubit.dart';
 import 'cubit/food_cubit.dart';
 import 'widgets/food_rating.dart';
 
@@ -33,21 +34,28 @@ class FoodScreen extends StatefulWidget {
 }
 
 class _FoodScreenState extends State<FoodScreen> {
-  late final FoodCubit _cubit = GetIt.I<FoodCubit>()..init(widget.food);
+  late final FoodCubit _foodCubit = GetIt.I<FoodCubit>()..init(widget.food);
 
   @override
   Widget build(BuildContext _) {
     return BlocProvider(
-      create: (_) => _cubit,
+      create: (_) => _foodCubit,
       child: ListenError<FoodCubit>(
         child: BlocBuilder<FoodCubit, FoodState>(
-          builder: (context, state) {
+          buildWhen: (previous, current) => previous.food != current.food,
+          builder: (_, state) {
             return ScrollableScreenWithBackground(
               backgroundImage: FNetworkImage(state.food!.img),
-              bottomCenterButton: AddToCartButton(
-                onPressed: () => _cubit.addToCart(),
-                isAdded: state.isAddedToCart,
-                isLoading: state.status.isLoading,
+              bottomCenterButton: BlocBuilder<CartCubit, CartState>(
+                buildWhen: (previous, current) => previous.cart != current.cart,
+                builder: (context, cartState) {
+                  return AddToCartButton(
+                    onPressed: () =>
+                        context.read<CartCubit>().addToCart(state.food!),
+                    isAdded: cartState.cart.items.containsKey(state.food!.id),
+                    isLoading: state.status.isLoading,
+                  );
+                },
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

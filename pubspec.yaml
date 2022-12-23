@@ -65,6 +65,7 @@ dependencies:
   http: ^0.13.5
   url_launcher: ^6.1.7
   android_intent_plus: ^3.1.5
+  flutter_stripe: ^7.0.0
 
 # dependency_overrides:
 #   firebase_core_platform_interface: 4.5.1

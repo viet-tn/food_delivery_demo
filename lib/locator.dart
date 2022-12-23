@@ -5,14 +5,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'config/secrets.dart';
 import 'modules/cart/cubit/cart_cubit.dart';
 import 'modules/chat/chat_detail/cubit/chat_detail_cubit.dart';
 import 'modules/chat/cubit/chat_cubit.dart';
+import 'modules/checkout/cubit/payment_cubit.dart';
 import 'modules/cubit/app_cubit.dart';
 import 'modules/food/cubit/food_cubit.dart';
 import 'modules/forgot_password/cubit/forgot_password_cubit.dart';
@@ -24,6 +27,7 @@ import 'modules/search/cubit/search_cubit.dart';
 import 'modules/signup/cubit/sign_up_cubit.dart';
 import 'modules/signup/screens/map_screen/cubit/map_screen_cubit.dart';
 import 'repositories/domain_manager.dart';
+import 'repositories/payment/payment_repostiory.dart';
 import 'utils/services/shared_preferences.dart';
 
 Future<void> initializeApp() async {
@@ -31,6 +35,10 @@ Future<void> initializeApp() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await Firebase.initializeApp();
+
+  Stripe.publishableKey = Credentials.stripePublishableKey;
+
+  await Stripe.instance.applySettings();
 
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: 'recaptcha-v3-site-key',
@@ -116,7 +124,8 @@ Future<void> _locator() async {
 
   GetIt.I.registerFactory<CartCubit>(
     () => CartCubit(
-      appCubit: GetIt.I<AppCubit>(),
+      cartRepository: DomainManager().cartRepository,
+      foodRepository: DomainManager().foodRepository,
     ),
   );
 
@@ -152,8 +161,17 @@ Future<void> _locator() async {
     ),
   );
 
+  GetIt.I.registerFactory<PaymentCubit>(
+    () => PaymentCubit(),
+  );
+
   // External services
   GetIt.I.registerLazySingleton<GeoHasher>(
     () => GeoHasher(),
+  );
+
+  // Payment repository
+  GetIt.I.registerFactory<PaymentRepository>(
+    () => PaymentRepository(GetIt.I<AppCubit>().state.user!.id),
   );
 }

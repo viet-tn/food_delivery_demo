@@ -28,14 +28,8 @@ class RestaurantRepositoryImpl extends BaseCollectionReference<FRestaurant>
       if (restaurant == null) {
         querySnapshot = await ref.orderBy('name').limit(limit).get();
       } else {
-        final documentSnapshot = await ref
-            .where('id', isEqualTo: restaurant.id)
-            .get()
-            .then((value) => value.docs.isNotEmpty ? value.docs.first : null);
+        final documentSnapshot = await ref.doc(restaurant.id).get();
 
-        if (documentSnapshot == null) {
-          return FResult.success(const <FRestaurant>[]);
-        }
         querySnapshot = await ref
             .orderBy('name')
             .startAfterDocument(documentSnapshot)

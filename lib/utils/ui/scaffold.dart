@@ -49,7 +49,9 @@ class FScaffold extends StatelessWidget {
           child: centerBottomButton ?? const SizedBox(),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        bottomNavigationBar: bottomNavigationBar,
+        bottomNavigationBar: Material(
+          child: bottomNavigationBar,
+        ),
       ),
     );
   }

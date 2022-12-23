@@ -25,14 +25,8 @@ class FoodRepositoryImpl extends BaseCollectionReference<FFood>
         querySnapshot =
             await ref.orderBy('id', descending: true).limit(limit).get();
       } else {
-        final documentSnapshot = await ref
-            .where('id', isEqualTo: food.id)
-            .get()
-            .then((value) => value.docs.isNotEmpty ? value.docs.first : null);
+        final documentSnapshot = await ref.doc(food.id).get();
 
-        if (documentSnapshot == null) {
-          return FResult.success(const <FFood>[]);
-        }
         querySnapshot = await ref
             .orderBy('id', descending: true)
             .startAfterDocument(documentSnapshot)

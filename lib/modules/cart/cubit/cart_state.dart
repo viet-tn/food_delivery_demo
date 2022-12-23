@@ -6,23 +6,28 @@ class CartState extends FState {
     super.errorMessage,
     this.cart = const FCart(),
     this.foods = const <FFood>[],
-    this.subTotal = 0,
     this.deliveryCharge = 0,
     this.discount = 0,
   });
 
   final FCart cart;
   final List<FFood> foods;
-  final int subTotal;
   final int deliveryCharge;
   final int discount;
+
+  int get subTotal => foods.fold(
+        0,
+        (previousValue, element) =>
+            previousValue +
+            element.price.toInt() * (cart.items[element.id] ?? 0),
+      );
+  int get total => max(subTotal - discount + deliveryCharge, 0);
 
   @override
   List<Object?> get props => [
         ...super.props,
         cart,
         foods,
-        subTotal,
         deliveryCharge,
         discount,
       ];
@@ -33,7 +38,6 @@ class CartState extends FState {
     String? errorMessage,
     FCart? cart,
     List<FFood>? foods,
-    int? subTotal,
     int? deliveryCharge,
     int? discount,
   }) {
@@ -42,7 +46,6 @@ class CartState extends FState {
       errorMessage: errorMessage ?? this.errorMessage,
       cart: cart ?? this.cart,
       foods: foods ?? this.foods,
-      subTotal: subTotal ?? this.subTotal,
       deliveryCharge: deliveryCharge ?? this.deliveryCharge,
       discount: discount ?? this.discount,
     );
