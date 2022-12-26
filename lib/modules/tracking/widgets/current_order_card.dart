@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../order/model/order.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../config/routes/coordinator.dart';
@@ -6,9 +7,7 @@ import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';
-import '../../../repositories/users/coordinate.dart';
 import '../../../repositories/users/user_model.dart';
-import '../../../utils/helpers/text_helpers.dart';
 import '../../../utils/ui/card.dart';
 import '../../../utils/ui/network_image.dart';
 import '../../../widgets/buttons/icon_button.dart';
@@ -17,27 +16,20 @@ class CurrentOrderCard extends StatelessWidget {
   const CurrentOrderCard({
     super.key,
     required this.chatId,
-    required this.source,
-    required this.destination,
     required this.shipper,
-    this.deliveryTime,
+    required this.order,
   });
 
   final String chatId;
-  final Coordinate source;
-  final Coordinate destination;
   final FUser shipper;
-  final int? deliveryTime;
+  final FOrder order;
 
   @override
   Widget build(BuildContext context) {
     return FCard(
       onTap: () => FCoordinator.pushNamed(
-        Routes.orderTracking.name,
-        extra: [
-          source,
-          destination,
-        ],
+        Routes.orderDetails.name,
+        extra: order,
       ),
       child: Row(
         children: [
@@ -56,16 +48,16 @@ class CurrentOrderCard extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                deliveryTime == null
-                    ? const SizedBox()
-                    : Text(
-                        StringExtension.toTime(deliveryTime!),
-                        style: FTextStyles.heading3,
-                      ),
-                Text(
-                  'Estimated delivery time',
-                  style: FTextStyles.label.copyWith(fontSize: 12.0),
+                const Text(
+                  'Order status',
+                  style: FTextStyles.heading5,
                 ),
+                Text(
+                  order.status.toString(),
+                  style: FTextStyles.heading4.copyWith(
+                    color: FColors.metallicOrange,
+                  ),
+                )
               ],
             ),
           ),

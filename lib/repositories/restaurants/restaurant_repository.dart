@@ -7,4 +7,6 @@ abstract class RestaurantRepository {
       [FRestaurant? restaurant, int limit = 5]);
 
   Future<FResult<FRestaurant>> getByFoodId(String foodId);
+
+  Future<FResult<FRestaurant>> getById(String id);
 }

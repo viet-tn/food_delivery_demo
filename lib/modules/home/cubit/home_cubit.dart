@@ -31,19 +31,18 @@ class HomeCubit extends FCubit<HomeState> {
     emitValue();
 
     final update = <FRestaurant>[];
-    await Future.forEach(state.restaurants, (restaurant) async {
+    await Future.wait(state.restaurants.map((restaurant) async {
       final matrix = await _placesSearchRepository.calculateDistance(
-          restaurant.coordinate.latitude,
-          restaurant.coordinate.longitude,
-          latitudeSrc,
-          longitudeSrc);
-      update.add(
-        restaurant.copyWith(
-          distance: matrix[0],
-          duration: matrix[1],
-        ),
+        restaurant.coordinate.latitude,
+        restaurant.coordinate.longitude,
+        latitudeSrc,
+        longitudeSrc,
       );
-    });
+      return update.add(restaurant.copyWith(
+        distance: matrix[0],
+        duration: matrix[1],
+      ));
+    }));
 
     emitValue(
       state.copyWith(

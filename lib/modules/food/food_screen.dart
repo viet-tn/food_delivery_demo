@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../widgets/dialogs/dialog.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../config/routes/coordinator.dart';
@@ -57,8 +58,30 @@ class _FoodScreenState extends State<FoodScreen> {
                 buildWhen: (previous, current) => previous.cart != current.cart,
                 builder: (context, cartState) {
                   return AddToCartButton(
-                    onPressed: () =>
-                        context.read<CartCubit>().addToCart(state.food!),
+                    onPressed: () async {
+                      if (cartState.cart.items.isEmpty ||
+                          cartState.cart.restaurantId ==
+                              state.food!.restaurantId) {
+                        context.read<CartCubit>().addToCart(state.food!);
+                        return;
+                      }
+
+                      showDialog(
+                        context: context,
+                        builder: (context) => FAlertDialog(
+                          title: 'Are you sure want to reset?',
+                          description:
+                              'You have food from another restaurant in cart. '
+                              'If you continue, your all previous food from art'
+                              ' will be removed.',
+                          onYesPressed: () {
+                            context.read<CartCubit>().clear();
+                            context.read<CartCubit>().addToCart(state.food!);
+                            Navigator.pop(context);
+                          },
+                        ),
+                      );
+                    },
                     isAdded: cartState.cart.items.containsKey(state.food!.id),
                     isLoading: state.status.isLoading,
                   );

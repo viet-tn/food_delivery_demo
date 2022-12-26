@@ -95,6 +95,11 @@ class RestaurantRepositoryImpl extends BaseCollectionReference<FRestaurant>
           mode: FileMode.append);
     }
   }
+
+  @override
+  Future<FResult<FRestaurant>> getById(String id) {
+    return get(id);
+  }
 }
 
 double _calculateRelativeDistance(

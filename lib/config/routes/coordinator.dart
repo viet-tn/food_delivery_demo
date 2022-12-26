@@ -41,7 +41,7 @@ import '../../utils/helpers/resfresh_stream.dart';
 import '../../utils/services/shared_preferences.dart';
 import '../../utils/ui/scaffold_with_bottom_nav_bar.dart';
 import '../../widgets/congrats_screen.dart';
-import '../../widgets/payment_successful_screen.dart';
+import '../../widgets/successful_screen.dart';
 import 'route_observer.dart';
 
 enum Routes {
@@ -180,7 +180,7 @@ class FCoordinator {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const PaymentSuccessfulScreen(),
+          builder: (context) => const SuccessfulScreen(),
         ));
   }
 
@@ -445,9 +445,9 @@ final appRouter = GoRouter(
       ),
     ),
     GoRoute(
+      parentNavigatorKey: FCoordinator.navigatorKey,
       name: Routes.orderTracking.name,
       path: '/tracking',
-      parentNavigatorKey: FCoordinator.navigatorKey,
       pageBuilder: (_, state) {
         final params = state.extra as List<Coordinate>;
         return MaterialPage(

@@ -12,6 +12,7 @@ class FFood extends Equatable {
     required this.rate,
     required this.country,
     required this.category,
+    required this.restaurantId,
   });
 
   final String id;
@@ -22,6 +23,7 @@ class FFood extends Equatable {
   final int rate;
   final String country;
   final String category;
+  final String restaurantId;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -33,6 +35,7 @@ class FFood extends Equatable {
       'rate': rate,
       'country': country,
       'category': category,
+      'restaurantId': restaurantId,
     };
   }
 
@@ -46,6 +49,7 @@ class FFood extends Equatable {
       rate: (map['rate'] as num).toInt(),
       country: map['country'],
       category: map['category'],
+      restaurantId: map['restaurantId'],
     );
   }
 
@@ -58,6 +62,7 @@ class FFood extends Equatable {
     int? rate,
     String? country,
     String? category,
+    String? restaurantId,
   }) {
     return FFood(
       id: id ?? this.id,
@@ -68,6 +73,7 @@ class FFood extends Equatable {
       rate: rate ?? this.rate,
       country: country ?? this.country,
       category: category ?? this.category,
+      restaurantId: restaurantId ?? this.restaurantId,
     );
   }
 
@@ -82,6 +88,7 @@ class FFood extends Equatable {
       rate,
       country,
       category,
+      restaurantId,
     ];
   }
 

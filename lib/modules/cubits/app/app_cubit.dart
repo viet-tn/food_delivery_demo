@@ -7,12 +7,10 @@ import '../../../repositories/cloud_storage/cloud_storage.dart';
 import '../../../repositories/maps/search/places_search_repository.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../repositories/restaurants/restaurant_repository.dart';
-import '../../../repositories/result.dart';
 import '../../../repositories/users/user_model.dart';
 import '../../../repositories/users/user_repository.dart';
 import '../../home/cubit/home_cubit.dart';
 import '../../login/cubit/login_cubit.dart';
-import '../../order/data/order_repository.dart';
 import '../../order/model/order.dart';
 import '../../signup/cubit/sign_up_cubit.dart';
 
@@ -28,34 +26,17 @@ class AppCubit extends FCubit<AppState> {
   })  : _cloudStorage = cloudStorage,
         _userRepository = userRepository,
         _authRepository = authRepository,
-        _restaurantRepository = restaurantRepository,
-        _placesSearchRepository = placesSearchRepository,
         super(const AppState());
 
   final CloudStorage _cloudStorage;
   final UserRepository _userRepository;
   final AuthRepository _authRepository;
-  final RestaurantRepository _restaurantRepository;
-  final PlacesSearchRepository _placesSearchRepository;
 
   void init(FUser user) async {
     emitValue(state.copyWith(user: user));
     if (user.coordinates.isEmpty) return;
     GetIt.I<HomeCubit>().init(
         user.coordinates.first.latitude, user.coordinates.first.longitude);
-
-    final result = await GetIt.I<OrderRepository>()
-        .fetchOrdersByStatus(OrderStatus.processing);
-
-    if (result.isError) {
-      emitError(result.error!);
-      return;
-    }
-
-    if (result.data!.isEmpty) return;
-
-    final order = result.data!.first;
-    getProcessingOrderInfo(order);
   }
 
   Future<void> signOut() async {
@@ -138,41 +119,5 @@ class AppCubit extends FCubit<AppState> {
       ),
     );
     return update;
-  }
-
-  void getProcessingOrderInfo(FOrder order) async {
-    List<FResult<dynamic>> results = await Future.wait([
-      _restaurantRepository.getByFoodId(order.cart.items.keys.first),
-      _userRepository.getShipper(),
-    ]);
-
-    final restaurantResult = results[0] as FResult<FRestaurant>;
-    final shipperResult = results[1] as FResult<FUser>;
-
-    if (restaurantResult.isError) {
-      emitError(results[0].error!);
-      return;
-    }
-
-    if (shipperResult.isError) {
-      emitError(results[1].error!);
-      return;
-    }
-
-    final deliveryTime = await _placesSearchRepository.calculateDistance(
-      restaurantResult.data!.coordinate.latitude,
-      restaurantResult.data!.coordinate.longitude,
-      order.userPosition.latitude,
-      order.userPosition.longitude,
-    );
-
-    emitValue(
-      state.copyWith(
-        order: order,
-        restaurant: restaurantResult.data!,
-        shipper: shipperResult.data!,
-        deliveryTime: deliveryTime[1],
-      ),
-    );
   }
 }

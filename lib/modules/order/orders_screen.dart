@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../config/routes/coordinator.dart';
 import '../../constants/ui/ui_parameters.dart';
 import '../../utils/ui/scaffold.dart';
+import '../../widgets/app_bar.dart';
 import 'cubit/orders_cubit.dart';
-import 'model/order.dart';
 import 'widgets/order_list.dart';
 import 'widgets/order_tab.dart';
 
@@ -41,13 +41,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
           padding: Ui.screenPadding,
           child: Column(
             children: [
-              // const FAppBar(title: 'Orders'),
+              const FAppBar(title: 'My Orders'),
               BlocSelector<OrdersCubit, OrdersState, int>(
                 selector: (state) => state.currentPage,
                 builder: (context, state) {
                   return OrderTab(
                     currentIndex: state,
-                    items: OrderStatus.values.map((e) => e.name).toList(),
+                    items: const <String>['Running', 'History'],
                     onPressed: (index) => context
                         .read<OrdersCubit>()
                         .onPageChanged(index, _pageController),
@@ -65,28 +65,21 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   children: [
                     BlocBuilder<OrdersCubit, OrdersState>(
                       buildWhen: (previous, current) =>
-                          previous.processingOrders != current.processingOrders,
+                          previous.runningOrders != current.runningOrders,
                       builder: (context, state) {
                         return OrdersList(
-                          orders: state.processingOrders,
+                          orders: state.runningOrders,
+                          restaurants: state.restaurants,
                         );
                       },
                     ),
                     BlocBuilder<OrdersCubit, OrdersState>(
                       buildWhen: (previous, current) =>
-                          previous.deliveredOrders != current.deliveredOrders,
+                          previous.historyOrders != current.historyOrders,
                       builder: (context, state) {
                         return OrdersList(
-                          orders: state.deliveredOrders,
-                        );
-                      },
-                    ),
-                    BlocBuilder<OrdersCubit, OrdersState>(
-                      buildWhen: (previous, current) =>
-                          previous.cancelledOrders != current.cancelledOrders,
-                      builder: (context, state) {
-                        return OrdersList(
-                          orders: state.cancelledOrders,
+                          orders: state.historyOrders,
+                          restaurants: state.restaurants,
                         );
                       },
                     ),

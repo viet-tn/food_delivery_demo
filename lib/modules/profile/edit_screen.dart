@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../config/routes/coordinator.dart';
 import '../../constants/ui/sizes.dart';
 import '../../constants/ui/text_style.dart';
 import '../../constants/ui/ui_parameters.dart';
@@ -14,7 +13,7 @@ import '../../utils/ui/scaffold.dart';
 import '../../utils/ui/snack_bar.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/gradient_button.dart';
-import '../../widgets/dialogs/alert_dialog.dart';
+import '../../widgets/dialogs/dialog.dart';
 import '../cubits/app/app_cubit.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -68,9 +67,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: GradientButton(
                     width: double.infinity,
-                    onPressed: _onChangeInfomationPressed,
+                    onPressed: _onChangeInformationPressed,
                     child: const Text(
-                      'Change Infomation',
+                      'Change Information',
                       style: FTextStyles.button,
                     ),
                   ),
@@ -81,11 +80,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: FAppBar(
-                          onPressed: () async {
-                            final isDisCarded = await _onBackButtonPressed();
-                            if (isDisCarded) {
-                              FCoordinator.onBack();
-                            }
+                          onPressed: () {
+                            _onBackButtonPressed().then(
+                              (isDiscarded) =>
+                                  isDiscarded ? Navigator.pop(context) : null,
+                            );
                           },
                           title: 'Edit Profile',
                         ),
@@ -156,37 +155,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   void _onDeleteAccountPressed() async {
-    bool? isConfirmed;
-    isConfirmed = await showDialog<bool>(
+    await showDialog(
       context: context,
       builder: (_) {
-        return const FAlertDialog(
-            title: 'Are you sure you wan to delete account forever !');
+        return FAlertDialog(
+          title: 'Are you sure you wan to delete account forever !',
+          onYesPressed: () {
+            Navigator.pop(context);
+            GetIt.I<AppCubit>().deleteUserFromDatabase();
+          },
+        );
       },
     );
-    if (isConfirmed ?? false) {
-      FCoordinator.onBack();
-      GetIt.I<AppCubit>().deleteUserFromDatabase();
-    }
   }
 
   Future<bool> _onBackButtonPressed() async {
-    bool? isDiscarded;
-    isDiscarded = await showDialog<bool>(
+    bool isDiscarded = false;
+    await showDialog(
       context: context,
-      builder: (context) {
-        return const FAlertDialog(
-            title: 'Any unsaved changes will be discarded ?');
-      },
+      builder: (context) => FAlertDialog(
+        title: 'Any unsaved changes will be discarded ?',
+        onYesPressed: () {
+          isDiscarded = true;
+          Navigator.pop(context);
+        },
+      ),
     );
-    if (isDiscarded ?? false) {
-      //TODO: Fetch user from database to AppCubit
-      return true;
-    }
-    return false;
+    return Future.value(isDiscarded);
   }
 
-  void _onChangeInfomationPressed() async {
+  void _onChangeInformationPressed() async {
     FocusManager.instance.primaryFocus?.unfocus();
     final bool hasTypedInChangePasswordSection =
         _currentPasswordController.text.isNotEmpty ||

@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
+import '../../../repositories/restaurants/restaurant_model.dart';
+import '../../../repositories/restaurants/restaurant_repository.dart';
+import '../../../repositories/users/user_model.dart';
+import '../../../repositories/users/user_repository.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
-import '../../../repositories/food/food_model.dart';
-import '../../../repositories/food/food_repository.dart';
 import '../../../repositories/result.dart';
-import '../../cubits/app/app_cubit.dart';
 import '../data/order_repository.dart';
 import '../model/order.dart';
 
@@ -15,26 +15,61 @@ part 'orders_state.dart';
 class OrdersCubit extends FCubit<OrdersState> {
   OrdersCubit({
     required OrderRepository orderRepository,
-    required FoodRepository foodRepository,
+    required RestaurantRepository restaurantRepository,
+    required UserRepository userRepository,
   })  : _orderRepository = orderRepository,
-        _foodRepository = foodRepository,
+        _restaurantRepository = restaurantRepository,
+        _userRepository = userRepository,
         super(const OrdersState());
 
   final OrderRepository _orderRepository;
-  final FoodRepository _foodRepository;
+  final RestaurantRepository _restaurantRepository;
+  final UserRepository _userRepository;
 
-  void init() async {
-    final orders = await fetchOrders();
-    final foodIds = orders.map((e) => e.cart.items.keys.first).toList();
+  void fetchNew() async {
+    emitLoading();
+    final ordersResult = await _orderRepository.fetchAllOrders();
 
-    final result = await _foodRepository.fetchFoodsByIds(foodIds);
-
-    if (result.isError) {
-      emitError(result.error!);
+    if (ordersResult.isError) {
+      emitError(ordersResult.error!);
       return;
     }
 
-    emitValue(state.copyWith(representativeFood: result.data!.toSet()));
+    final orders = ordersResult.data!;
+
+    List<FResult<FRestaurant>>? responses = await Future.wait([
+      ...orders.map((e) => _restaurantRepository.getById(e.cart.restaurantId!)),
+    ]);
+
+    for (var response in responses) {
+      if (response.isError) {
+        emitError(response.error!);
+        return;
+      }
+    }
+
+    List<FRestaurant> restaurants = responses.map((e) => e.data!).toList();
+    final runningOrders = orders.where((order) => order.isRunning).toList();
+    final historyOrders = orders.where((order) => !order.isRunning).toList();
+
+    FUser? shipper;
+    if (runningOrders.isNotEmpty) {
+      final result = await _userRepository.getShipper();
+      if (result.isError) {
+        emitError(result.error!);
+        return;
+      }
+      shipper = result.data!;
+    }
+
+    emitValue(
+      state.copyWith(
+        restaurants: restaurants,
+        runningOrders: runningOrders,
+        historyOrders: historyOrders,
+        shipper: shipper,
+      ),
+    );
   }
 
   void reset() {
@@ -52,7 +87,7 @@ class OrdersCubit extends FCubit<OrdersState> {
   void createOrder({required FOrder newOrder}) async {
     final List<FResult> responses = await Future.wait([
       _orderRepository.create(newOrder),
-      _foodRepository.fetchFoodById(newOrder.cart.items.keys.first),
+      _restaurantRepository.getById(newOrder.cart.restaurantId!),
     ]);
 
     for (var result in responses) {
@@ -62,55 +97,19 @@ class OrdersCubit extends FCubit<OrdersState> {
       }
     }
 
-    GetIt.I<AppCubit>().getProcessingOrderInfo(responses[0].data!);
+    final order = responses[0] as FOrder;
+    final restaurant = responses[1] as FRestaurant;
 
     emitValue(
       state.copyWith(
-        processingOrders: [
-          responses[0].data!,
-          ...state.processingOrders,
-        ],
-        representativeFood: {responses[1].data!, ...state.representativeFood},
+        runningOrders: [...state.runningOrders, order],
+        restaurants: [...state.restaurants, restaurant],
       ),
     );
   }
 
-  Future<List<FOrder>> fetchOrders() async {
-    try {
-      List<FResult<List<FOrder>>> responses = await Future.wait(
-        [
-          _orderRepository.fetchOrdersByStatus(OrderStatus.processing),
-          _orderRepository.fetchOrdersByStatus(OrderStatus.cancelled),
-          _orderRepository.fetchOrdersByStatus(OrderStatus.delivered),
-        ],
-      );
-
-      for (var result in responses) {
-        if (result.isError) {
-          emitError(result.error!);
-          return const <FOrder>[];
-        }
-      }
-      emit(
-        state.copyWith(
-          processingOrders: responses[0].data!,
-          cancelledOrders: responses[1].data!,
-          deliveredOrders: responses[2].data!,
-        ),
-      );
-
-      final result = <FOrder>[];
-      for (var e in responses) {
-        result.addAll(e.data!);
-      }
-      return result;
-    } catch (e) {
-      emitError(e.runtimeType.toString());
-      return const <FOrder>[];
-    }
-  }
-
-  void onOrderDelivered(FOrder update) async {
+  void onOrderCancelledOrDelivered(FOrder update,
+      {required void Function() onUpdateSucceeded}) async {
     final result = await _orderRepository.set(update);
 
     if (result.isError) {
@@ -120,30 +119,9 @@ class OrdersCubit extends FCubit<OrdersState> {
 
     emitValue(
       state.copyWith(
-        processingOrders: state.processingOrders.toList()
+        runningOrders: state.runningOrders.toList()
           ..removeWhere((order) => order.id == update.id),
-        deliveredOrders: [update, ...state.deliveredOrders],
-      ),
-    );
-  }
-
-  void cancelOrder(FOrder processingOrder,
-      {required void Function() onCancelSucceeded}) async {
-    final update = processingOrder.copyWith(status: OrderStatus.cancelled);
-    final result = await _orderRepository.set(update);
-
-    if (result.isError) {
-      emitError(result.error!);
-      return;
-    }
-
-    onCancelSucceeded();
-
-    emitValue(
-      state.copyWith(
-        processingOrders: state.processingOrders.toList()
-          ..removeWhere((order) => order.id == update.id),
-        cancelledOrders: [update, ...state.cancelledOrders],
+        historyOrders: [update, ...state.historyOrders],
       ),
     );
   }

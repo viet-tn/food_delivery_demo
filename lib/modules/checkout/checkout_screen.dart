@@ -126,9 +126,9 @@ class CheckoutScreen extends StatelessWidget {
               userId: GetIt.I<AppCubit>().state.user!.id,
               orderId: newOrder.id!,
             );
-        FCoordinator.context
-            .read<OrdersCubit>()
-            .createOrder(newOrder: newOrder);
+        FCoordinator.context.read<OrdersCubit>()
+          ..createOrder(newOrder: newOrder)
+          ..fetchNew();
         FCoordinator.showPaymentSuccessfulScreen();
       },
     );

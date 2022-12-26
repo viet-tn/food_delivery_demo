@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../repositories/food/food_model.dart';
+import '../../../repositories/restaurants/restaurant_model.dart';
 
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/sizes.dart';
@@ -45,7 +48,33 @@ class _HomeAppBarState extends State<HomeAppBar> {
             ),
             Flexible(
               child: FIconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final resRef = FirebaseFirestore.instance
+                      .collection('restaurants')
+                      .withConverter(
+                        fromFirestore: (snapshot, options) =>
+                            FRestaurant.fromMap(snapshot.data()!),
+                        toFirestore: (value, options) => value.toMap(),
+                      );
+                  final foodRef = FirebaseFirestore.instance
+                      .collection('foods')
+                      .withConverter(
+                        fromFirestore: (snapshot, options) =>
+                            FFood.fromMap(snapshot.data()!),
+                        toFirestore: (value, options) => value.toMap(),
+                      );
+
+                  final restaurantsQuery = await resRef.get();
+                  final restaurants =
+                      restaurantsQuery.docs.map((e) => e.data());
+
+                  for (var restaurant in restaurants) {
+                    final resId = restaurant.id;
+                    for (var foodId in restaurant.foodIds) {
+                      foodRef.doc(foodId).update({'restaurantId': resId});
+                    }
+                  }
+                },
                 hasNotification: true,
                 icon: Image.asset(
                   Assets.icons.notifiaction.path,

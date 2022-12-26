@@ -56,6 +56,23 @@ class OrderRepository extends BaseCollectionReference<FOrder> {
     }
   }
 
+  Future<FResult<List<FOrder>>> fetchIsRunningOrder() async {
+    try {
+      final querySnapshot = await ref
+          .where('status', isNotEqualTo: OrderStatus.cancelled)
+          .where('status', isNotEqualTo: OrderStatus.delivered)
+          .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        return FResult.success(const <FOrder>[]);
+      }
+
+      return FResult.success(querySnapshot.docs.map((e) => e.data()).toList());
+    } catch (e) {
+      return FResult.exception(e);
+    }
+  }
+
   Future<FResult<List<FOrder>>> fetchAllOrders([
     FOrder? order,
     int limit = 10,

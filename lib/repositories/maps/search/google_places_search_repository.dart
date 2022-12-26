@@ -72,7 +72,7 @@ class GooglePlacesSearchRepository implements PlacesSearchRepository {
       url,
     );
     if (response.statusCode != 200) {
-      throw 'Distance cannot be calculated!';
+      throw Exception('Distance cannot be calculated!');
     }
 
     List<dynamic> data = jsonDecode(response.body)['rows'];

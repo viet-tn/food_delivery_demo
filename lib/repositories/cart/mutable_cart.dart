@@ -1,4 +1,3 @@
-import '../restaurants/restaurant_model.dart';
 import 'cart_model.dart';
 import 'item_model.dart';
 
@@ -8,11 +7,11 @@ extension MutableCart on FCart {
   FCart setItem(Item item) {
     final copy = Map<String, int>.from(items);
     copy[item.foodId] = item.quantity;
-    return FCart(copy);
+    return FCart(restaurantId, copy);
   }
 
   /// add an item to the cart by *updating* the quantity if it already exists
-  FCart addItem(Item item, FRestaurant restaurantId) {
+  FCart addItem(Item item, String restaurantId) {
     final copy = Map<String, int>.from(items);
     // * update item quantity. Read this for more details:
     // * https://codewithandrea.com/tips/dart-map-update-method/
@@ -23,7 +22,7 @@ extension MutableCart on FCart {
       // otherwise, add the item with the given quantity
       ifAbsent: () => item.quantity,
     );
-    return FCart(copy);
+    return FCart(restaurantId, copy);
   }
 
   /// add a list of items to the cart by *updating* the quantities of items that
@@ -39,13 +38,13 @@ extension MutableCart on FCart {
         ifAbsent: () => item.quantity,
       );
     }
-    return FCart(copy);
+    return FCart(restaurantId, copy);
   }
 
   /// if an item with the given foodId is found, remove it
   FCart removeItemById(String foodId) {
     final copy = Map<String, int>.from(items);
     copy.remove(foodId);
-    return FCart(copy);
+    return FCart(restaurantId, copy);
   }
 }
