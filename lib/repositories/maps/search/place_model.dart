@@ -5,7 +5,7 @@ class FPlace extends Equatable {
     required this.name,
     required this.address,
     required this.latitude,
-    required this.longtitude,
+    required this.longitude,
     this.distance,
     this.duration,
   });
@@ -19,7 +19,7 @@ class FPlace extends Equatable {
   /// second
   final int? duration;
   final double latitude;
-  final double longtitude;
+  final double longitude;
 
   @override
   List<Object?> get props => [
@@ -27,7 +27,7 @@ class FPlace extends Equatable {
         address,
         distance,
         latitude,
-        longtitude,
+        longitude,
         duration,
       ];
 
@@ -44,7 +44,7 @@ class FPlace extends Equatable {
       address: address ?? this.address,
       distance: distance ?? this.distance,
       latitude: latitude ?? this.latitude,
-      longtitude: longtitude ?? this.longtitude,
+      longitude: longtitude ?? longitude,
       duration: duration ?? this.duration,
     );
   }

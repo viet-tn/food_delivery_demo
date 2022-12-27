@@ -3,12 +3,37 @@ import 'package:equatable/equatable.dart';
 import '../../../repositories/cart/cart_model.dart';
 import '../../../repositories/users/coordinate.dart';
 
-enum OrderStatus { processing, delivered, cancelled }
+enum OrderStatus {
+  placed,
+  confirmed,
+  preparing,
+  onTheWay,
+  delivered,
+  cancelled;
+
+  @override
+  String toString() {
+    switch (this) {
+      case OrderStatus.placed:
+        return 'Pending';
+      case OrderStatus.confirmed:
+        return 'Confirmed';
+      case OrderStatus.preparing:
+        return 'Preparing';
+      case OrderStatus.onTheWay:
+        return 'On the way';
+      case OrderStatus.delivered:
+        return 'Succeeded';
+      case OrderStatus.cancelled:
+        return 'Cancelled';
+    }
+  }
+}
 
 class FOrder extends Equatable {
   const FOrder({
     this.id,
-    this.status = OrderStatus.processing,
+    this.status = OrderStatus.placed,
     required this.name,
     required this.phone,
     required this.userPosition,
@@ -31,6 +56,8 @@ class FOrder extends Equatable {
   final double subTotal;
 
   double get paid => subTotal + deliveryCharge - discount;
+  bool get isRunning =>
+      status != OrderStatus.cancelled && status != OrderStatus.delivered;
 
   @override
   List<Object?> get props => [

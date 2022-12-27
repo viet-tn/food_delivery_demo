@@ -69,4 +69,6 @@ class FTextStyles {
     fontSize: 14.0,
     height: 2.0,
   );
+
+  static const chip = TextStyle(fontSize: 11);
 }

@@ -67,6 +67,8 @@ class ViewMoreCubit extends FCubit<ViewMoreState> {
       return emitError(result.error!);
     }
 
+    if (result.data!.isEmpty) return;
+
     final update = await _updateDurationAndEmitValue(result.data!, coord);
     emit(state.copyWith(restaurants: [...state.restaurants!, ...update]));
   }
@@ -74,20 +76,18 @@ class ViewMoreCubit extends FCubit<ViewMoreState> {
   Future<List<FRestaurant>> _updateDurationAndEmitValue(
       List<FRestaurant> result, Coordinate coordinate) async {
     final update = <FRestaurant>[];
-    await Future.forEach(result, (restaurant) async {
+    await Future.wait(state.restaurants!.map((restaurant) async {
       final matrix = await _placesSearchRepository.calculateDistance(
         restaurant.coordinate.latitude,
         restaurant.coordinate.longitude,
         coordinate.latitude,
         coordinate.longitude,
       );
-      update.add(
-        restaurant.copyWith(
-          distance: matrix[0],
-          duration: matrix[1],
-        ),
-      );
-    });
+      return update.add(restaurant.copyWith(
+        distance: matrix[0],
+        duration: matrix[1],
+      ));
+    }));
     return update;
   }
 }

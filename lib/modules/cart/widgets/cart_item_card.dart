@@ -9,7 +9,7 @@ import '../../../repositories/cart/item_model.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../utils/ui/card.dart';
 import '../../../utils/ui/network_image.dart';
-import '../../../widgets/dialogs/alert_dialog.dart';
+import '../../../widgets/dialogs/dialog.dart';
 import '../cubit/cart_cubit.dart';
 import 'item_quantity_selector.dart';
 
@@ -126,7 +126,9 @@ class CartItemCard extends StatelessWidget {
   Future<bool?> confirmDismiss(BuildContext context) async {
     return showDialog<bool>(
       context: context,
-      builder: (context) => const FAlertDialog(title: 'Confirm Delete'),
+      builder: (context) => const FAlertDialog(
+        title: 'Confirm Delete',
+      ),
     );
   }
 }

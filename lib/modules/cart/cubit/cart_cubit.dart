@@ -1,13 +1,12 @@
 import 'dart:math';
 
-import '../../../repositories/restaurants/restaurant_repository.dart';
+import '../../../repositories/cart/mutable_cart.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/cart/cart_model.dart';
 import '../../../repositories/cart/cart_repository.dart';
 import '../../../repositories/cart/item_model.dart';
-import '../../../repositories/cart/mutable_cart.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../repositories/food/food_repository.dart';
 
@@ -17,17 +16,14 @@ class CartCubit extends FCubit<CartState> {
   CartCubit({
     required CartRepository cartRepository,
     required FoodRepository foodRepository,
-    required RestaurantRepository restaurantRepository,
   })  : _cartRepository = cartRepository,
         _foodRepository = foodRepository,
-        _restaurantRepository = restaurantRepository,
-        super(const CartState()) {
+        super(const CartState(status: ScreenStatus.loading)) {
     init();
   }
 
   final CartRepository _cartRepository;
   final FoodRepository _foodRepository;
-  final RestaurantRepository _restaurantRepository;
 
   void init() async {
     final cartResult = await _cartRepository.fetchCart();
@@ -93,19 +89,13 @@ class CartCubit extends FCubit<CartState> {
 
   void addToCart(FFood food) async {
     emitLoading();
-    final restaurantResult = await _restaurantRepository.getByFoodId(food.id);
-
-    if (restaurantResult.isError) {
-      emitError(restaurantResult.error!);
-      return;
-    }
 
     final update = state.cart.addItem(
       Item(
         foodId: food.id,
         quantity: 1,
       ),
-      restaurantResult.data!,
+      food.restaurantId,
     );
 
     final result = await _cartRepository.setCart(update);

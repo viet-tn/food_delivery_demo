@@ -4,8 +4,8 @@ import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../gen/assets.gen.dart';
 
-class InfomationSection extends StatelessWidget {
-  const InfomationSection({
+class InformationSection extends StatelessWidget {
+  const InformationSection({
     super.key,
     required this.name,
     required this.email,

@@ -4,27 +4,27 @@ class OrdersState extends FState {
   const OrdersState({
     super.status,
     super.errorMessage,
+    this.restaurants = const <FRestaurant>[],
+    this.runningOrders = const <FOrder>[],
+    this.historyOrders = const <FOrder>[],
     this.currentPage = 0,
-    this.representativeFood = const <FFood>{},
-    this.processingOrders = const <FOrder>[],
-    this.deliveredOrders = const <FOrder>[],
-    this.cancelledOrders = const <FOrder>[],
+    this.shipper,
   });
 
   final int currentPage;
-  final Set<FFood> representativeFood;
-  final List<FOrder> processingOrders;
-  final List<FOrder> deliveredOrders;
-  final List<FOrder> cancelledOrders;
+  final List<FRestaurant> restaurants;
+  final List<FOrder> runningOrders;
+  final List<FOrder> historyOrders;
+  final FUser? shipper;
 
   @override
   List<Object?> get props => [
         ...super.props,
         currentPage,
-        representativeFood,
-        processingOrders,
-        deliveredOrders,
-        cancelledOrders,
+        restaurants,
+        runningOrders,
+        historyOrders,
+        shipper,
       ];
 
   @override
@@ -32,19 +32,19 @@ class OrdersState extends FState {
     ScreenStatus? status,
     String? errorMessage,
     int? currentPage,
-    Set<FFood>? representativeFood,
-    List<FOrder>? processingOrders,
-    List<FOrder>? deliveredOrders,
-    List<FOrder>? cancelledOrders,
+    List<FRestaurant>? restaurants,
+    List<FOrder>? runningOrders,
+    List<FOrder>? historyOrders,
+    FUser? shipper,
   }) {
     return OrdersState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       currentPage: currentPage ?? this.currentPage,
-      representativeFood: representativeFood ?? this.representativeFood,
-      processingOrders: processingOrders ?? this.processingOrders,
-      deliveredOrders: deliveredOrders ?? this.deliveredOrders,
-      cancelledOrders: cancelledOrders ?? this.cancelledOrders,
+      restaurants: restaurants ?? this.restaurants,
+      runningOrders: runningOrders ?? this.runningOrders,
+      historyOrders: historyOrders ?? this.historyOrders,
+      shipper: shipper ?? this.shipper,
     );
   }
 }

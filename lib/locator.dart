@@ -95,6 +95,7 @@ Future<void> _locator() async {
       cloudStorage: DomainManager().cloudStorage,
       authRepository: DomainManager().authRepository,
       restaurantRepository: DomainManager().restaurantRepository,
+      placesSearchRepository: DomainManager().placesSearchRepository,
     ),
   );
 
@@ -131,7 +132,6 @@ Future<void> _locator() async {
     () => CartCubit(
       cartRepository: DomainManager().cartRepository,
       foodRepository: DomainManager().foodRepository,
-      restaurantRepository: DomainManager().restaurantRepository,
     ),
   );
 
@@ -139,7 +139,7 @@ Future<void> _locator() async {
     () => ChatCubit(
       chatRepository: DomainManager().chatRepository,
       userRepository: DomainManager().userRepository,
-    )..init(GetIt.I<AppCubit>().state.user!.id),
+    ),
   );
   GetIt.I.registerFactory<ChatDetailCubit>(
     () => ChatDetailCubit(
@@ -180,19 +180,23 @@ Future<void> _locator() async {
       uid: GetIt.I<AppCubit>().state.user!.id,
       favoriteListRepository: DomainManager().favoriteListRepository,
       foodRepository: DomainManager().foodRepository,
-    )..fetchFavoriteList(),
+    ),
   );
 
   GetIt.I.registerFactory<OrdersCubit>(
     () => OrdersCubit(
       orderRepository: GetIt.I<OrderRepository>(),
-      foodRepository: DomainManager().foodRepository,
-    )..init(),
+      restaurantRepository: DomainManager().restaurantRepository,
+      userRepository: DomainManager().userRepository,
+    )..fetchNew(),
   );
 
   GetIt.I.registerFactory<OrderDetailsCubit>(
     () => OrderDetailsCubit(
-      foodRepository: DomainManager().foodRepository,
+      DomainManager().placesSearchRepository,
+      DomainManager().restaurantRepository,
+      DomainManager().foodRepository,
+      GetIt.I<OrderRepository>(),
     ),
   );
 
@@ -214,10 +218,10 @@ Future<void> _locator() async {
 
   // Payment repository
   GetIt.I.registerLazySingleton<PaymentRepository>(
-    () => PaymentRepository(GetIt.I<AppCubit>().state.user!.id),
+    () => PaymentRepository(DomainManager().authRepository.currentUser!.id),
   );
 
   GetIt.I.registerLazySingleton<OrderRepository>(
-    () => OrderRepository(GetIt.I<AppCubit>().state.user!.id),
+    () => OrderRepository(DomainManager().authRepository.currentUser!.id),
   );
 }

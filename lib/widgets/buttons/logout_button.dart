@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../dialogs/dialog.dart';
 
 import '../../config/routes/coordinator.dart';
 import '../../modules/cubits/app/app_cubit.dart';
-import '../dialogs/alert_dialog.dart';
 
 class LogoutButton extends StatelessWidget {
   const LogoutButton({super.key});
@@ -12,17 +12,19 @@ class LogoutButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        showDialog<bool>(
+        showDialog(
           context: context,
-          builder: (context) => const FAlertDialog(title: 'Confirm Logout'),
-        ).then((value) {
-          if (value == true) {
-            context
-                .read<AppCubit>()
-                .signOut()
-                .then((_) => FCoordinator.goNamed(Routes.logIn.name));
-          }
-        });
+          builder: (context) => FAlertDialog(
+            onYesPressed: () {
+              Navigator.pop(context);
+              context
+                  .read<AppCubit>()
+                  .signOut()
+                  .then((_) => FCoordinator.goNamed(Routes.logIn.name));
+            },
+            title: 'Confirm Logout',
+          ),
+        );
       },
       icon: const Icon(
         Icons.logout_outlined,

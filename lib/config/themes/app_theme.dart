@@ -17,6 +17,7 @@ final appThemeData = {
     brightness: Brightness.light,
     indicatorColor: FColors.lightGreen,
     inputDecorationTheme: const InputDecorationTheme(
+      
       labelStyle: FTextStyles.label,
       contentPadding: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 20.0),
       enabledBorder: OutlineInputBorder(

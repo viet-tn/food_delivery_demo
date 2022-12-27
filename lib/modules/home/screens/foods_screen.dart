@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +48,6 @@ class _FoodsScreenState extends State<FoodsScreen> {
       const Duration(milliseconds: 200),
       () {
         _cubit.fetchNextPopularFoodBatch();
-        log('fetchNextFoodBatch');
       },
     );
   }

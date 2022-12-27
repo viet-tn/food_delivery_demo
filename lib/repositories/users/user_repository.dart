@@ -1,6 +1,5 @@
-import '../result.dart';
-
 import '../base_collection_reference.dart';
+import '../result.dart';
 import 'user_model.dart';
 
 abstract class UserRepository extends BaseCollectionReference<FUser> {

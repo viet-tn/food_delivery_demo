@@ -48,6 +48,7 @@ class SignUpCubit extends FCubit<SignUpState> {
     if (result.isError) {
       return emitError(result.error!);
     }
+    emitValue();
 
     final loginCubit = GetIt.I<LoginCubit>();
     loginCubit.onCreateUserOnAuthenDbSuccess(result.data!);

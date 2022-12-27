@@ -3,13 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../config/routes/coordinator.dart';
 import '../../constants/ui/colors.dart';
 import '../../gen/assets.gen.dart';
 import '../../repositories/users/coordinate.dart';
-import '../cubits/app/app_cubit.dart';
-import '../order/cubit/orders_cubit.dart';
-import '../order/model/order.dart';
 import 'cubit/order_tracking_cubit.dart';
 
 class OrderTrackingScreen extends StatefulWidget {
@@ -112,13 +108,9 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
         .loadString(Assets.mapstyles.orderTrackingMapstyle);
     controller.setMapStyle(style).then(
           (_) => context.read<OrderTrackingCubit>().onMapCreated(
-            controller,
-            onOrderDelivered: () {
-              FCoordinator.showHomeScreen();
-              FOrder update = context.read<AppCubit>().onOrderDelivered();
-              context.read<OrdersCubit>().onOrderDelivered(update);
-            },
-          ),
+                controller,
+                onOrderDelivered: () {},
+              ),
         );
   }
 }

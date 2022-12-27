@@ -10,6 +10,7 @@ import 'modules/cubits/app/app_cubit.dart';
 import 'modules/cubits/favorite/favorite_cubit.dart';
 import 'modules/food/cubit/food_cubit.dart';
 import 'modules/home/cubit/home_cubit.dart';
+import 'modules/home/screens/cubit/view_more_cubit.dart';
 import 'modules/login/cubit/login_cubit.dart';
 import 'modules/order/cubit/orders_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => GetIt.I<ChatCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => GetIt.I<ViewMoreCubit>(),
         )
       ],
       child: MaterialApp.router(

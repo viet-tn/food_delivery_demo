@@ -44,7 +44,7 @@ class GooglePlacesSearchRepository implements PlacesSearchRepository {
           name: element['name'],
           address: element['formatted_address'],
           latitude: element['geometry']['location']['lat'],
-          longtitude: element['geometry']['location']['lng'],
+          longitude: element['geometry']['location']['lng'],
         ),
       );
     }
@@ -72,7 +72,7 @@ class GooglePlacesSearchRepository implements PlacesSearchRepository {
       url,
     );
     if (response.statusCode != 200) {
-      throw 'Distance cannot be calculated!';
+      throw Exception('Distance cannot be calculated!');
     }
 
     List<dynamic> data = jsonDecode(response.body)['rows'];

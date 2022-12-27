@@ -7,7 +7,6 @@ import '../../../gen/assets.gen.dart';
 import '../../../modules/signup/cubit/sign_up_cubit.dart';
 import '../../../modules/signup/models/sign_up_password_input.dart';
 import '../../../widgets/buttons/gradient_button.dart';
-import '../../../widgets/buttons/radio_list_tile.dart';
 import '../../../widgets/textfield/text_field.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -64,18 +63,18 @@ class _SignUpFormState extends State<SignUpForm> {
                     ? null
                     : SignUpPasswordValidationError.notMatch.toErrorText(),
               ),
-              gapH16,
-              FRadioListTile(
-                onTap: (value) {},
-                value: true,
-                text: 'Keep Me Signed In',
-              ),
-              gapH16,
-              FRadioListTile(
-                onTap: (value) {},
-                value: false,
-                text: 'Email Me About Special Pricing',
-              ),
+              // gapH16,
+              // FRadioListTile(
+              //   onTap: (value) {},
+              //   value: true,
+              //   text: 'Keep Me Signed In',
+              // ),
+              // gapH16,
+              // FRadioListTile(
+              //   onTap: (value) {},
+              //   value: false,
+              //   text: 'Email Me About Special Pricing',
+              // ),
               gapH32,
               GradientButton(
                 onPressed: () {

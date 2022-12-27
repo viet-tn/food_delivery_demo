@@ -39,7 +39,7 @@ class ChatBody extends StatelessWidget {
                     .read<ChatCubit>()
                     .readMessage(chat.id!, chat.lastestMessage);
                 FCoordinator.goNamed(
-                  Routes.chatDetail.name,
+                  Routes.chat.name,
                   params: {
                     'chatId': chat.id!,
                     'chatWithUserId': chatWithUserId,

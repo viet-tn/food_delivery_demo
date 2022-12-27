@@ -53,7 +53,7 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                   gapH8,
-                  InfomationSection(
+                  InformationSection(
                     onEditPressed: () =>
                         FCoordinator.goNamed(Routes.editProfile.name),
                     name: '${state.user!.firstName} ${state.user!.lastName}',

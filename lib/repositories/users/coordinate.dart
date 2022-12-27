@@ -28,11 +28,12 @@ class Coordinate extends Equatable {
 
   factory Coordinate.fromMap(Map<String, dynamic> map) {
     final position = map['position'];
+    final geoPoint = position['geopoint'] as GeoPoint;
     return Coordinate(
-      latitude: position['geopoint'].latitude,
-      longitude: position['geopoint'].longitude,
+      latitude: geoPoint.latitude,
+      longitude: geoPoint.longitude,
       address: map['address'],
-      geohash: map['geohash'],
+      geohash: position['geohash'],
     );
   }
 

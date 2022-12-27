@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../base_collection_reference.dart';
 import '../result.dart';
@@ -48,13 +51,13 @@ class RestaurantRepositoryImpl extends BaseCollectionReference<FRestaurant>
 
     final result = querySnapshot.docs.map((e) => e.data()).toList()
       ..sort(
-        (a, b) => _calulateRelativeDistance(
+        (a, b) => _calculateRelativeDistance(
           latitudeSrc,
           a.coordinate.latitude,
           longitudeSrc,
           a.coordinate.longitude,
         ).compareTo(
-          _calulateRelativeDistance(
+          _calculateRelativeDistance(
             latitudeSrc,
             b.coordinate.latitude,
             longitudeSrc,
@@ -72,7 +75,7 @@ class RestaurantRepositoryImpl extends BaseCollectionReference<FRestaurant>
       return FResult.success(const <FRestaurant>[]);
     }
     return FResult.success(
-        result.sublist(index + 1, min(index + limit, result.length)));
+        result.sublist(index + 1, min(index + limit + 1, result.length)));
   }
 
   @override
@@ -81,9 +84,25 @@ class RestaurantRepositoryImpl extends BaseCollectionReference<FRestaurant>
         await ref.where('menu', arrayContains: {'food_id': foodId}).get();
     return FResult.success(query.docs.first.data());
   }
+
+  Future<void> exportRestaurants() async {
+    final query = await ref.get();
+    List<FRestaurant> restaurants = query.docs.map((e) => e.data()).toList();
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/restaurants.json');
+    for (var restaurant in restaurants) {
+      file.writeAsStringSync('${jsonEncode(restaurant.toMap())},',
+          mode: FileMode.append);
+    }
+  }
+
+  @override
+  Future<FResult<FRestaurant>> getById(String id) {
+    return get(id);
+  }
 }
 
-double _calulateRelativeDistance(
+double _calculateRelativeDistance(
   double lat1,
   double lat2,
   double lon1,

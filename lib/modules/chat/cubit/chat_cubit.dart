@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import '../../../repositories/users/user_repository.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
@@ -8,6 +7,7 @@ import '../../../base/state.dart';
 import '../../../repositories/chat/chat_model.dart';
 import '../../../repositories/chat/chat_repository.dart';
 import '../../../repositories/chat/messages/message_model.dart';
+import '../../../repositories/users/user_repository.dart';
 import '../../login/cubit/login_cubit.dart';
 
 part 'chat_state.dart';
@@ -31,17 +31,15 @@ class ChatCubit extends FCubit<ChatState> {
       (event) {
         emitValue(
           state.copyWith(
-            chats: event.toList()
-              ..sort(
-                (a, b) => a.created.compareTo(b.created),
-              ),
+            chats: event.toList(),
           ),
         );
       },
     );
   }
 
-  Future<void> createChat(String userId) async {
+  Future<void> createChat(
+      {required String userId, required String orderId}) async {
     emitLoading();
 
     final shipperResult = await _userRepository.getShipper();
@@ -53,6 +51,7 @@ class ChatCubit extends FCubit<ChatState> {
 
     final result = await _chatRepository.createChat(
       FChat(
+        id: orderId,
         userIds: [userId, shipperResult.data!.id],
         created: DateTime.now(),
       ),

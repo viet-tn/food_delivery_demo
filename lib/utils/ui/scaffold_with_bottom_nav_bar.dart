@@ -46,8 +46,7 @@ class ScaffoldWithBottomNavBar extends StatelessWidget {
   int _locationToIndex(String location) {
     if (location.contains('/orders')) return 1;
     if (location.contains('/cart')) return 2;
-    if (location.contains('/chat')) return 3;
-    if (location.contains('/profile')) return 4;
+    if (location.contains('/profile')) return 3;
     return 0;
   }
 
@@ -197,18 +196,18 @@ final _tabs = <FBottomBarItem>[
       style: FTextStyles.heading5,
     ),
   ),
-  FBottomBarItem(
-    initialLocation: Routes.chat.name,
-    icon: Image.asset(
-      Assets.icons.chat.path,
-      fit: BoxFit.contain,
-      scale: _iconScale,
-    ),
-    title: const Text(
-      'Chat',
-      style: FTextStyles.heading5,
-    ),
-  ),
+  // FBottomBarItem(
+  //   initialLocation: Routes.chat.name,
+  //   icon: Image.asset(
+  //     Assets.icons.chat.path,
+  //     fit: BoxFit.contain,
+  //     scale: _iconScale,
+  //   ),
+  //   title: const Text(
+  //     'Chat',
+  //     style: FTextStyles.heading5,
+  //   ),
+  // ),
   FBottomBarItem(
     initialLocation: Routes.profile.name,
     icon: Image.asset(

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../result.dart';
 
+import '../result.dart';
 import 'user_model.dart';
 import 'user_repository.dart';
 
@@ -30,8 +30,12 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<FResult<FUser>> getShipper() async {
-    // simulate get shipper
-    const shipperId = 'XjuKAeSNkYNj5DhKINiOUapq0Rl2';
-    return get(shipperId);
+    try {
+      final query =
+          await ref.where('email', isEqualTo: 'thanhviet.1081@gmail.com').get();
+      return FResult.success(query.docs.first.data());
+    } catch (e) {
+      return FResult.exception(e);
+    }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../chat/cubit/chat_cubit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../base/state.dart';
 import '../../config/routes/coordinator.dart';
@@ -14,6 +14,7 @@ import '../../utils/ui/scaffold.dart';
 import '../../widgets/app_bar.dart';
 import '../cart/cubit/cart_cubit.dart';
 import '../cart/widgets/cart_total_infomation.dart';
+import '../chat/cubit/chat_cubit.dart';
 import '../cubits/app/app_cubit.dart';
 import '../order/cubit/orders_cubit.dart';
 import '../order/model/order.dart';
@@ -106,6 +107,7 @@ class CheckoutScreen extends StatelessWidget {
     final user = GetIt.I<AppCubit>().state.user!;
 
     final newOrder = FOrder(
+      id: const Uuid().v1(),
       name: '${user.firstName!} ${user.lastName!}',
       phone: user.phone!,
       userPosition: user.coordinates.first,
@@ -119,15 +121,16 @@ class CheckoutScreen extends StatelessWidget {
     context.read<PaymentCubit>().onCheckoutPressed(
       state.total * 100, // convert dolar to cent
       onPaymentSuccessful: () {
-        GetIt.I<AppCubit>().getProcessingOrderInfo(newOrder);
         FCoordinator.context.read<CartCubit>().clear();
         FCoordinator.context.read<ChatCubit>().createChat(
-              GetIt.I<AppCubit>().state.user!.id,
+              userId: GetIt.I<AppCubit>().state.user!.id,
+              orderId: newOrder.id!,
             );
+        FCoordinator.context.read<OrdersCubit>()
+          ..createOrder(newOrder: newOrder)
+          ..fetchNew();
         FCoordinator.showPaymentSuccessfulScreen();
       },
     );
-
-    context.read<OrdersCubit>().createOrder(newOrder: newOrder);
   }
 }

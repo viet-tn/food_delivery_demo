@@ -19,23 +19,25 @@ class UserStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FCard(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox.square(
-            dimension: 70.0,
-            child: AvatarBuilder(userId: userId),
-          ),
-          gapW12,
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              NameBuilder(userId: userId),
-              OnlineStatus(lastSeen: lastSeen),
-            ],
-          )
-        ],
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox.square(
+              dimension: 70.0,
+              child: AvatarBuilder(userId: userId),
+            ),
+            gapW12,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                NameBuilder(userId: userId),
+                OnlineStatus(lastSeen: lastSeen),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

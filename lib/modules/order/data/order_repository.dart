@@ -21,7 +21,7 @@ class OrderRepository extends BaseCollectionReference<FOrder> {
   final String uid;
 
   Future<FResult<FOrder>> create(FOrder order) {
-    return add(order);
+    return set(order);
   }
 
   Future<FResult<List<FOrder>>> fetchOrdersByStatus(
@@ -50,6 +50,23 @@ class OrderRepository extends BaseCollectionReference<FOrder> {
       if (querySnapshot.docs.isEmpty) {
         return FResult.success(const <FOrder>[]);
       }
+      return FResult.success(querySnapshot.docs.map((e) => e.data()).toList());
+    } catch (e) {
+      return FResult.exception(e);
+    }
+  }
+
+  Future<FResult<List<FOrder>>> fetchIsRunningOrder() async {
+    try {
+      final querySnapshot = await ref
+          .where('status', isNotEqualTo: OrderStatus.cancelled)
+          .where('status', isNotEqualTo: OrderStatus.delivered)
+          .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        return FResult.success(const <FOrder>[]);
+      }
+
       return FResult.success(querySnapshot.docs.map((e) => e.data()).toList());
     } catch (e) {
       return FResult.exception(e);
