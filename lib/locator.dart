@@ -29,6 +29,7 @@ import 'modules/login/cubit/login_cubit.dart';
 import 'modules/order/cubit/orders_cubit.dart';
 import 'modules/order/data/order_repository.dart';
 import 'modules/order/order_details/cubit/order_details_cubit.dart';
+import 'modules/rating/cubit/rating_cubit.dart';
 import 'modules/restaurant/cubit/restaurant_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
 import 'modules/signup/cubit/sign_up_cubit.dart';
@@ -132,13 +133,17 @@ Future<void> _locator() async {
 
   GetIt.I.registerFactory<FoodCubit>(
     () => FoodCubit(
-      foodRepository: DomainManager().foodRepository,
+      DomainManager().ratingRepository,
+      DomainManager().starCountRepository,
+      DomainManager().restaurantRepository,
     ),
   );
 
   GetIt.I.registerFactory<RestaurantCubit>(
     () => RestaurantCubit(
-      foodRepository: DomainManager().foodRepository,
+      DomainManager().foodRepository,
+      DomainManager().starCountRepository,
+      DomainManager().ratingRepository,
     ),
   );
 
@@ -194,7 +199,7 @@ Future<void> _locator() async {
       uid: GetIt.I<AppCubit>().state.user!.id,
       favoriteListRepository: DomainManager().favoriteListRepository,
       foodRepository: DomainManager().foodRepository,
-    ),
+    )..fetchFavoriteList(),
   );
 
   GetIt.I.registerFactory<OrdersCubit>(
@@ -219,6 +224,10 @@ Future<void> _locator() async {
       source: source,
       destination: destination,
     )..init(),
+  );
+
+  GetIt.I.registerFactory<RatingCubit>(
+    () => RatingCubit(DomainManager().ratingRepository),
   );
 
   // External services
