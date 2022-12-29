@@ -32,11 +32,11 @@ import 'modules/order/order_details/cubit/order_details_cubit.dart';
 import 'modules/rating/cubit/rating_cubit.dart';
 import 'modules/restaurant/cubit/restaurant_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
-import 'modules/signup/cubit/sign_up_cubit.dart';
-import 'modules/signup/screens/map_screen/cubit/map_screen_cubit.dart';
+import 'modules/sign_up/cubit/sign_up_cubit.dart';
+import 'modules/sign_up/screens/map_screen/cubit/map_screen_cubit.dart';
 import 'modules/tracking/cubit/order_tracking_cubit.dart';
 import 'repositories/domain_manager.dart';
-import 'repositories/payment/payment_repostiory.dart';
+import 'repositories/payment/payment_repository.dart';
 import 'repositories/users/coordinate.dart';
 import 'utils/services/notification_service.dart';
 import 'utils/services/shared_preferences.dart';
@@ -45,8 +45,6 @@ import 'utils/services/shared_preferences.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await setupFlutterNotifications();
   showFlutterNotification(message);
-  // If you're going to use other Firebase services in the background, such as Fi
-  print('Handling a background message ${message.messageId}');
 }
 
 Future<void> initializeApp() async {

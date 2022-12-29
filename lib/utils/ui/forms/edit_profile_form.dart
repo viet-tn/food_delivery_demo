@@ -7,7 +7,7 @@ import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../modules/profile/widgets/change_password_section.dart';
 import '../../../modules/profile/widgets/widgets.dart';
-import '../../../modules/signup/widgets/location_selector.dart';
+import '../../../modules/sign_up/widgets/location_selector.dart';
 import '../../../repositories/domain_manager.dart';
 import '../../../repositories/users/user_model.dart';
 import '../../../widgets/textfield/text_field.dart';

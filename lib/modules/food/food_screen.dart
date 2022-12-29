@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../widgets/dialogs/dialog.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../constants/app_constants.dart';
@@ -15,6 +14,7 @@ import '../../utils/ui/network_image.dart';
 import '../../utils/ui/scrollable_screen_with_background.dart';
 import '../../widgets/buttons/icon_button.dart';
 import '../../widgets/chips/category_chip.dart';
+import '../../widgets/dialogs/dialog.dart';
 import '../../widgets/testimonial_section.dart';
 import '../cart/cubit/cart_cubit.dart';
 import '../cubits/favorite/favorite_cubit.dart';

@@ -14,7 +14,7 @@ import 'modules/home/screens/cubit/view_more_cubit.dart';
 import 'modules/login/cubit/login_cubit.dart';
 import 'modules/order/cubit/orders_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
-import 'modules/signup/cubit/sign_up_cubit.dart';
+import 'modules/sign_up/cubit/sign_up_cubit.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

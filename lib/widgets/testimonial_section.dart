@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:food_delivery/constants/constants.dart';
-import 'package:food_delivery/repositories/rating/rating.dart';
-import 'package:food_delivery/repositories/rating/star/star.dart';
-import 'package:food_delivery/utils/ui/network_image.dart';
 import 'package:intl/intl.dart';
 
+import '../constants/constants.dart';
 import '../gen/assets.gen.dart';
+import '../repositories/rating/rating.dart';
+import '../repositories/rating/star/star.dart';
 import '../utils/ui/card.dart';
+import '../utils/ui/network_image.dart';
 
 class TestimonialSection extends StatelessWidget {
   const TestimonialSection({

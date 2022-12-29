@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../repositories/food/food_model.dart';
-import '../../../repositories/restaurants/restaurant_model.dart';
 
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../gen/assets.gen.dart';
+import '../../../repositories/food/food_model.dart';
+import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../widgets/buttons/icon_button.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/widgets/filter_chip.dart';
@@ -77,7 +77,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
                 },
                 hasNotification: true,
                 icon: Image.asset(
-                  Assets.icons.notifiaction.path,
+                  Assets.icons.notification.path,
                   fit: BoxFit.contain,
                 ),
               ),

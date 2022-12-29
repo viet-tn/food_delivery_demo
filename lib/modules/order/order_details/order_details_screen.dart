@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../config/routes/coordinator.dart';
-import '../../../constants/constants.dart';
-import '../../../gen/assets.gen.dart';
-import '../cubit/orders_cubit.dart';
-import '../../../repositories/users/coordinate.dart';
-import '../../../widgets/dialogs/dialog.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../config/routes/coordinator.dart';
+import '../../../constants/constants.dart';
+import '../../../gen/assets.gen.dart';
+import '../../../repositories/users/coordinate.dart';
 import '../../../utils/helpers/text_helpers.dart';
 import '../../../utils/ui/scaffold.dart';
 import '../../../widgets/app_bar.dart';
 import '../../../widgets/buttons/gradient_button.dart';
+import '../../../widgets/dialogs/dialog.dart';
+import '../cubit/orders_cubit.dart';
 import '../model/order.dart';
 import 'cubit/order_details_cubit.dart';
 import 'widgets/order_details_view.dart';

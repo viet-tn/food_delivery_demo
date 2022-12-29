@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../dialogs/dialog.dart';
 
 import '../../config/routes/coordinator.dart';
 import '../../modules/cubits/app/app_cubit.dart';
+import '../dialogs/dialog.dart';
 
 class LogoutButton extends StatelessWidget {
   const LogoutButton({super.key});

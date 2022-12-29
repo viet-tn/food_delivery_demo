@@ -1,16 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/order_repository.dart';
-import '../../model/order.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../repositories/food/food_model.dart';
 import '../../../../repositories/food/food_repository.dart';
 import '../../../../repositories/maps/search/places_search_repository.dart';
 import '../../../../repositories/restaurants/restaurant_model.dart';
 import '../../../../repositories/restaurants/restaurant_repository.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../data/order_repository.dart';
+import '../../model/order.dart';
 
-import '../../../../repositories/food/food_model.dart';
-
-part 'order_details_state.dart';
 part 'order_details_cubit.freezed.dart';
+part 'order_details_state.dart';
 
 class OrderDetailsCubit extends Cubit<OrderDetailsState> {
   OrderDetailsCubit(

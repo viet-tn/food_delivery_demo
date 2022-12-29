@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_delivery/widgets/testimonial_section.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../constants/app_constants.dart';
@@ -14,6 +13,7 @@ import '../../utils/ui/network_image.dart';
 import '../../utils/ui/scrollable_screen_with_background.dart';
 import '../../widgets/buttons/icon_button.dart';
 import '../../widgets/chips/category_chip.dart';
+import '../../widgets/testimonial_section.dart';
 import 'cubit/restaurant_cubit.dart';
 import 'widgets/popular_brief_food_section.dart';
 import 'widgets/restaurant_rating.dart';

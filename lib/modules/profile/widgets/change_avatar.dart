@@ -4,7 +4,7 @@ import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';
-import '../../signup/widgets/photo_selector.dart';
+import '../../sign_up/widgets/photo_selector.dart';
 
 class ChangeAvatar extends StatelessWidget {
   const ChangeAvatar({

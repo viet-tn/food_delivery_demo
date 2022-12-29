@@ -239,14 +239,12 @@ flutter:
   assets:
     - assets/images/
     - assets/images/splash/
-    - assets/images/payment/
     - assets/images/onboarding/
     - assets/images/banner/
-    - assets/images/restaurants/
     - assets/images/illustrations/
     - assets/images/voucher/
     - assets/icons/
-    - assets/mapstyles/
+    - assets/map_styles/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:food_delivery/config/routes/coordinator.dart';
-import 'package:food_delivery/constants/constants.dart';
-import 'package:food_delivery/modules/cubits/app/app_cubit.dart';
-import 'package:food_delivery/utils/ui/network_image.dart';
-import 'package:food_delivery/utils/ui/snack_bar.dart';
-import 'package:food_delivery/widgets/buttons/gradient_button.dart';
+import '../../config/routes/coordinator.dart';
+import '../../constants/constants.dart';
+import '../cubits/app/app_cubit.dart';
+import '../../utils/ui/network_image.dart';
+import '../../utils/ui/snack_bar.dart';
+import '../../widgets/buttons/gradient_button.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../gen/assets.gen.dart';
@@ -14,7 +14,7 @@ import '../../repositories/food/food_model.dart';
 import '../../utils/ui/scaffold.dart';
 import 'cubit/rating_cubit.dart';
 
-class WriteReviewScreen extends StatefulWidget {
+class WriteReviewScreen extends StatelessWidget {
   const WriteReviewScreen({
     super.key,
     required this.food,
@@ -23,13 +23,7 @@ class WriteReviewScreen extends StatefulWidget {
   final FFood food;
 
   @override
-  State<WriteReviewScreen> createState() => _WriteReviewScreenState();
-}
-
-class _WriteReviewScreenState extends State<WriteReviewScreen> {
-  late final _cubit = GetIt.I<RatingCubit>();
-  @override
-  Widget build(BuildContext _) {
+  Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => GetIt.I<RatingCubit>(),
       child: Builder(builder: (context) {
@@ -40,8 +34,8 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
             child: GradientButton(
               onPressed: () => context.read<RatingCubit>().submit(
                 context.read<AppCubit>().state.user!.id,
-                widget.food.id,
-                widget.food.restaurantId,
+                food.id,
+                food.restaurantId,
                 onReviewAddSuccessfully: () {
                   FSnackBar.showSnackBar('Review Added', FColors.green);
                   Navigator.pop(context);
@@ -63,7 +57,7 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
                       borderRadius: Ui.borderRadius,
                       child: SizedBox.square(
                         dimension: 70,
-                        child: FNetworkImage(widget.food.img),
+                        child: FNetworkImage(food.img),
                       ),
                     ),
                     gapW16,
@@ -72,11 +66,11 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.food.name,
+                            food.name,
                             style: FTextStyles.heading4,
                           ),
                           Text(
-                            widget.food.description,
+                            food.description,
                           ),
                         ],
                       ),

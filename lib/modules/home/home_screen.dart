@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/repositories/domain_manager.dart';
-import '../cubits/app/app_cubit.dart';
-import '../order/cubit/orders_cubit.dart';
 
 import '../../config/routes/coordinator.dart';
 import '../../constants/ui/sizes.dart';
 import '../../constants/ui/ui_parameters.dart';
+import '../../repositories/domain_manager.dart';
 import '../../utils/ui/listen_error.dart';
 import '../../utils/ui/scaffold.dart';
+import '../cubits/app/app_cubit.dart';
+import '../order/cubit/orders_cubit.dart';
 import '../tracking/widgets/current_order_card.dart';
 import 'cubit/home_cubit.dart';
 import 'widgets/home_app_bar.dart';

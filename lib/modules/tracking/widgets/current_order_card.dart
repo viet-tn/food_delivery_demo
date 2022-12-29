@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../order/model/order.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../config/routes/coordinator.dart';
@@ -11,6 +10,7 @@ import '../../../repositories/users/user_model.dart';
 import '../../../utils/ui/card.dart';
 import '../../../utils/ui/network_image.dart';
 import '../../../widgets/buttons/icon_button.dart';
+import '../../order/model/order.dart';
 
 class CurrentOrderCard extends StatelessWidget {
   const CurrentOrderCard({

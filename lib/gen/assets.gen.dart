@@ -2,11 +2,6 @@
 /// *****************************************************
 ///  FlutterGen
 /// *****************************************************
-
-// coverage:ignore-file
-// ignore_for_file: type=lint
-// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal
-
 import 'package:flutter/widgets.dart';
 
 class $AssetsIconsGen {
@@ -65,9 +60,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/message.png
   AssetGenImage get message => const AssetGenImage('assets/icons/message.png');
 
-  /// File path: assets/icons/notifiaction.png
-  AssetGenImage get notifiaction =>
-      const AssetGenImage('assets/icons/notifiaction.png');
+  /// File path: assets/icons/notification.png
+  AssetGenImage get notification =>
+      const AssetGenImage('assets/icons/notification.png');
 
   /// File path: assets/icons/order.png
   AssetGenImage get order => const AssetGenImage('assets/icons/order.png');
@@ -124,7 +119,7 @@ class $AssetsIconsGen {
         locationPinOutlined,
         lock,
         message,
-        notifiaction,
+        notification,
         order,
         pin,
         profile,
@@ -147,25 +142,22 @@ class $AssetsImagesGen {
       const $AssetsImagesIllustrationsGen();
   $AssetsImagesOnboardingGen get onboarding =>
       const $AssetsImagesOnboardingGen();
-  $AssetsImagesPaymentGen get payment => const $AssetsImagesPaymentGen();
-  $AssetsImagesRestaurantsGen get restaurants =>
-      const $AssetsImagesRestaurantsGen();
   $AssetsImagesSplashGen get splash => const $AssetsImagesSplashGen();
   $AssetsImagesVoucherGen get voucher => const $AssetsImagesVoucherGen();
 }
 
-class $AssetsMapstylesGen {
-  const $AssetsMapstylesGen();
+class $AssetsMapStylesGen {
+  const $AssetsMapStylesGen();
 
-  /// File path: assets/mapstyles/mapstyle_default.json
-  String get mapstyleDefault => 'assets/mapstyles/mapstyle_default.json';
+  /// File path: assets/map_styles/default_map_style.json
+  String get defaultMapStyle => 'assets/map_styles/default_map_style.json';
 
-  /// File path: assets/mapstyles/order_tracking_mapstyle.json
-  String get orderTrackingMapstyle =>
-      'assets/mapstyles/order_tracking_mapstyle.json';
+  /// File path: assets/map_styles/order_tracking_map_style.json
+  String get orderTrackingMapStyle =>
+      'assets/map_styles/order_tracking_map_style.json';
 
   /// List of all assets
-  List<String> get values => [mapstyleDefault, orderTrackingMapstyle];
+  List<String> get values => [defaultMapStyle, orderTrackingMapStyle];
 }
 
 class $AssetsImagesBannerGen {
@@ -231,57 +223,6 @@ class $AssetsImagesOnboardingGen {
   List<AssetGenImage> get values => [onboarding1, onboarding2];
 }
 
-class $AssetsImagesPaymentGen {
-  const $AssetsImagesPaymentGen();
-
-  /// File path: assets/images/payment/payoneer.png
-  AssetGenImage get payoneer =>
-      const AssetGenImage('assets/images/payment/payoneer.png');
-
-  /// File path: assets/images/payment/paypal.png
-  AssetGenImage get paypal =>
-      const AssetGenImage('assets/images/payment/paypal.png');
-
-  /// File path: assets/images/payment/visa.png
-  AssetGenImage get visa =>
-      const AssetGenImage('assets/images/payment/visa.png');
-
-  /// List of all assets
-  List<AssetGenImage> get values => [payoneer, paypal, visa];
-}
-
-class $AssetsImagesRestaurantsGen {
-  const $AssetsImagesRestaurantsGen();
-
-  /// File path: assets/images/restaurants/abc_resto.png
-  AssetGenImage get abcResto =>
-      const AssetGenImage('assets/images/restaurants/abc_resto.png');
-
-  /// File path: assets/images/restaurants/dutch_lady.png
-  AssetGenImage get dutchLady =>
-      const AssetGenImage('assets/images/restaurants/dutch_lady.png');
-
-  /// File path: assets/images/restaurants/good_food.png
-  AssetGenImage get goodFood =>
-      const AssetGenImage('assets/images/restaurants/good_food.png');
-
-  /// File path: assets/images/restaurants/healthy_food.png
-  AssetGenImage get healthyFood =>
-      const AssetGenImage('assets/images/restaurants/healthy_food.png');
-
-  /// File path: assets/images/restaurants/smart_resto.png
-  AssetGenImage get smartResto =>
-      const AssetGenImage('assets/images/restaurants/smart_resto.png');
-
-  /// File path: assets/images/restaurants/vegan_resto.png
-  AssetGenImage get veganResto =>
-      const AssetGenImage('assets/images/restaurants/vegan_resto.png');
-
-  /// List of all assets
-  List<AssetGenImage> get values =>
-      [abcResto, dutchLady, goodFood, healthyFood, smartResto, veganResto];
-}
-
 class $AssetsImagesSplashGen {
   const $AssetsImagesSplashGen();
 
@@ -317,7 +258,7 @@ class Assets {
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
-  static const $AssetsMapstylesGen mapstyles = $AssetsMapstylesGen();
+  static const $AssetsMapStylesGen mapStyles = $AssetsMapStylesGen();
 }
 
 class AssetGenImage {

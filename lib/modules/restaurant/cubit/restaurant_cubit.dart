@@ -1,19 +1,19 @@
 import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/base/async_state.dart';
-import 'package:food_delivery/repositories/rating/rating.dart';
-import 'package:food_delivery/repositories/rating/rating_repository.dart';
-import 'package:food_delivery/repositories/rating/star/star.dart';
-import 'package:food_delivery/repositories/rating/star/star_count_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../base/async_state.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../repositories/food/food_repository.dart';
+import '../../../repositories/rating/rating.dart';
+import '../../../repositories/rating/rating_repository.dart';
+import '../../../repositories/rating/star/star.dart';
+import '../../../repositories/rating/star/star_count_repository.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
 
-part 'restaurant_state.dart';
 part 'restaurant_cubit.freezed.dart';
+part 'restaurant_state.dart';
 
 class RestaurantCubit extends Cubit<RestaurantState> {
   RestaurantCubit(

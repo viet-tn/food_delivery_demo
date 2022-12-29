@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:food_delivery/repositories/base_collection_reference.dart';
-import 'package:food_delivery/repositories/rating/rating.dart';
-import 'package:food_delivery/repositories/rating/star/star.dart';
 
+import '../base_collection_reference.dart';
 import '../result.dart';
+import 'rating.dart';
+import 'star/star.dart';
 
 class RatingRepository extends BaseCollectionReference<FRating> {
   RatingRepository(this._firestore)
@@ -83,24 +83,24 @@ class RatingRepository extends BaseCollectionReference<FRating> {
   }
 
   @override
-  Future<FResult<FRating>> add(FRating rating) async {
+  Future<FResult<FRating>> add(FRating item) async {
     try {
       final ratingCountRef =
-          _firestore.collection('ratingCounts').doc(rating.restaurantId);
+          _firestore.collection('ratingCounts').doc(item.restaurantId);
       var documentSnapshot = await ratingCountRef.get();
 
       if (!documentSnapshot.exists) {
-        await ratingCountRef.set(
-            {rating.foodId: const FStar().increment(rating.rate).toJson()});
+        await ratingCountRef
+            .set({item.foodId: const FStar().increment(item.rate).toJson()});
         documentSnapshot = await ratingCountRef.get();
       }
 
       final starUpdate = FStar.fromJson(
-        documentSnapshot.data()?[rating.foodId] ?? const FStar().toJson(),
-      ).increment(rating.rate);
+        documentSnapshot.data()?[item.foodId] ?? const FStar().toJson(),
+      ).increment(item.rate);
 
-      ratingCountRef.update({rating.foodId: starUpdate.toJson()});
-      return super.add(rating);
+      ratingCountRef.update({item.foodId: starUpdate.toJson()});
+      return super.add(item);
     } catch (e) {
       return FResult.exception(e);
     }

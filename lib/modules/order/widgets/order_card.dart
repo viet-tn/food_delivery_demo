@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+
 import '../../../config/routes/coordinator.dart';
 import '../../../constants/constants.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../repositories/users/coordinate.dart';
-import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-
 import '../../../utils/ui/card.dart';
 import '../../../utils/ui/network_image.dart';
 import '../model/order.dart';

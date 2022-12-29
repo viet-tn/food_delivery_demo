@@ -174,7 +174,7 @@ class _MapScreenState extends State<MapScreen> {
   void _onMapCreated(GoogleMapController controller) async {
     _mapController = controller;
     final style = await DefaultAssetBundle.of(context)
-        .loadString(Assets.mapstyles.mapstyleDefault);
+        .loadString(Assets.mapStyles.defaultMapStyle);
     _mapController.setMapStyle(style);
   }
 

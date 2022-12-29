@@ -13,7 +13,7 @@ import '../../utils/ui/loading_screen.dart';
 import '../../utils/ui/scaffold.dart';
 import '../../widgets/app_bar.dart';
 import '../cart/cubit/cart_cubit.dart';
-import '../cart/widgets/cart_total_infomation.dart';
+import '../cart/widgets/cart_total_information.dart';
 import '../chat/cubit/chat_cubit.dart';
 import '../cubits/app/app_cubit.dart';
 import '../order/cubit/orders_cubit.dart';
@@ -52,7 +52,7 @@ class CheckoutScreen extends StatelessWidget {
                                   return state.user!;
                                 },
                                 builder: (context, state) {
-                                  return ShippingAdressSection(
+                                  return ShippingAddressSection(
                                     name:
                                         '${state.firstName} ${state.lastName}',
                                     phone: state.phone!,
@@ -119,7 +119,7 @@ class CheckoutScreen extends StatelessWidget {
     );
 
     context.read<PaymentCubit>().onCheckoutPressed(
-      state.total * 100, // convert dolar to cent
+      state.total * 100, // convert dollar to cent
       onPaymentSuccessful: () {
         FCoordinator.context.read<CartCubit>().clear();
         FCoordinator.context.read<ChatCubit>().createChat(

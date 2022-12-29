@@ -13,7 +13,7 @@ import '../../../repositories/users/user_model.dart';
 import '../../../repositories/users/user_repository.dart';
 import '../../../utils/services/shared_preferences.dart';
 import '../../cubits/app/app_cubit.dart';
-import '../../signup/cubit/sign_up_cubit.dart';
+import '../../sign_up/cubit/sign_up_cubit.dart';
 import '../models/email_input.dart';
 import '../models/password_input.dart';
 

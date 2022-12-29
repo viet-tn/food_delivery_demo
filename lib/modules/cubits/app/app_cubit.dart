@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:food_delivery/repositories/notification/notification_repository.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/auth/auth_repository.dart';
 import '../../../repositories/cloud_storage/cloud_storage.dart';
+import '../../../repositories/notification/notification_repository.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../repositories/users/user_model.dart';
 import '../../../repositories/users/user_repository.dart';
@@ -15,7 +15,7 @@ import '../../../utils/services/notification_service.dart';
 import '../../home/cubit/home_cubit.dart';
 import '../../login/cubit/login_cubit.dart';
 import '../../order/model/order.dart';
-import '../../signup/cubit/sign_up_cubit.dart';
+import '../../sign_up/cubit/sign_up_cubit.dart';
 
 part 'app_state.dart';
 

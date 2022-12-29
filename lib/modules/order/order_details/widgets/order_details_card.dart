@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/config/routes/coordinator.dart';
+import '../../../../config/routes/coordinator.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../constants/constants.dart';
 

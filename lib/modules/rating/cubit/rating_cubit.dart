@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/repositories/rating/rating_repository.dart';
 import 'package:formz/formz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../repositories/rating/rating.dart';
+import '../../../repositories/rating/rating_repository.dart';
 
-part 'rating_state.dart';
 part 'rating_cubit.freezed.dart';
+part 'rating_state.dart';
 
 class RatingCubit extends Cubit<RatingState> {
   RatingCubit(this._ratingRepository) : super(const RatingState());
