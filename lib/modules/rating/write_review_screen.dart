@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../../config/routes/coordinator.dart';
-import '../../constants/constants.dart';
-import '../cubits/app/app_cubit.dart';
-import '../../utils/ui/network_image.dart';
-import '../../utils/ui/snack_bar.dart';
-import '../../widgets/buttons/gradient_button.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../config/routes/coordinator.dart';
+import '../../constants/constants.dart';
 import '../../gen/assets.gen.dart';
 import '../../repositories/food/food_model.dart';
+import '../../utils/ui/network_image.dart';
 import '../../utils/ui/scaffold.dart';
+import '../../utils/ui/snack_bar.dart';
+import '../../widgets/buttons/gradient_button.dart';
+import '../cubits/app/app_cubit.dart';
 import 'cubit/rating_cubit.dart';
 
 class WriteReviewScreen extends StatelessWidget {

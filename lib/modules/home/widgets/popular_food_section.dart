@@ -33,7 +33,10 @@ class PopularFoodSection extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  FCoordinator.pushNamed(Routes.foods.name);
+                  FCoordinator.pushNamed(
+                    Routes.foods.name,
+                    extra: foods,
+                  );
                 },
                 child: Text(
                   'View More',

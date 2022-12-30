@@ -1,16 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../../../base/async_state.dart';
 import '../../../repositories/food/food_model.dart';
+import '../../../repositories/rating/rating.dart';
 import '../../../repositories/rating/rating_repository.dart';
 import '../../../repositories/rating/star/star.dart';
 import '../../../repositories/rating/star/star_count_repository.dart';
 import '../../../repositories/restaurants/restaurant_repository.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../repositories/rating/rating.dart';
-
-part 'food_state.dart';
 part 'food_cubit.freezed.dart';
+part 'food_state.dart';
 
 class FoodCubit extends Cubit<FoodState> {
   FoodCubit(

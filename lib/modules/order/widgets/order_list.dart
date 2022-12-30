@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../repositories/restaurants/restaurant_model.dart';
 
 import '../../../constants/ui/sizes.dart';
 import '../../../gen/assets.gen.dart';
+import '../../../repositories/restaurants/restaurant_model.dart';
 import '../cubit/orders_cubit.dart';
 import '../model/order.dart';
 import 'order_card.dart';

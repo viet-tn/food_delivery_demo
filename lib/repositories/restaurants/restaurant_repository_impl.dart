@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dart_geohash/dart_geohash.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../base_collection_reference.dart';
@@ -28,8 +28,9 @@ class RestaurantRepositoryImpl extends BaseCollectionReference<FRestaurant>
   @override
   Future<FResult<List<FRestaurant>>> fetchNearestRestaurants(
       double latitudeSrc, double longitudeSrc,
-      [FRestaurant? restaurant, int limit = 5, double radius = 25]) async {
+      [FRestaurant? restaurant, int limit = 5, double radius = 40]) async {
     final center = GeoPoint(latitudeSrc, longitudeSrc);
+    final geoHash = GeoHasher();
 
     double latPerKm = 0.00902;
     double lonPerKm = 0.00914;
@@ -40,42 +41,37 @@ class RestaurantRepositoryImpl extends BaseCollectionReference<FRestaurant>
     double greaterLat = center.latitude + (latPerKm * radius);
     double greaterLon = center.longitude + (lonPerKm * radius);
 
-    GeoPoint lesserGeoPoint = GeoPoint(lowerLat, lowerLon);
-    GeoPoint greaterGeoPoint = GeoPoint(greaterLat, greaterLon);
+    String lesserGeoHash = geoHash.encode(lowerLon, lowerLat, precision: 9);
+    String greaterGeoHash =
+        geoHash.encode(greaterLon, greaterLat, precision: 9);
 
-    final geopointRef = FieldPath(const ['coordinate', 'position', 'geopoint']);
-    final querySnapshot = await ref
-        .where(geopointRef, isGreaterThan: lesserGeoPoint)
-        .where(geopointRef, isLessThan: greaterGeoPoint)
-        .get();
-
-    final result = querySnapshot.docs.map((e) => e.data()).toList()
-      ..sort(
-        (a, b) => _calculateRelativeDistance(
-          latitudeSrc,
-          a.coordinate.latitude,
-          longitudeSrc,
-          a.coordinate.longitude,
-        ).compareTo(
-          _calculateRelativeDistance(
-            latitudeSrc,
-            b.coordinate.latitude,
-            longitudeSrc,
-            b.coordinate.longitude,
-          ),
-        ),
-      );
-
+    late QuerySnapshot<FRestaurant> querySnapshot;
+    final geoHashRef = FieldPath(const ['coordinate', 'position', 'geohash']);
     if (restaurant == null) {
-      return FResult.success(result.sublist(0, limit));
+      querySnapshot = await ref
+          .where(geoHashRef, isGreaterThan: lesserGeoHash)
+          .where(geoHashRef, isLessThan: greaterGeoHash)
+          .orderBy(geoHashRef)
+          .limit(limit)
+          .get();
+    } else {
+      final documentSnapshot = await ref.doc(restaurant.id).get();
+      querySnapshot = await ref
+          .where(geoHashRef, isGreaterThan: lesserGeoHash)
+          .where(geoHashRef, isLessThan: greaterGeoHash)
+          .orderBy(geoHashRef)
+          .startAfterDocument(documentSnapshot)
+          .limit(limit)
+          .get();
     }
 
-    int index = result.indexWhere((e) => e.id == restaurant.id);
-    if (index == result.length - 1) {
+    if (querySnapshot.docs.isEmpty) {
       return FResult.success(const <FRestaurant>[]);
     }
-    return FResult.success(
-        result.sublist(index + 1, min(index + limit + 1, result.length)));
+
+    final result = querySnapshot.docs.map((e) => e.data()).toList();
+
+    return FResult.success(result);
   }
 
   @override
@@ -100,13 +96,4 @@ class RestaurantRepositoryImpl extends BaseCollectionReference<FRestaurant>
   Future<FResult<FRestaurant>> getById(String id) {
     return get(id);
   }
-}
-
-double _calculateRelativeDistance(
-  double lat1,
-  double lat2,
-  double lon1,
-  double lon2,
-) {
-  return sqrt(pow(lat1 - lat2, 2) + pow(lon1 - lon2, 2));
 }

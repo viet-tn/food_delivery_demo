@@ -282,13 +282,17 @@ final appRouter = GoRouter(
               path: 'restaurants',
               name: Routes.restaurants.name,
               parentNavigatorKey: FCoordinator.navigatorKey,
-              builder: (_, __) => const RestaurantsScreen(),
+              builder: (_, state) => RestaurantsScreen(
+                restaurants: state.extra as List<FRestaurant>,
+              ),
             ),
             GoRoute(
               path: 'foods',
               name: Routes.foods.name,
               parentNavigatorKey: FCoordinator.navigatorKey,
-              builder: (_, __) => const FoodsScreen(),
+              builder: (_, state) => FoodsScreen(
+                foods: state.extra as List<FFood>,
+              ),
             ),
           ],
         ),
