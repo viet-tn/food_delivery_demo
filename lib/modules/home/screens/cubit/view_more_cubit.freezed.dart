@@ -145,24 +145,6 @@ class _$_ViewMoreState extends _ViewMoreState {
   @JsonKey()
   final AsyncState<List<FFood>> foods;
 
-  @override
-  String toString() {
-    return 'ViewMoreState(restaurants: $restaurants, foods: $foods)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ViewMoreState &&
-            (identical(other.restaurants, restaurants) ||
-                other.restaurants == restaurants) &&
-            (identical(other.foods, foods) || other.foods == foods));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, restaurants, foods);
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

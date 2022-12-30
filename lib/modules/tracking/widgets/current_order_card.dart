@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../config/routes/coordinator.dart';
@@ -27,9 +28,9 @@ class CurrentOrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FCard(
-      onTap: () => FCoordinator.pushNamed(
+      onTap: () => context.pushNamed(
         Routes.orderDetails.name,
-        extra: order,
+        params: {'orderId': order.id!},
       ),
       child: Row(
         children: [

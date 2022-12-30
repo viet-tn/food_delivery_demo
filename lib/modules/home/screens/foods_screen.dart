@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../utils/page_arguments/view_more_food_argument.dart';
-import '../../../repositories/food/food_model.dart';
-import '../../../utils/ui/loading/food_card_loading.dart';
 
 import '../../../config/routes/coordinator.dart';
+import '../../../repositories/food/food_model.dart';
+import '../../../utils/page_arguments/view_more_food_argument.dart';
+import '../../../utils/ui/loading/food_card_loading.dart';
 import '../../../utils/ui/scaffold.dart';
 import '../../../widgets/app_bar.dart';
 import '../widgets/food_card.dart';

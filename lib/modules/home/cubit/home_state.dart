@@ -6,13 +6,16 @@ class HomeState extends FState {
     super.errorMessage,
     this.restaurants = const <FRestaurant>[],
     this.foods = const <FFood>[],
+    this.hasNotification = false,
   });
 
   final List<FRestaurant> restaurants;
   final List<FFood> foods;
+  final bool hasNotification;
 
   @override
-  List<Object?> get props => [...super.props, restaurants, foods];
+  List<Object?> get props =>
+      [...super.props, restaurants, foods, hasNotification];
 
   @override
   HomeState copyWith({
@@ -20,12 +23,14 @@ class HomeState extends FState {
     String? errorMessage,
     List<FRestaurant>? restaurants,
     List<FFood>? foods,
+    bool? hasNotification,
   }) {
     return HomeState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       restaurants: restaurants ?? this.restaurants,
       foods: foods ?? this.foods,
+      hasNotification: hasNotification ?? this.hasNotification,
     );
   }
 }

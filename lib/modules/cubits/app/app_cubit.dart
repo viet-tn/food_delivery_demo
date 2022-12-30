@@ -12,6 +12,7 @@ import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../repositories/users/user_model.dart';
 import '../../../repositories/users/user_repository.dart';
 import '../../../utils/services/notification_service.dart';
+import '../../../utils/services/shared_preferences.dart';
 import '../../home/cubit/home_cubit.dart';
 import '../../order/model/order.dart';
 
@@ -26,9 +27,12 @@ class AppCubit extends FCubit<AppState> {
   })  : _cloudStorage = cloudStorage,
         _userRepository = userRepository,
         _authRepository = authRepository,
-        super(const AppState()) {
+        super(AppState(
+          hasNotification: GetIt.I<FSharedPreferences>().hasNotification,
+        )) {
     _notificationSubscription = FirebaseMessaging.onMessage.listen((message) {
       showFlutterNotification(message);
+      markUnreadNotification();
     });
   }
 
@@ -131,5 +135,15 @@ class AppCubit extends FCubit<AppState> {
   Future<void> close() {
     _notificationSubscription.cancel();
     return super.close();
+  }
+
+  void markUnreadNotification() {
+    emit(state.copyWith(hasNotification: true));
+    GetIt.I<FSharedPreferences>().setHasNotification(true);
+  }
+
+  void readNotification() {
+    emit(state.copyWith(hasNotification: false));
+    GetIt.I<FSharedPreferences>().setHasNotification(false);
   }
 }

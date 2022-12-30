@@ -39,7 +39,7 @@ function orderStatusToMessage(status: string): string {
  * Function in cloud functions.
  */
 export const notificationTrigger = functions
-  .region("asia-east2").firestore.document("users/{userId}/orders/{ordersId}")
+  .region("asia-east2").firestore.document("users/{userId}/orders/{orderId}")
   .onWrite((handler, context) => sendNotification(handler, context));
 
 
@@ -50,6 +50,7 @@ export const notificationTrigger = functions
 async function sendNotification(handler: functions.Change<functions.firestore.DocumentSnapshot>,
   context: functions.EventContext) {
   const userId = context.params.userId;
+  const orderId = context.params.orderId;
   let tokenSnapshot = await admin.firestore().collection("notification_tokens").doc(userId).get();
   const fcmToken = tokenSnapshot.get("token") as string;
 
@@ -63,8 +64,19 @@ async function sendNotification(handler: functions.Change<functions.firestore.Do
       "title": "Order",
       "body": statusMessage,
     },
-    "token": fcmToken
+    "token": fcmToken,
   };
 
   admin.messaging().send(message);
+
+  const notification = {
+    "title": "Order",
+    "body": statusMessage,
+    "uid": userId,
+    "orderId": orderId,
+    "created": admin.firestore.Timestamp.fromDate(new Date()),
+  }
+
+  admin.firestore().collection('notifications').add(notification);
+
 }

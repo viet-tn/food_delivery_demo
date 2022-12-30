@@ -13,11 +13,10 @@ enum AppTheme {
 final appThemeData = {
   AppTheme.light: ThemeData(
     useMaterial3: true,
-    fontFamily: GoogleFonts.roboto().fontFamily,
+    fontFamily: GoogleFonts.poppins().fontFamily,
     brightness: Brightness.light,
     indicatorColor: FColors.lightGreen,
     inputDecorationTheme: const InputDecorationTheme(
-      
       labelStyle: FTextStyles.label,
       contentPadding: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 20.0),
       enabledBorder: OutlineInputBorder(

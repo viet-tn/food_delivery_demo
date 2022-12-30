@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../config/routes/coordinator.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/sizes.dart';
@@ -7,6 +9,7 @@ import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../widgets/buttons/icon_button.dart';
+import '../../cubits/app/app_cubit.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/widgets/filter_chip.dart';
 import 'home_search_bar.dart';
@@ -44,13 +47,22 @@ class _HomeAppBarState extends State<HomeAppBar> {
               ),
             ),
             Flexible(
-              child: FIconRounded(
-                onPressed: () {},
-                hasNotification: true,
-                icon: Image.asset(
-                  Assets.icons.notification.path,
-                  fit: BoxFit.contain,
-                ),
+              child: BlocBuilder<AppCubit, AppState>(
+                buildWhen: (previous, current) =>
+                    previous.hasNotification != current.hasNotification,
+                builder: (context, state) {
+                  return FIconRounded(
+                    onPressed: () {
+                      context.goNamed(Routes.notification.name);
+                      context.read<AppCubit>().readNotification();
+                    },
+                    hasNotification: state.hasNotification,
+                    icon: Image.asset(
+                      Assets.icons.notification.path,
+                      fit: BoxFit.contain,
+                    ),
+                  );
+                },
               ),
             ),
           ],

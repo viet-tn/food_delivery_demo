@@ -10,6 +10,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'modules/notification/cubit/notification_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,6 +46,7 @@ import 'utils/services/shared_preferences.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await setupFlutterNotifications();
   showFlutterNotification(message);
+  GetIt.I<FSharedPreferences>().setHasNotification(true);
 }
 
 Future<void> initializeApp() async {
@@ -226,6 +228,10 @@ Future<void> _locator() async {
 
   GetIt.I.registerFactory<RatingCubit>(
     () => RatingCubit(DomainManager().ratingRepository),
+  );
+
+  GetIt.I.registerFactory<NotificationCubit>(
+    () => NotificationCubit(DomainManager().notificationRepository),
   );
 
   // External services

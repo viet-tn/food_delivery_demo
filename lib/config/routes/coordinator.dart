@@ -16,8 +16,8 @@ import '../../modules/home/screens/foods_screen.dart';
 import '../../modules/home/screens/restaurants_screen.dart';
 import '../../modules/login/cubit/login_cubit.dart';
 import '../../modules/login/login_screen.dart';
+import '../../modules/notification/notification_screen.dart';
 import '../../modules/onboarding/onboarding_screen.dart';
-import '../../modules/order/model/order.dart';
 import '../../modules/order/order_details/order_details_screen.dart';
 import '../../modules/order/orders_screen.dart';
 import '../../modules/profile/edit_screen.dart';
@@ -75,6 +75,7 @@ enum Routes {
   orderDetails,
   orderTracking,
   review,
+  notification,
 }
 
 class FCoordinator {
@@ -295,6 +296,12 @@ final appRouter = GoRouter(
                 argument: state.extra as ViewMoreFoodsArgument,
               ),
             ),
+            GoRoute(
+              path: 'notification',
+              name: Routes.notification.name,
+              parentNavigatorKey: FCoordinator.navigatorKey,
+              builder: (_, state) => const NotificationScreen(),
+            ),
           ],
         ),
         GoRoute(
@@ -342,10 +349,10 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               parentNavigatorKey: FCoordinator.navigatorKey,
-              path: 'details',
+              path: 'details:orderId',
               name: Routes.orderDetails.name,
               builder: (_, state) => OrderDetailsScreen(
-                order: state.extra as FOrder,
+                orderId: state.params['orderId']!,
               ),
             ),
           ],

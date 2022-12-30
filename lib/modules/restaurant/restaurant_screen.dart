@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../utils/ui/loading/restaurant_list_loading.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../constants/app_constants.dart';
@@ -10,6 +9,7 @@ import '../../constants/ui/sizes.dart';
 import '../../constants/ui/text_style.dart';
 import '../../gen/assets.gen.dart';
 import '../../repositories/restaurants/restaurant_model.dart';
+import '../../utils/ui/loading/restaurant_list_loading.dart';
 import '../../utils/ui/network_image.dart';
 import '../../utils/ui/scrollable_screen_with_background.dart';
 import '../../widgets/buttons/icon_button.dart';

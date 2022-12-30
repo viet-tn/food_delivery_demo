@@ -25,7 +25,16 @@ class OrderDetailsCubit extends Cubit<OrderDetailsState> {
   final FoodRepository _foodRepository;
   final OrderRepository _orderRepository;
 
-  void init(FOrder order) async {
+  void init(String orderId) async {
+    final orderResult = await _orderRepository.get(orderId);
+
+    if (orderResult.isError) {
+      emit(OrderDetailsState.loadFailure(orderResult.error!));
+      return;
+    }
+
+    final order = orderResult.data!;
+
     final restaurantResult =
         await _restaurantRepository.getById(order.cart.restaurantId!);
 
