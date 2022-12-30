@@ -6,7 +6,8 @@ abstract class FoodRepository {
 
   Future<FResult<FFood?>> fetchFoodById(String foodId);
 
-  Future<FResult<List<FFood>>> fetchFoodsByIds(List<String> foodIds);
+  Future<FResult<List<FFood>>> fetchFoodsByIds(List<String> foodIds,
+      [FFood? food, int limit = 10]);
 
   Future<FResult<List<FFood>>> fetchPopularFoods([FFood? food, int limit = 10]);
 }

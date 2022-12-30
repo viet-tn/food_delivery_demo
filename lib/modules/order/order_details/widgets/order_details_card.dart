@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../config/routes/coordinator.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../constants/constants.dart';
 
+import '../../../../config/routes/coordinator.dart';
+import '../../../../constants/constants.dart';
 import '../../../../repositories/food/food_model.dart';
 import '../../../../utils/ui/network_image.dart';
 import '../../model/order.dart';

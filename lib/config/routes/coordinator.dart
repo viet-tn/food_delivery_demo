@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../utils/page_arguments/view_more_food_argument.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -291,7 +292,7 @@ final appRouter = GoRouter(
               name: Routes.foods.name,
               parentNavigatorKey: FCoordinator.navigatorKey,
               builder: (_, state) => FoodsScreen(
-                foods: state.extra as List<FFood>,
+                argument: state.extra as ViewMoreFoodsArgument,
               ),
             ),
           ],

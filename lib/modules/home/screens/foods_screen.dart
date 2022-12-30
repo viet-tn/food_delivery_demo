@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../utils/page_arguments/view_more_food_argument.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../utils/ui/loading/food_card_loading.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../config/routes/coordinator.dart';
 import '../../../utils/ui/scaffold.dart';
@@ -13,10 +13,10 @@ import 'cubit/view_more_cubit.dart';
 class FoodsScreen extends StatefulWidget {
   const FoodsScreen({
     super.key,
-    required this.foods,
+    required this.argument,
   });
 
-  final List<FFood> foods;
+  final ViewMoreFoodsArgument argument;
 
   @override
   State<FoodsScreen> createState() => _FoodsScreenState();
@@ -24,18 +24,18 @@ class FoodsScreen extends StatefulWidget {
 
 class _FoodsScreenState extends State<FoodsScreen> {
   late final _scrollController = ScrollController();
-  late final _cubit = GetIt.I<ViewMoreCubit>();
 
   @override
   void initState() {
     super.initState();
-    _cubit.initViewMoreFood(widget.foods);
+    widget.argument.cubit.initViewMoreFood(widget.argument.foods);
     _scrollController.addListener(_scrollListener);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    widget.argument.cubit.close();
     super.dispose();
   }
 
@@ -44,19 +44,19 @@ class _FoodsScreenState extends State<FoodsScreen> {
         _scrollController.position.maxScrollExtent - 200.0) {
       return;
     }
-    _cubit.fetchNextPopularFoodBatch();
+    widget.argument.onFetchMoreItems.call();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: _cubit,
+      value: widget.argument.cubit,
       child: FScaffold(
         body: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: FAppBar(title: 'Popular Food'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: FAppBar(title: widget.argument.title),
             ),
             Flexible(
               child: BlocBuilder<ViewMoreCubit, ViewMoreState>(

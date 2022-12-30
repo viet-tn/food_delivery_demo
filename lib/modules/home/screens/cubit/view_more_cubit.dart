@@ -10,6 +10,7 @@ import '../../../../repositories/food/food_repository.dart';
 import '../../../../repositories/maps/search/places_search_repository.dart';
 import '../../../../repositories/restaurants/restaurant_model.dart';
 import '../../../../repositories/restaurants/restaurant_repository.dart';
+import '../../../../repositories/result.dart';
 import '../../../../repositories/users/coordinate.dart';
 
 part 'view_more_state.dart';
@@ -111,29 +112,54 @@ class ViewMoreCubit extends Cubit<ViewMoreState> {
         await Future.delayed(const Duration(seconds: 1));
         final result = await _foodRepository.fetchPopularFoods(foods.last);
 
-        if (result.isError) {
-          emit(state.copyWith(
-            foods: AsyncState.error(
-              result.error!,
-              foods,
-            ),
-          ));
-          return;
-        }
-
-        final newFoods = result.data!;
-
-        if (newFoods.isEmpty) {
-          emit(state.copyWith(foods: AsyncState.empty(foods)));
-          return;
-        }
-
-        emit(
-          state.copyWith(
-            foods: AsyncState.data([...foods, ...newFoods]),
-          ),
-        );
+        _fetchFoodHandler(result, foods);
       },
     );
+  }
+
+  void fetchNextRestaurantFoodBatch(
+    List<String> foodIds,
+  ) async {
+    state.foods.whenOrNull(
+      data: (foods) async {
+        emit(state.copyWith(foods: AsyncState.loading(foods)));
+        await Future.delayed(const Duration(seconds: 1));
+        final result =
+            await _foodRepository.fetchFoodsByIds(foodIds, foods.last);
+
+        _fetchFoodHandler(result, foods);
+      },
+    );
+  }
+
+  void _fetchFoodHandler(FResult<List<FFood>> result, List<FFood> foods) {
+    if (result.isError) {
+      emit(state.copyWith(
+        foods: AsyncState.error(
+          result.error!,
+          foods,
+        ),
+      ));
+      return;
+    }
+
+    final newFoods = result.data!;
+
+    if (newFoods.isEmpty) {
+      emit(state.copyWith(foods: AsyncState.empty(foods)));
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        foods: AsyncState.data([...foods, ...newFoods]),
+      ),
+    );
+  }
+
+  @override
+  Future<void> close() {
+    log('viewMoreCubit closed');
+    return super.close();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../base_collection_reference.dart';
@@ -56,24 +58,31 @@ class FoodRepositoryImpl extends BaseCollectionReference<FFood>
   }
 
   @override
-  Future<FResult<List<FFood>>> fetchFoodsByIds(List<String> foodIds) async {
-    if (foodIds.isEmpty) return FResult.success([]);
+  Future<FResult<List<FFood>>> fetchFoodsByIds(List<String> foodIds,
+      [FFood? food, int limit = 10]) async {
+    assert(limit <= 10);
+    if (foodIds.isEmpty) return FResult.success(const <FFood>[]);
 
-    final batches = <FFood>[];
+    foodIds = foodIds..sort((a, b) => a.compareTo(b));
 
-    List<List<String>> subList = [];
-    for (var i = 0; i < foodIds.length; i += 10) {
-      subList.add(
-        foodIds.sublist(i, i + 10 > foodIds.length ? foodIds.length : i + 10),
-      );
+    late final int startIndex;
+    if (food == null) {
+      startIndex = 0;
+    } else {
+      startIndex = foodIds.indexOf(food.id) + 1;
     }
 
+    final subList =
+        foodIds.sublist(startIndex, min(startIndex + limit, foodIds.length));
+
+    if (subList.isEmpty) return FResult.success(const <FFood>[]);
+
     try {
-      for (var sub in subList) {
-        final query = await ref.where('id', whereIn: sub).get();
-        batches.addAll(query.docs.map((e) => e.data()));
-      }
-      return FResult.success(batches);
+      final query = await ref.where('id', whereIn: subList).get();
+      return FResult.success(query.docs.map((e) => e.data()).toList()
+        ..sort(
+          (a, b) => a.id.compareTo(b.id),
+        ));
     } catch (e) {
       return FResult.exception(e);
     }
