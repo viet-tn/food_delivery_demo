@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../utils/page_arguments/view_more_food_argument.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,6 +39,7 @@ import '../../repositories/restaurants/restaurant_model.dart';
 import '../../repositories/users/coordinate.dart';
 import '../../repositories/users/user_model.dart';
 import '../../utils/helpers/refresh_stream.dart';
+import '../../utils/page_arguments/view_more_food_argument.dart';
 import '../../utils/services/shared_preferences.dart';
 import '../../utils/ui/scaffold_with_bottom_nav_bar.dart';
 import '../../widgets/congrats_screen.dart';

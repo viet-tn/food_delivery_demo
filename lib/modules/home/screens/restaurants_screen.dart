@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../cubits/app/app_cubit.dart';
-import '../../../repositories/restaurants/restaurant_model.dart';
-import '../../../utils/ui/loading/restaurant_card_loading.dart';
 
 import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/ui_parameters.dart';
+import '../../../repositories/restaurants/restaurant_model.dart';
+import '../../../utils/ui/loading/restaurant_card_loading.dart';
 import '../../../utils/ui/scaffold.dart';
 import '../../../widgets/app_bar.dart';
+import '../../cubits/app/app_cubit.dart';
 import '../widgets/restaurant_card.dart';
 import 'cubit/view_more_cubit.dart';
 

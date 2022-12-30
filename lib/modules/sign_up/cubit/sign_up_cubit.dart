@@ -33,7 +33,7 @@ class SignUpCubit extends FCubit<SignUpState> {
     emit(state.copyWith(email: EmailInput.dirty(value)));
   }
 
-  void onChangePaswword(String value) {
+  void onChangePassword(String value) {
     emit(state.copyWith(password: SignUpPasswordInput.dirty(value)));
   }
 

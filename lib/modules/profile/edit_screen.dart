@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../order/cubit/orders_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../constants/ui/sizes.dart';
@@ -15,6 +16,8 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/gradient_button.dart';
 import '../../widgets/dialogs/dialog.dart';
 import '../cubits/app/app_cubit.dart';
+import '../login/cubit/login_cubit.dart';
+import '../sign_up/cubit/sign_up_cubit.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -157,12 +160,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _onDeleteAccountPressed() async {
     await showDialog(
       context: context,
-      builder: (_) {
+      builder: (context) {
         return FAlertDialog(
           title: 'Are you sure you wan to delete account forever !',
           onYesPressed: () {
             Navigator.pop(context);
-            GetIt.I<AppCubit>().deleteUserFromDatabase();
+            context.read<AppCubit>().deleteUserFromDatabase(
+              onSignOutSuccessfully: () {
+                context.read<SignUpCubit>().emit(const SignUpState());
+                context.read<LoginCubit>().emit(const LoginState());
+                context.read<OrdersCubit>().emit(const OrdersState());
+              },
+            );
           },
         );
       },

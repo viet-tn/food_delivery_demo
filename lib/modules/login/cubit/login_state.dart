@@ -2,7 +2,7 @@ part of 'login_cubit.dart';
 
 class LoginState extends FState {
   const LoginState({
-    super.status,
+    super.status = ScreenStatus.value,
     super.errorMessage,
     this.user = FUser.empty,
     this.email = const EmailInput.pure(),

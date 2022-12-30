@@ -1,5 +1,4 @@
 import '../../modules/home/screens/cubit/view_more_cubit.dart';
-
 import '../../repositories/food/food_model.dart';
 
 class ViewMoreFoodsArgument {

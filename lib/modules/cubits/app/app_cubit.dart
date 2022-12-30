@@ -13,9 +13,7 @@ import '../../../repositories/users/user_model.dart';
 import '../../../repositories/users/user_repository.dart';
 import '../../../utils/services/notification_service.dart';
 import '../../home/cubit/home_cubit.dart';
-import '../../login/cubit/login_cubit.dart';
 import '../../order/model/order.dart';
-import '../../sign_up/cubit/sign_up_cubit.dart';
 
 part 'app_state.dart';
 
@@ -46,13 +44,13 @@ class AppCubit extends FCubit<AppState> {
         user.coordinates.first.latitude, user.coordinates.first.longitude);
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut({required void Function() onSignOutSuccessfully}) async {
     emitLoading();
-    await _authRepository.signOut();
-    emit(const AppState());
-    GetIt.I<SignUpCubit>().emit(const SignUpState());
-    GetIt.I<LoginCubit>().emit(
-      GetIt.I<LoginCubit>().state.copyWith(user: FUser.empty),
+    _authRepository.signOut().then(
+      (_) {
+        emit(const AppState());
+        onSignOutSuccessfully();
+      },
     );
   }
 
@@ -84,13 +82,14 @@ class AppCubit extends FCubit<AppState> {
     emitValue(state.copyWith(user: result.data!));
   }
 
-  void deleteUserFromDatabase() {
+  void deleteUserFromDatabase(
+      {required void Function() onSignOutSuccessfully}) {
     _authRepository.deleteUser().then((value) {
       if (value.isError) {
         emitError(value.error!);
         return;
       }
-      signOut();
+      signOut(onSignOutSuccessfully: onSignOutSuccessfully);
     });
     if (!state.status.hasError) {
       _userRepository.delete(state.user!.id);

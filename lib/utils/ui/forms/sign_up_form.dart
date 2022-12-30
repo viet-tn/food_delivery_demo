@@ -49,7 +49,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 prefixIcon: Image.asset(Assets.icons.lock.path),
                 obscureText: true,
                 onChanged: (value) =>
-                    context.read<SignUpCubit>().onChangePaswword(value),
+                    context.read<SignUpCubit>().onChangePassword(value),
                 validator: (value) => state.password.valid
                     ? null
                     : state.password.error!.toErrorText(),

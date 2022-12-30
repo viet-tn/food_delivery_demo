@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../home/screens/cubit/view_more_cubit.dart';
-import '../../../repositories/restaurants/restaurant_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,7 +6,9 @@ import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../repositories/food/food_model.dart';
+import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../utils/page_arguments/view_more_food_argument.dart';
+import '../../home/screens/cubit/view_more_cubit.dart';
 import 'brief_food_card.dart';
 
 class PopularBriefFoodSection extends StatelessWidget {
