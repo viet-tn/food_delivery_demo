@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/ui.dart';
 import '../../../widgets/buttons/gradient_button.dart';
+import '../../chat/widgets/loading_indicator.dart';
 
 class AddToCartButton extends StatelessWidget {
   const AddToCartButton({
@@ -27,7 +28,7 @@ class AddToCartButton extends StatelessWidget {
         width: double.infinity,
         gradient: FColors.linearGradient,
         child: isLoading
-            ? const CircularProgressIndicator()
+            ? const FLoadingIndicator()
             : Text(
                 isAdded ? 'Go To Cart' : 'Add To Cart',
                 style: FTextStyles.button.copyWith(fontSize: 18.0),

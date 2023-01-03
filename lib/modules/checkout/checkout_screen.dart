@@ -75,7 +75,7 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Sizes.orderInforGapH,
+                      Sizes.orderInformationGapH,
                     ],
                   ),
                 ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../config/routes/coordinator.dart';
-import '../../../constants/ui/ui_parameters.dart';
+import '../../../constants/ui/ui.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../utils/ui/loading/restaurant_card_loading.dart';
 import '../../../utils/ui/scaffold.dart';
@@ -135,7 +136,11 @@ class _RestaurantsListView extends StatelessWidget {
                       ),
                     )..addAll(isLoading
                         ? List.generate(
-                            5, (index) => const RestaurantCardLoading())
+                            5,
+                            (index) => const Shimmer(
+                                gradient: FColors.shimmerGradient,
+                                child: RestaurantCardLoading()),
+                          )
                         : []),
                   ],
                 ),

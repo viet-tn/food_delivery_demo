@@ -9,6 +9,7 @@ import '../../utils/ui/listen_error.dart';
 import '../../utils/ui/network_image.dart';
 import '../../utils/ui/scrollable_screen_with_background.dart';
 import '../../widgets/buttons/logout_button.dart';
+import '../chat/widgets/loading_indicator.dart';
 import '../cubits/app/app_cubit.dart';
 import '../cubits/favorite/favorite_cubit.dart';
 import 'widgets/widgets.dart';
@@ -32,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
             if (state.status.isLoading) {
               return const SafeArea(
                 child: Scaffold(
-                  body: Center(child: CircularProgressIndicator()),
+                  body: Center(child: FLoadingIndicator()),
                 ),
               );
             }
@@ -59,8 +60,8 @@ class ProfileScreen extends StatelessWidget {
                     name: '${state.user!.firstName} ${state.user!.lastName}',
                     email: state.user!.email!,
                   ),
-                  gapH12,
-                  const VoucherCountSection(),
+                  // gapH12,
+                  // const VoucherCountSection(),
                   gapH24,
                   const Text(
                     'Favorite',

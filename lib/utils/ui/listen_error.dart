@@ -24,7 +24,10 @@ class ListenError<C extends FCubit> extends StatelessWidget {
       listenWhen: (_, current) => current.status.hasError,
       listener: (_, state) {
         log(state.errorMessage ?? '');
-        FSnackBar.showSnackBar(state.errorMessage);
+        FSnackBar.showSnackBar(
+          'On Snap!',
+          state.errorMessage ?? 'An unknown error occurred!',
+        );
       },
       child: child,
     );

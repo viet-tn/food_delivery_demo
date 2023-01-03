@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../chat/widgets/loading_indicator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -50,7 +51,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         ),
         builder: (context, state) {
           return FScaffold(
-            bottomNavigationBar:
+            centerBottomButton:
                 state.whenOrNull(loadSuccess: (order, _, restaurant) {
               if (order.status == OrderStatus.placed ||
                   order.status == OrderStatus.onTheWay) {
@@ -83,6 +84,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             ),
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.red),
+                              backgroundColor: Colors.white,
                             ),
                             child: Text(
                               'Cancel Order',
@@ -129,8 +131,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       builder: (context, state) {
                         return state.when(
                           loading: () => const Center(
-                            child:
-                                CircularProgressIndicator(color: FColors.green),
+                            child: FLoadingIndicator(),
                           ),
                           loadFailure: (message) => Center(
                             child: Column(

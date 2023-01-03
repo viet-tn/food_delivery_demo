@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../constants/app_constants.dart';
-import '../../constants/ui/colors.dart';
 import '../../constants/ui/sizes.dart';
 import '../../constants/ui/text_style.dart';
 import '../../gen/assets.gen.dart';
@@ -17,6 +16,7 @@ import '../../widgets/chips/category_chip.dart';
 import '../../widgets/dialogs/dialog.dart';
 import '../../widgets/testimonial_section.dart';
 import '../cart/cubit/cart_cubit.dart';
+import '../chat/widgets/loading_indicator.dart';
 import '../cubits/favorite/favorite_cubit.dart';
 import 'cubit/food_cubit.dart';
 import 'widgets/add_to_cart_button.dart';
@@ -48,12 +48,13 @@ class _FoodScreenState extends State<FoodScreen> {
     return BlocProvider(
       create: (_) => _foodCubit,
       child: BlocBuilder<FoodCubit, FoodState>(
-        buildWhen: (previous, current) => previous.food != current.food,
+        buildWhen: (previous, current) =>
+            previous.food != current.food || previous.star != current.star,
         builder: (_, state) {
           return state.food.when(
             error: (message, _) => Text(message),
             loading: (_) => const Center(
-              child: CircularProgressIndicator(),
+              child: FLoadingIndicator(),
             ),
             empty: (_) => const SizedBox(),
             data: (food) => ScrollableScreenWithBackground(
@@ -102,14 +103,14 @@ class _FoodScreenState extends State<FoodScreen> {
                             CategoryChip(
                                 text: food.category.foodCategoryProcessor()),
                             const Spacer(),
-                            FIconButton(
-                              onTap: () {},
-                              icon: Image.asset(
-                                Assets.icons.locationPin.path,
-                                fit: BoxFit.contain,
-                              ),
-                              color: FColors.lightGreen.withOpacity(.2),
-                            ),
+                            // FIconButton(
+                            //   onTap: () {},
+                            //   icon: Image.asset(
+                            //     Assets.icons.locationPin.path,
+                            //     fit: BoxFit.contain,
+                            //   ),
+                            //   color: FColors.lightGreen.withOpacity(.2),
+                            // ),
                             gapW8,
                             BlocBuilder<FavoriteCubit, FavoriteState>(
                               buildWhen: (previous, current) =>
@@ -171,7 +172,7 @@ class _FoodScreenState extends State<FoodScreen> {
                         previous.star != current.star,
                     builder: (context, state) => state.star.when(
                       error: (message, _) => Text(message),
-                      loading: (_) => const CircularProgressIndicator(),
+                      loading: (_) => const FLoadingIndicator(),
                       empty: (_) => const Text('Empty'),
                       data: (star) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -188,7 +189,7 @@ class _FoodScreenState extends State<FoodScreen> {
                       builder: (context, state) {
                         return state.ratings.when(
                           loading: (_) =>
-                              const Center(child: CircularProgressIndicator()),
+                              const Center(child: FLoadingIndicator()),
                           error: (message, _) => Center(
                             child: Column(
                               children: [
