@@ -17,7 +17,6 @@ import '../../widgets/buttons/gradient_button.dart';
 import '../../widgets/dialogs/dialog.dart';
 import '../cubits/app/app_cubit.dart';
 import '../login/cubit/login_cubit.dart';
-import '../order/cubit/orders_cubit.dart';
 import '../sign_up/cubit/sign_up_cubit.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -170,7 +169,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               onSignOutSuccessfully: () {
                 context.read<SignUpCubit>().emit(const SignUpState());
                 context.read<LoginCubit>().emit(const LoginState());
-                context.read<OrdersCubit>().emit(const OrdersState());
               },
             );
           },

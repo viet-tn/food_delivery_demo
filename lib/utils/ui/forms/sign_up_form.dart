@@ -78,6 +78,7 @@ class _SignUpFormState extends State<SignUpForm> {
               gapH32,
               GradientButton(
                 onPressed: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   if (_formKey.currentState!.validate()) {
                     widget.onSubmittedCreateAccount
                         ?.call(state.email.value, state.password.value);

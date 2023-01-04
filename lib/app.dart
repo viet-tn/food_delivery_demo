@@ -62,7 +62,8 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: BlocListener<AppCubit, AppState>(
-        listenWhen: (_, current) => current.user != null,
+        listenWhen: (_, current) =>
+            current.user != null && current.status.hasValue,
         listener: (context, state) {
           if (GetIt.I.isRegistered<OrderRepository>()) {
             GetIt.I.unregister<OrderRepository>();
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
           }
 
           context.read<OrdersCubit>().fetchNew();
+          context.read<FavoriteCubit>().fetchFavoriteList();
         },
         child: MaterialApp.router(
           scaffoldMessengerKey: messengerKey,

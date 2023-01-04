@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
@@ -14,21 +15,18 @@ part 'orders_state.dart';
 
 class OrdersCubit extends FCubit<OrdersState> {
   OrdersCubit({
-    required OrderRepository orderRepository,
     required RestaurantRepository restaurantRepository,
     required UserRepository userRepository,
-  })  : _orderRepository = orderRepository,
-        _restaurantRepository = restaurantRepository,
+  })  : _restaurantRepository = restaurantRepository,
         _userRepository = userRepository,
         super(const OrdersState());
 
-  final OrderRepository _orderRepository;
   final RestaurantRepository _restaurantRepository;
   final UserRepository _userRepository;
 
   void fetchNew() async {
     emitLoading();
-    final ordersResult = await _orderRepository.fetchAllOrders();
+    final ordersResult = await GetIt.I<OrderRepository>().fetchAllOrders();
 
     if (ordersResult.isError) {
       emitError(ordersResult.error!);
@@ -86,7 +84,7 @@ class OrdersCubit extends FCubit<OrdersState> {
 
   void createOrder({required FOrder newOrder}) async {
     final List<FResult> responses = await Future.wait([
-      _orderRepository.create(newOrder),
+      GetIt.I<OrderRepository>().create(newOrder),
       _restaurantRepository.getById(newOrder.cart.restaurantId!),
     ]);
 
@@ -110,7 +108,7 @@ class OrdersCubit extends FCubit<OrdersState> {
 
   void onOrderCancelledOrDelivered(FOrder update,
       {required void Function() onUpdateSucceeded}) async {
-    final result = await _orderRepository.set(update);
+    final result = await GetIt.I<OrderRepository>().set(update);
 
     if (result.isError) {
       emitError(result.error!);

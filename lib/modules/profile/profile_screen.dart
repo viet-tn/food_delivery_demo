@@ -30,13 +30,14 @@ class ProfileScreen extends StatelessWidget {
               previous.status != current.status ||
               previous.user != current.user,
           builder: (_, state) {
-            if (state.status.isLoading) {
+            if (state.status.isLoading || state.user == null) {
               return const SafeArea(
                 child: Scaffold(
                   body: Center(child: FLoadingIndicator()),
                 ),
               );
             }
+
             return ScrollableScreenWithBackground(
               padding: Ui.screenPadding,
               backgroundImage: FNetworkImage(

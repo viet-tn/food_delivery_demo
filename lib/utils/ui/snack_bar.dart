@@ -21,7 +21,7 @@ class FSnackBar {
     );
 
     MyApp.messengerKey.currentState!
-      ..hideCurrentSnackBar()
+      ..removeCurrentSnackBar()
       ..showSnackBar(snackBar);
   }
 
@@ -49,7 +49,7 @@ class FSnackBar {
     );
 
     MyApp.messengerKey.currentState!
-      ..hideCurrentMaterialBanner()
+      ..removeCurrentMaterialBanner()
       ..showMaterialBanner(materialBanner);
   }
 }

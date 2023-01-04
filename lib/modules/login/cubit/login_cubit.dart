@@ -118,7 +118,7 @@ class LoginCubit extends FCubit<LoginState> {
     log('login_cubit/_authenticatedHandler/${currentUser.email}');
     final dbUser = await fetchUserFromDB(currentUser.id);
 
-    // Null means logined but not yet store user in firestore
+    // Null means logged in but not yet store user in firestore
     if (dbUser == null) {
       // Just add new user doc in firestore
       final setResult = await _userRepository.set(currentUser);

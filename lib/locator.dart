@@ -189,25 +189,22 @@ Future<void> _locator() async {
   );
 
   GetIt.I.registerFactory<PaymentCubit>(
-    () => PaymentCubit(
-      GetIt.I<PaymentRepository>(),
-    ),
+    () => PaymentCubit(),
   );
 
-  GetIt.I.registerFactory<FavoriteCubit>(
+  GetIt.I.registerLazySingleton<FavoriteCubit>(
     () => FavoriteCubit(
       uid: GetIt.I<AppCubit>().state.user!.id,
       favoriteListRepository: DomainManager().favoriteListRepository,
       foodRepository: DomainManager().foodRepository,
-    )..fetchFavoriteList(),
+    ),
   );
 
   GetIt.I.registerFactory<OrdersCubit>(
     () => OrdersCubit(
-      orderRepository: GetIt.I<OrderRepository>(),
       restaurantRepository: DomainManager().restaurantRepository,
       userRepository: DomainManager().userRepository,
-    )..fetchNew(),
+    ),
   );
 
   GetIt.I.registerFactory<OrderDetailsCubit>(

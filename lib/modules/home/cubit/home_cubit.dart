@@ -76,7 +76,7 @@ class HomeCubit extends FCubit<HomeState> {
       return emitError(result.error!);
     }
     return emit(state.copyWith(
-      foods: [...state.foods, ...result.data!],
+      foods: result.data!,
     ));
   }
 }

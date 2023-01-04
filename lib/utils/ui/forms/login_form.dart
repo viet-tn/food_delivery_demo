@@ -67,6 +67,7 @@ class _LoginFormState extends State<LoginForm> {
               GradientButton(
                 width: double.infinity,
                 onPressed: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   if (_formKey.currentState!.validate()) {
                     widget.onSubmittedEmailAndPassword
                         ?.call(state.email.value, state.password.value);

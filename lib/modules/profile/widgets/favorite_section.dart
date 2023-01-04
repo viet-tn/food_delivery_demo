@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_delivery/modules/chat/widgets/dismissible.dart';
-import 'package:food_delivery/modules/cubits/favorite/favorite_cubit.dart';
+import '../../chat/widgets/dismissible.dart';
+import '../../cubits/favorite/favorite_cubit.dart';
 
 import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/colors.dart';
