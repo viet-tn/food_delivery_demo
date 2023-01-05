@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -16,7 +17,6 @@ import '../../widgets/buttons/gradient_button.dart';
 import '../../widgets/dialogs/dialog.dart';
 import '../cubits/app/app_cubit.dart';
 import '../login/cubit/login_cubit.dart';
-import '../order/cubit/orders_cubit.dart';
 import '../sign_up/cubit/sign_up_cubit.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -169,7 +169,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               onSignOutSuccessfully: () {
                 context.read<SignUpCubit>().emit(const SignUpState());
                 context.read<LoginCubit>().emit(const LoginState());
-                context.read<OrdersCubit>().emit(const OrdersState());
               },
             );
           },
@@ -226,8 +225,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _appCubit.updateUserState(update);
     await _appCubit.updateUserToDatabase(_imgUrl);
     FSnackBar.showSnackBar(
-      'Saved',
-      Colors.black87,
+      'Success',
+      'Your profile update successfully!',
+      contentType: ContentType.success,
     );
   }
 }

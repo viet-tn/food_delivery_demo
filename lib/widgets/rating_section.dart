@@ -34,7 +34,7 @@ class RatingSection extends StatelessWidget {
                 ),
               ],
             ),
-            gapW32,
+            gapW20,
           ],
         ),
       ),

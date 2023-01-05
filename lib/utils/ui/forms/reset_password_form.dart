@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
+import '../../../modules/chat/widgets/loading_indicator.dart';
 import '../../../widgets/buttons/gradient_button.dart';
 import '../../../widgets/textfield/text_field.dart';
 
@@ -53,7 +54,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                   }
                 },
           child: widget.isLoading
-              ? const CircularProgressIndicator()
+              ? const FLoadingIndicator()
               : const Text(
                   'Send Instructions',
                   style: FTextStyles.button,

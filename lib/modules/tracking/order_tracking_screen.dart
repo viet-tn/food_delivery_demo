@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../constants/ui/colors.dart';
 import '../../gen/assets.gen.dart';
 import '../../repositories/users/coordinate.dart';
+import '../chat/widgets/loading_indicator.dart';
 import 'cubit/order_tracking_cubit.dart';
 
 class OrderTrackingScreen extends StatefulWidget {
@@ -60,7 +61,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 current.polylinesCoordinates.length,
             builder: (context, state) {
               if (state.status.isLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(child: FLoadingIndicator());
               }
               return GoogleMap(
                 polylines: {

@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../base/async_state.dart';
-import '../../../repositories/notification/notification_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../base/async_state.dart';
 import '../../../repositories/notification/notification.dart';
+import '../../../repositories/notification/notification_repository.dart';
 
-part 'notification_state.dart';
 part 'notification_cubit.freezed.dart';
+part 'notification_state.dart';
 
 class NotificationCubit extends Cubit<NotificationState> {
   NotificationCubit(this._notificationRepository)

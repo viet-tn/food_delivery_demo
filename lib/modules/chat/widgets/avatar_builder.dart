@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../repositories/domain_manager.dart';
 import '../../../utils/ui/network_image.dart';
+import 'loading_indicator.dart';
 
 class AvatarBuilder extends StatelessWidget {
   const AvatarBuilder({
@@ -27,7 +28,7 @@ class AvatarBuilder extends StatelessWidget {
           );
         }
         return const Center(
-          child: CircularProgressIndicator(),
+          child: FLoadingIndicator(),
         );
       },
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../config/routes/coordinator.dart';
 import '../constants/ui/sizes.dart';
+import '../modules/chat/widgets/loading_indicator.dart';
 import '../modules/home/widgets/food_card.dart';
 import '../repositories/food/food_model.dart';
 
@@ -44,7 +45,7 @@ class FoodListView extends StatelessWidget {
                 ? const Center(
                     child: Padding(
                       padding: EdgeInsets.all(20.0),
-                      child: CircularProgressIndicator(),
+                      child: FLoadingIndicator(),
                     ),
                   )
                 : const SizedBox(),

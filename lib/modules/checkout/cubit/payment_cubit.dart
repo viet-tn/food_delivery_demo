@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
@@ -11,13 +12,10 @@ import '../../../repositories/payment/payment_repository.dart';
 part 'payment_state.dart';
 
 class PaymentCubit extends FCubit<PaymentState> {
-  PaymentCubit(
-    this._paymentRepository,
-  ) : super(
+  PaymentCubit()
+      : super(
           const PaymentState(status: ScreenStatus.value),
         );
-
-  final PaymentRepository _paymentRepository;
 
   /// amount: dollar
   void onCheckoutPressed(int amount,
@@ -25,7 +23,7 @@ class PaymentCubit extends FCubit<PaymentState> {
     emitLoading();
 
     late StreamSubscription subscription;
-    subscription = _paymentRepository
+    subscription = GetIt.I<PaymentRepository>()
         .createCheckoutSession(
           FPayment(
             amount: amount,

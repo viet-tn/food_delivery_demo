@@ -52,7 +52,7 @@ class OrderTrackingCubit extends FCubit<OrderTrackingState> {
 
   void onMapCreated(GoogleMapController controller,
       {required void Function() onOrderDelivered}) async {
-    // Simulate delivery proccess by periodicly remove first point of
+    // Simulate delivery process by periodically remove first point of
     // polylinesCoordinates
     timer?.cancel();
     timer = Timer.periodic(
@@ -87,7 +87,7 @@ List<LatLng> _polylineGenerator(List<LatLng> src) {
   var threshHold = 1e-4; //m
   for (var i = 0; i < src.length - 1; i++) {
     result.add(src[i]);
-    final relativeDistance = _calulateRelativeDistance(src[i], src[i + 1]);
+    final relativeDistance = _calculateRelativeDistance(src[i], src[i + 1]);
     if (relativeDistance > threshHold) {
       result.add(_calculateCenter(src[i], src[i + 1]));
     }
@@ -96,7 +96,7 @@ List<LatLng> _polylineGenerator(List<LatLng> src) {
   return result;
 }
 
-double _calulateRelativeDistance(
+double _calculateRelativeDistance(
   LatLng p1,
   LatLng p2,
 ) {

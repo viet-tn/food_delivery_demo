@@ -50,12 +50,9 @@ class AppCubit extends FCubit<AppState> {
 
   Future<void> signOut({required void Function() onSignOutSuccessfully}) async {
     emitLoading();
-    _authRepository.signOut().then(
-      (_) {
-        emit(const AppState());
-        onSignOutSuccessfully();
-      },
-    );
+    await _authRepository.signOut();
+    emitValue(const AppState());
+    onSignOutSuccessfully();
   }
 
   void updateUserState(FUser user) {

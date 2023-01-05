@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +25,11 @@ class VerificationScreen extends StatelessWidget {
             await context.read<SignUpCubit>().onOtpPhoneConfirm(otp,
                 onOtpPassed: FCoordinator.showUploadPhotoScreen);
           } else {
-            FSnackBar.showSnackBar('Please enter valid OTP');
+            FSnackBar.showSnackBar(
+              'Oh Hey!!',
+              'Please enter valid OTP',
+              contentType: ContentType.warning,
+            );
           }
         },
         title: 'Enter $otpLetterCount-digit Verification code',

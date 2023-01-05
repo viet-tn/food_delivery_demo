@@ -192,6 +192,7 @@ class OrderDetailsView extends StatelessWidget {
                 ],
               ),
               gapH12,
+              Sizes.navBarGapH,
             ],
           )
         ],

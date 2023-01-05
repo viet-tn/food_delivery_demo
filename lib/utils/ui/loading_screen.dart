@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+
+import '../../gen/assets.gen.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({
@@ -19,9 +22,9 @@ class LoadingScreen extends StatelessWidget {
           child,
           isLoading
               ? Container(
-                  color: Colors.grey.withOpacity(.5),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
+                  color: Colors.black.withOpacity(.3),
+                  child: Center(
+                    child: Lottie.asset(Assets.lotties.loadingWhite),
                   ),
                 )
               : const SizedBox()

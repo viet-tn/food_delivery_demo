@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../config/routes/coordinator.dart';
+import '../../../constants/constants.dart';
 import '../../../repositories/food/food_model.dart';
 import '../../../utils/page_arguments/view_more_food_argument.dart';
 import '../../../utils/ui/loading/food_card_loading.dart';
@@ -98,7 +100,6 @@ class _FoodListView extends StatelessWidget {
     this.controller,
     this.foods,
     this.errorMessage,
-    // ignore: unused_element
     this.isLoading = false,
   });
 
@@ -134,7 +135,10 @@ class _FoodListView extends StatelessWidget {
                       4,
                       (_) => const Padding(
                             padding: cardPadding,
-                            child: FoodCardLoading(),
+                            child: Shimmer(
+                              gradient: FColors.shimmerGradient,
+                              child: FoodCardLoading(),
+                            ),
                           ))
                   : [const SizedBox()]),
               errorMessage == null ? const SizedBox() : Text(errorMessage!)

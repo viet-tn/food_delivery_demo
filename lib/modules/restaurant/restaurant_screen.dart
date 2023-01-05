@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../constants/app_constants.dart';
-import '../../constants/ui/colors.dart';
 import '../../constants/ui/sizes.dart';
 import '../../constants/ui/text_style.dart';
 import '../../gen/assets.gen.dart';
@@ -12,9 +11,9 @@ import '../../repositories/restaurants/restaurant_model.dart';
 import '../../utils/ui/loading/restaurant_list_loading.dart';
 import '../../utils/ui/network_image.dart';
 import '../../utils/ui/scrollable_screen_with_background.dart';
-import '../../widgets/buttons/icon_button.dart';
 import '../../widgets/chips/category_chip.dart';
 import '../../widgets/testimonial_section.dart';
+import '../chat/widgets/loading_indicator.dart';
 import '../home/screens/cubit/view_more_cubit.dart';
 import 'cubit/restaurant_cubit.dart';
 import 'widgets/popular_brief_food_section.dart';
@@ -61,23 +60,14 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const CategoryChip(text: 'Popular'),
-                            const Spacer(),
-                            FIconButton(
-                              onTap: () {},
-                              icon: Image.asset(
-                                Assets.icons.locationPin.path,
-                                fit: BoxFit.contain,
-                              ),
-                              color: FColors.lightGreen.withOpacity(.2),
+                            Text(
+                              restaurant.name,
+                              style: FTextStyles.heading1,
                             ),
+                            const CategoryChip(text: 'Popular'),
                           ],
-                        ),
-                        gapH20,
-                        Text(
-                          restaurant.name,
-                          style: FTextStyles.heading1,
                         ),
                         gapH20,
                         RestaurantRating(
@@ -125,7 +115,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     builder: (context, state) => state.star.when(
                       error: (message, _) => Text(message),
                       loading: (_) => const Center(
-                        child: CircularProgressIndicator(),
+                        child: FLoadingIndicator(),
                       ),
                       empty: (_) => const Text('Empty'),
                       data: (star) => Padding(
@@ -142,7 +132,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     builder: (context, state) => state.ratings.when(
                       error: (message, _) => Text(message),
                       loading: (_) => const Center(
-                        child: CircularProgressIndicator(),
+                        child: FLoadingIndicator(),
                       ),
                       empty: (_) => Center(
                         child: SizedBox.square(

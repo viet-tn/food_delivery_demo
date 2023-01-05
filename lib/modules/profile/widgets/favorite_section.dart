@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../chat/widgets/dismissible.dart';
+import '../../cubits/favorite/favorite_cubit.dart';
 
 import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/colors.dart';
@@ -8,9 +11,7 @@ import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../repositories/food/food_model.dart';
-import '../../../utils/ui/card.dart';
 import '../../../utils/ui/network_image.dart';
-import '../../../widgets/buttons/gradient_button.dart';
 
 class FavoriteSection extends StatelessWidget {
   const FavoriteSection({
@@ -63,7 +64,8 @@ class _FavoriteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FCard(
+    return FDismissible(
+      onDismiss: () => context.read<FavoriteCubit>().toggleFavoriteList(food),
       onTap: () => FCoordinator.pushNamed(Routes.food.name, extra: food),
       child: Row(
         children: [
@@ -104,20 +106,6 @@ class _FavoriteCard extends StatelessWidget {
             ),
           ),
           gapW4,
-          SizedBox(
-            height: 30,
-            width: 70,
-            child: GradientButton(
-              onPressed: () {},
-              child: const Text(
-                'Buy Again',
-                style: TextStyle(
-                  fontSize: 12.0,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );

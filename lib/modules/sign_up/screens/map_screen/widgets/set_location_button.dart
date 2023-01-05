@@ -5,6 +5,7 @@ import '../../../../../constants/ui/text_style.dart';
 import '../../../../../constants/ui/ui_parameters.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../widgets/buttons/gradient_button.dart';
+import '../../../../chat/widgets/loading_indicator.dart';
 
 class SetLocationButton extends StatelessWidget {
   const SetLocationButton({
@@ -57,7 +58,7 @@ class SetLocationButton extends StatelessWidget {
             onPressed: isLoading ? null : onPressed,
             width: double.infinity,
             child: isLoading
-                ? const CircularProgressIndicator()
+                ? const FLoadingIndicator()
                 : const Text(
                     'Set Location',
                     style: FTextStyles.button,

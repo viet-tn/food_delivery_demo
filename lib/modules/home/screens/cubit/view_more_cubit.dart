@@ -37,6 +37,7 @@ class ViewMoreCubit extends Cubit<ViewMoreState> {
 
   void initViewMoreFood(List<FFood> foods) {
     emit(state.copyWith(foods: AsyncState.data(foods)));
+    fetchNextPopularFoodBatch();
   }
 
   void fetchNextNearestRestaurantBatch(Coordinate currentPosition) async {
@@ -109,7 +110,7 @@ class ViewMoreCubit extends Cubit<ViewMoreState> {
     state.foods.whenOrNull(
       data: (foods) async {
         emit(state.copyWith(foods: AsyncState.loading(foods)));
-        await Future.delayed(const Duration(seconds: 1));
+        await Future.delayed(const Duration(seconds: 10));
         final result = await _foodRepository.fetchPopularFoods(foods.last);
 
         _fetchFoodHandler(result, foods);

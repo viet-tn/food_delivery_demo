@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -37,7 +38,11 @@ class WriteReviewScreen extends StatelessWidget {
                 food.id,
                 food.restaurantId,
                 onReviewAddSuccessfully: () {
-                  FSnackBar.showSnackBar('Review Added', FColors.green);
+                  FSnackBar.showSnackBar(
+                    'Success',
+                    'Your review has been added successfully',
+                    contentType: ContentType.success,
+                  );
                   Navigator.pop(context);
                 },
               ),

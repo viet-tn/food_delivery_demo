@@ -151,6 +151,19 @@ class $AssetsImagesGen {
   $AssetsImagesVoucherGen get voucher => const $AssetsImagesVoucherGen();
 }
 
+class $AssetsLottiesGen {
+  const $AssetsLottiesGen();
+
+  /// File path: assets/lotties/loading_black.json
+  String get loadingBlack => 'assets/lotties/loading_black.json';
+
+  /// File path: assets/lotties/loading_white.json
+  String get loadingWhite => 'assets/lotties/loading_white.json';
+
+  /// List of all assets
+  List<String> get values => [loadingBlack, loadingWhite];
+}
+
 class $AssetsMapStylesGen {
   const $AssetsMapStylesGen();
 
@@ -168,16 +181,24 @@ class $AssetsMapStylesGen {
 class $AssetsImagesBannerGen {
   const $AssetsImagesBannerGen();
 
-  /// File path: assets/images/banner/banner.png
-  AssetGenImage get banner =>
-      const AssetGenImage('assets/images/banner/banner.png');
+  /// File path: assets/images/banner/banner_1.png
+  AssetGenImage get banner1 =>
+      const AssetGenImage('assets/images/banner/banner_1.png');
+
+  /// File path: assets/images/banner/banner_2.png
+  AssetGenImage get banner2 =>
+      const AssetGenImage('assets/images/banner/banner_2.png');
+
+  /// File path: assets/images/banner/banner_3.png
+  AssetGenImage get banner3 =>
+      const AssetGenImage('assets/images/banner/banner_3.png');
 
   /// File path: assets/images/banner/price_info.png
   AssetGenImage get priceInfo =>
       const AssetGenImage('assets/images/banner/price_info.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [banner, priceInfo];
+  List<AssetGenImage> get values => [banner1, banner2, banner3, priceInfo];
 }
 
 class $AssetsImagesIllustrationsGen {
@@ -263,6 +284,7 @@ class Assets {
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsLottiesGen lotties = $AssetsLottiesGen();
   static const $AssetsMapStylesGen mapStyles = $AssetsMapStylesGen();
 }
 

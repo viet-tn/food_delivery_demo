@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../repositories/chat/messages/message_model.dart';
 import 'bubble_message.dart';
+import 'loading_indicator.dart';
 
 class ChatDetailContents extends StatelessWidget {
   const ChatDetailContents({
@@ -24,7 +25,7 @@ class ChatDetailContents extends StatelessWidget {
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(
-            child: CircularProgressIndicator(),
+            child: FLoadingIndicator(),
           )
         : Padding(
             padding: const EdgeInsets.only(top: 12.0),

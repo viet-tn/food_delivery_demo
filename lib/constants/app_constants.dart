@@ -28,3 +28,9 @@ const restaurantDescription =
     'Most whole Alaskan Red King Crabs get broken down into legs, claws, and lump meat. We offer all of these options as well in our online shop, but there is nothing like getting the whole...';
 
 final vouchers = Assets.images.voucher.values.map((e) => e.path);
+
+final banners = <String>[
+  Assets.images.banner.banner1.path,
+  Assets.images.banner.banner2.path,
+  Assets.images.banner.banner3.path,
+];

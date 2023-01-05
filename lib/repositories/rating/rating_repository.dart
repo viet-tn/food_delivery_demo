@@ -90,8 +90,7 @@ class RatingRepository extends BaseCollectionReference<FRating> {
       var documentSnapshot = await ratingCountRef.get();
 
       if (!documentSnapshot.exists) {
-        await ratingCountRef
-            .set({item.foodId: const FStar().increment(item.rate).toJson()});
+        await ratingCountRef.set({item.foodId: const FStar().toJson()});
         documentSnapshot = await ratingCountRef.get();
       }
 
