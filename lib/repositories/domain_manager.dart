@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 
 import 'auth/auth_repository.dart';
@@ -18,6 +20,9 @@ import 'maps/geocoding/geocoding_repository.dart';
 import 'maps/geocoding/google_geocoding_repository.dart';
 import 'maps/search/google_places_search_repository.dart';
 import 'maps/search/places_search_repository.dart';
+import 'notification/notification_repository.dart';
+import 'rating/rating_repository.dart';
+import 'rating/star/star_count_repository.dart';
 import 'restaurants/restaurant_repository.dart';
 import 'restaurants/restaurant_repository_impl.dart';
 import 'search/algolia_search_repository.dart';
@@ -39,6 +44,14 @@ class DomainManager {
     cloudStorage = const FirebaseCloudStorage();
     geocodingRepository = GoogleGeocodingRepository(GetIt.I());
     placesSearchRepository = GooglePlacesSearchRepository(GetIt.I());
+    notificationRepository = NotificationRepository(
+      FirebaseMessaging.instance,
+      FirebaseFirestore.instance,
+    );
+    ratingRepository = RatingRepository(
+      FirebaseFirestore.instance,
+    );
+    starCountRepository = StarCountRepository(FirebaseFirestore.instance);
   }
   static final DomainManager _instance = DomainManager._();
 
@@ -58,4 +71,7 @@ class DomainManager {
   late CloudStorage cloudStorage;
   late GeocodingRepository geocodingRepository;
   late PlacesSearchRepository placesSearchRepository;
+  late NotificationRepository notificationRepository;
+  late RatingRepository ratingRepository;
+  late StarCountRepository starCountRepository;
 }

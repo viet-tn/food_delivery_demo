@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../config/routes/coordinator.dart';
-import '../../../constants/constants.dart';
-import '../../../repositories/restaurants/restaurant_model.dart';
-import '../../../repositories/users/coordinate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../config/routes/coordinator.dart';
+import '../../../constants/constants.dart';
+import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../utils/ui/card.dart';
 import '../../../utils/ui/network_image.dart';
 import '../model/order.dart';
@@ -23,7 +22,8 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FCard(
-      onTap: () => context.goNamed(Routes.orderDetails.name, extra: order),
+      onTap: () => context
+          .goNamed(Routes.orderDetails.name, params: {'orderId': order.id!}),
       child: Row(
         children: [
           SizedBox.square(
@@ -87,43 +87,21 @@ class OrderCard extends StatelessWidget {
                       DateFormat('d MMM yyyy HH:mm').format(order.created),
                       style: FTextStyles.label.copyWith(color: Colors.grey),
                     ),
-                    order.isRunning
-                        ? SizedBox(
-                            height: 30.0,
-                            width: 100.0,
-                            child: OutlinedButton(
-                              onPressed: () => context.pushNamed(
-                                Routes.orderTracking.name,
-                                extra: <Coordinate>[
-                                  restaurant.coordinate,
-                                  order.userPosition,
-                                ],
-                              ),
-                              child: FittedBox(
-                                child: Text(
-                                  'Track Order',
-                                  style: FTextStyles.label.copyWith(
-                                    color: FColors.green,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Text.rich(
-                            TextSpan(
-                              text: 'Item: ',
-                              style: FTextStyles.body,
-                              children: [
-                                TextSpan(
-                                  text: '${order.cart.items.length}',
-                                  style: FTextStyles.label.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: FColors.green,
-                                  ),
-                                ),
-                              ],
+                    Text.rich(
+                      TextSpan(
+                        text: 'Item: ',
+                        style: FTextStyles.body,
+                        children: [
+                          TextSpan(
+                            text: '${order.cart.items.length}',
+                            style: FTextStyles.label.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: FColors.green,
                             ),
                           ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ],

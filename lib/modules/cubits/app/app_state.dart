@@ -9,6 +9,7 @@ class AppState extends FState {
     this.restaurant,
     this.shipper,
     this.deliveryTime,
+    this.hasNotification = false,
   });
 
   final FUser? user;
@@ -16,6 +17,7 @@ class AppState extends FState {
   final FRestaurant? restaurant;
   final FUser? shipper;
   final int? deliveryTime;
+  final bool hasNotification;
 
   @override
   List<Object?> get props => [
@@ -25,6 +27,7 @@ class AppState extends FState {
         restaurant,
         shipper,
         deliveryTime,
+        hasNotification,
       ];
 
   @override
@@ -36,6 +39,7 @@ class AppState extends FState {
     FRestaurant? restaurant,
     FUser? shipper,
     int? deliveryTime,
+    bool? hasNotification,
   }) {
     return AppState(
       status: status ?? this.status,
@@ -45,6 +49,7 @@ class AppState extends FState {
       restaurant: restaurant ?? this.restaurant,
       shipper: shipper ?? this.shipper,
       deliveryTime: deliveryTime ?? this.deliveryTime,
+      hasNotification: hasNotification ?? this.hasNotification,
     );
   }
 }

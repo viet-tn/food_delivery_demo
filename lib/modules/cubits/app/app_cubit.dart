@@ -1,18 +1,20 @@
+import 'dart:async';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/auth/auth_repository.dart';
 import '../../../repositories/cloud_storage/cloud_storage.dart';
-import '../../../repositories/maps/search/places_search_repository.dart';
+import '../../../repositories/notification/notification_repository.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
-import '../../../repositories/restaurants/restaurant_repository.dart';
 import '../../../repositories/users/user_model.dart';
 import '../../../repositories/users/user_repository.dart';
+import '../../../utils/services/notification_service.dart';
+import '../../../utils/services/shared_preferences.dart';
 import '../../home/cubit/home_cubit.dart';
-import '../../login/cubit/login_cubit.dart';
 import '../../order/model/order.dart';
-import '../../signup/cubit/sign_up_cubit.dart';
 
 part 'app_state.dart';
 
@@ -21,16 +23,23 @@ class AppCubit extends FCubit<AppState> {
     required CloudStorage cloudStorage,
     required UserRepository userRepository,
     required AuthRepository authRepository,
-    required RestaurantRepository restaurantRepository,
-    required PlacesSearchRepository placesSearchRepository,
+    required NotificationRepository notificationRepository,
   })  : _cloudStorage = cloudStorage,
         _userRepository = userRepository,
         _authRepository = authRepository,
-        super(const AppState());
+        super(AppState(
+          hasNotification: GetIt.I<FSharedPreferences>().hasNotification,
+        )) {
+    _notificationSubscription = FirebaseMessaging.onMessage.listen((message) {
+      showFlutterNotification(message);
+      markUnreadNotification();
+    });
+  }
 
   final CloudStorage _cloudStorage;
   final UserRepository _userRepository;
   final AuthRepository _authRepository;
+  late final StreamSubscription _notificationSubscription;
 
   void init(FUser user) async {
     emitValue(state.copyWith(user: user));
@@ -39,13 +48,13 @@ class AppCubit extends FCubit<AppState> {
         user.coordinates.first.latitude, user.coordinates.first.longitude);
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut({required void Function() onSignOutSuccessfully}) async {
     emitLoading();
-    await _authRepository.signOut();
-    emit(const AppState());
-    GetIt.I<SignUpCubit>().emit(const SignUpState());
-    GetIt.I<LoginCubit>().emit(
-      GetIt.I<LoginCubit>().state.copyWith(user: FUser.empty),
+    _authRepository.signOut().then(
+      (_) {
+        emit(const AppState());
+        onSignOutSuccessfully();
+      },
     );
   }
 
@@ -77,13 +86,14 @@ class AppCubit extends FCubit<AppState> {
     emitValue(state.copyWith(user: result.data!));
   }
 
-  void deleteUserFromDatabase() {
+  void deleteUserFromDatabase(
+      {required void Function() onSignOutSuccessfully}) {
     _authRepository.deleteUser().then((value) {
       if (value.isError) {
         emitError(value.error!);
         return;
       }
-      signOut();
+      signOut(onSignOutSuccessfully: onSignOutSuccessfully);
     });
     if (!state.status.hasError) {
       _userRepository.delete(state.user!.id);
@@ -119,5 +129,21 @@ class AppCubit extends FCubit<AppState> {
       ),
     );
     return update;
+  }
+
+  @override
+  Future<void> close() {
+    _notificationSubscription.cancel();
+    return super.close();
+  }
+
+  void markUnreadNotification() {
+    emit(state.copyWith(hasNotification: true));
+    GetIt.I<FSharedPreferences>().setHasNotification(true);
+  }
+
+  void readNotification() {
+    emit(state.copyWith(hasNotification: false));
+    GetIt.I<FSharedPreferences>().setHasNotification(false);
   }
 }

@@ -33,7 +33,10 @@ class NearestRestaurantSection extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  FCoordinator.pushNamed(Routes.restaurants.name);
+                  FCoordinator.pushNamed(
+                    Routes.restaurants.name,
+                    extra: restaurants,
+                  );
                 },
                 child: Text(
                   'View More',

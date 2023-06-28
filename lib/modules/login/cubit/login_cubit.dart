@@ -13,7 +13,7 @@ import '../../../repositories/users/user_model.dart';
 import '../../../repositories/users/user_repository.dart';
 import '../../../utils/services/shared_preferences.dart';
 import '../../cubits/app/app_cubit.dart';
-import '../../signup/cubit/sign_up_cubit.dart';
+import '../../sign_up/cubit/sign_up_cubit.dart';
 import '../models/email_input.dart';
 import '../models/password_input.dart';
 
@@ -32,6 +32,8 @@ class LoginCubit extends FCubit<LoginState> {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
   final FSharedPreferences _sharedPreferences;
+
+  late final StreamSubscription _statusSubscription;
 
   Future<void> loginWithEmailAndPassword({
     required String email,
@@ -72,7 +74,7 @@ class LoginCubit extends FCubit<LoginState> {
     emit(state.copyWith(email: EmailInput.dirty(value)));
   }
 
-  void onChangePaswword(String value) =>
+  void onChangePassword(String value) =>
       emit(state.copyWith(password: PasswordInput.dirty(value)));
 
   Future<void> signOut() => _authRepository.signOut();
@@ -92,8 +94,8 @@ class LoginCubit extends FCubit<LoginState> {
   }
 
   void init() {
-    _authRepository.status.listen((status) {
-      log(status.name);
+    _statusSubscription = _authRepository.status.listen((status) {
+      log('login_cubit/init${status.name}');
       switch (status) {
         case AuthenStatus.authenticated:
           emitLoading();
@@ -113,7 +115,7 @@ class LoginCubit extends FCubit<LoginState> {
 
   void _authenticatedHandler() async {
     final currentUser = _authRepository.currentUser!;
-    log(currentUser.email ?? 'email null');
+    log('login_cubit/_authenticatedHandler/${currentUser.email}');
     final dbUser = await fetchUserFromDB(currentUser.id);
 
     // Null means logined but not yet store user in firestore
@@ -150,5 +152,11 @@ class LoginCubit extends FCubit<LoginState> {
     GetIt.I<SignUpCubit>().emitValue(
       GetIt.I<SignUpCubit>().state.copyWith(user: state.user),
     );
+  }
+
+  @override
+  Future<void> close() {
+    _statusSubscription.cancel();
+    return super.close();
   }
 }

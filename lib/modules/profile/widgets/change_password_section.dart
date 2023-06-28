@@ -6,7 +6,7 @@ import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../widgets/textfield/text_field.dart';
 import '../../login/models/password_input.dart';
-import '../../signup/models/sign_up_password_input.dart';
+import '../../sign_up/models/sign_up_password_input.dart';
 
 class ChangePasswordSection extends StatefulWidget {
   const ChangePasswordSection({

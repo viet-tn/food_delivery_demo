@@ -6,7 +6,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/payment/payment_model.dart';
-import '../../../repositories/payment/payment_repostiory.dart';
+import '../../../repositories/payment/payment_repository.dart';
 
 part 'payment_state.dart';
 
@@ -24,8 +24,8 @@ class PaymentCubit extends FCubit<PaymentState> {
       {required void Function() onPaymentSuccessful}) async {
     emitLoading();
 
-    late StreamSubscription subcription;
-    subcription = _paymentRepository
+    late StreamSubscription subscription;
+    subscription = _paymentRepository
         .createCheckoutSession(
           FPayment(
             amount: amount,
@@ -62,7 +62,7 @@ class PaymentCubit extends FCubit<PaymentState> {
               .retrievePaymentIntent(stripe.paymentIntentClientSecret!);
           log(intent.status.name);
           onPaymentSuccessful();
-          subcription.cancel();
+          subscription.cancel();
         },
       )
       ..onError((e, st) {

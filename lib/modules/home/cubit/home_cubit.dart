@@ -1,3 +1,5 @@
+import 'package:get_it/get_it.dart';
+
 import '../../../base/cubit.dart';
 import '../../../base/state.dart';
 import '../../../repositories/food/food_model.dart';
@@ -5,6 +7,7 @@ import '../../../repositories/food/food_repository.dart';
 import '../../../repositories/maps/search/places_search_repository.dart';
 import '../../../repositories/restaurants/restaurant_model.dart';
 import '../../../repositories/restaurants/restaurant_repository.dart';
+import '../../../utils/services/shared_preferences.dart';
 
 part 'home_state.dart';
 
@@ -46,8 +49,11 @@ class HomeCubit extends FCubit<HomeState> {
 
     emitValue(
       state.copyWith(
-        restaurants: update..sort((a, b) => a.distance!.compareTo(b.distance!)),
-      ),
+          hasNotification: GetIt.I<FSharedPreferences>().hasNotification,
+          restaurants: update
+            ..sort(
+              (a, b) => a.coordinate.geohash!.compareTo(b.coordinate.geohash!),
+            )),
     );
   }
 

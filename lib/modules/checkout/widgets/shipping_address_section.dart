@@ -10,8 +10,8 @@ import '../../../repositories/users/coordinate.dart';
 import '../../cubits/app/app_cubit.dart';
 import 'editable_section_bar.dart';
 
-class ShippingAdressSection extends StatelessWidget {
-  const ShippingAdressSection({
+class ShippingAddressSection extends StatelessWidget {
+  const ShippingAddressSection({
     super.key,
     required this.name,
     required this.phone,

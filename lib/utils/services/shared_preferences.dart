@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 const onboardingKey = 'ONBOARDING_KEY';
-const loginStateKey = 'LOGIN_STATE_KEY';
+const notificationKey = 'NOTIFICATION_KEY';
 
 class FSharedPreferences {
   FSharedPreferences(this.sharedPreferences);
@@ -13,4 +13,10 @@ class FSharedPreferences {
 
   bool get wasOnboardingShown =>
       sharedPreferences.getBool(onboardingKey) ?? false;
+
+  Future<bool> setHasNotification(bool value) =>
+      sharedPreferences.setBool(notificationKey, value);
+
+  bool get hasNotification =>
+      sharedPreferences.getBool(notificationKey) ?? false;
 }

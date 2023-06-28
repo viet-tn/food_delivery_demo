@@ -1,8 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../repositories/food/food_model.dart';
-import '../../../repositories/restaurants/restaurant_model.dart';
+import '../../../config/routes/coordinator.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/sizes.dart';
@@ -10,6 +9,7 @@ import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../widgets/buttons/icon_button.dart';
+import '../../cubits/app/app_cubit.dart';
 import '../../search/cubit/search_cubit.dart';
 import '../../search/widgets/filter_chip.dart';
 import 'home_search_bar.dart';
@@ -47,39 +47,22 @@ class _HomeAppBarState extends State<HomeAppBar> {
               ),
             ),
             Flexible(
-              child: FIconButton(
-                onPressed: () async {
-                  final resRef = FirebaseFirestore.instance
-                      .collection('restaurants')
-                      .withConverter(
-                        fromFirestore: (snapshot, options) =>
-                            FRestaurant.fromMap(snapshot.data()!),
-                        toFirestore: (value, options) => value.toMap(),
-                      );
-                  final foodRef = FirebaseFirestore.instance
-                      .collection('foods')
-                      .withConverter(
-                        fromFirestore: (snapshot, options) =>
-                            FFood.fromMap(snapshot.data()!),
-                        toFirestore: (value, options) => value.toMap(),
-                      );
-
-                  final restaurantsQuery = await resRef.get();
-                  final restaurants =
-                      restaurantsQuery.docs.map((e) => e.data());
-
-                  for (var restaurant in restaurants) {
-                    final resId = restaurant.id;
-                    for (var foodId in restaurant.foodIds) {
-                      foodRef.doc(foodId).update({'restaurantId': resId});
-                    }
-                  }
+              child: BlocBuilder<AppCubit, AppState>(
+                buildWhen: (previous, current) =>
+                    previous.hasNotification != current.hasNotification,
+                builder: (context, state) {
+                  return FIconRounded(
+                    onPressed: () {
+                      context.goNamed(Routes.notification.name);
+                      context.read<AppCubit>().readNotification();
+                    },
+                    hasNotification: state.hasNotification,
+                    icon: Image.asset(
+                      Assets.icons.notification.path,
+                      fit: BoxFit.contain,
+                    ),
+                  );
                 },
-                hasNotification: true,
-                icon: Image.asset(
-                  Assets.icons.notifiaction.path,
-                  fit: BoxFit.contain,
-                ),
               ),
             ),
           ],

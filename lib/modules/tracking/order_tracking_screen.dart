@@ -105,7 +105,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   void _onMapCreated(
       BuildContext context, GoogleMapController controller) async {
     final style = await DefaultAssetBundle.of(context)
-        .loadString(Assets.mapstyles.orderTrackingMapstyle);
+        .loadString(Assets.mapStyles.orderTrackingMapStyle);
     controller.setMapStyle(style).then(
           (_) => context.read<OrderTrackingCubit>().onMapCreated(
                 controller,

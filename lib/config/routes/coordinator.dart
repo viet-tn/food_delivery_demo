@@ -16,20 +16,21 @@ import '../../modules/home/screens/foods_screen.dart';
 import '../../modules/home/screens/restaurants_screen.dart';
 import '../../modules/login/cubit/login_cubit.dart';
 import '../../modules/login/login_screen.dart';
+import '../../modules/notification/notification_screen.dart';
 import '../../modules/onboarding/onboarding_screen.dart';
-import '../../modules/order/model/order.dart';
 import '../../modules/order/order_details/order_details_screen.dart';
 import '../../modules/order/orders_screen.dart';
 import '../../modules/profile/edit_screen.dart';
 import '../../modules/profile/profile_screen.dart';
+import '../../modules/rating/write_review_screen.dart';
 import '../../modules/restaurant/restaurant_screen.dart';
 import '../../modules/search/search_screen.dart';
-import '../../modules/signup/screens/fill_bio_screen.dart';
-import '../../modules/signup/screens/map_screen/map_screen.dart';
-import '../../modules/signup/screens/set_location_screen.dart';
-import '../../modules/signup/screens/upload_photo_screen.dart';
-import '../../modules/signup/screens/verification_screen.dart';
-import '../../modules/signup/sign_up_screen.dart';
+import '../../modules/sign_up/screens/fill_bio_screen.dart';
+import '../../modules/sign_up/screens/map_screen/map_screen.dart';
+import '../../modules/sign_up/screens/set_location_screen.dart';
+import '../../modules/sign_up/screens/upload_photo_screen.dart';
+import '../../modules/sign_up/screens/verification_screen.dart';
+import '../../modules/sign_up/sign_up_screen.dart';
 import '../../modules/tracking/order_tracking_screen.dart';
 import '../../modules/voucher/voucher_screen.dart';
 import '../../repositories/domain_manager.dart';
@@ -37,7 +38,8 @@ import '../../repositories/food/food_model.dart';
 import '../../repositories/restaurants/restaurant_model.dart';
 import '../../repositories/users/coordinate.dart';
 import '../../repositories/users/user_model.dart';
-import '../../utils/helpers/resfresh_stream.dart';
+import '../../utils/helpers/refresh_stream.dart';
+import '../../utils/page_arguments/view_more_food_argument.dart';
 import '../../utils/services/shared_preferences.dart';
 import '../../utils/ui/scaffold_with_bottom_nav_bar.dart';
 import '../../widgets/congrats_screen.dart';
@@ -72,6 +74,8 @@ enum Routes {
   orders,
   orderDetails,
   orderTracking,
+  review,
+  notification,
 }
 
 class FCoordinator {
@@ -280,13 +284,23 @@ final appRouter = GoRouter(
               path: 'restaurants',
               name: Routes.restaurants.name,
               parentNavigatorKey: FCoordinator.navigatorKey,
-              builder: (_, __) => const RestaurantsScreen(),
+              builder: (_, state) => RestaurantsScreen(
+                restaurants: state.extra as List<FRestaurant>,
+              ),
             ),
             GoRoute(
               path: 'foods',
               name: Routes.foods.name,
               parentNavigatorKey: FCoordinator.navigatorKey,
-              builder: (_, __) => const FoodsScreen(),
+              builder: (_, state) => FoodsScreen(
+                argument: state.extra as ViewMoreFoodsArgument,
+              ),
+            ),
+            GoRoute(
+              path: 'notification',
+              name: Routes.notification.name,
+              parentNavigatorKey: FCoordinator.navigatorKey,
+              builder: (_, state) => const NotificationScreen(),
             ),
           ],
         ),
@@ -335,10 +349,10 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               parentNavigatorKey: FCoordinator.navigatorKey,
-              path: 'details',
+              path: 'details:orderId',
               name: Routes.orderDetails.name,
               builder: (_, state) => OrderDetailsScreen(
-                order: state.extra as FOrder,
+                orderId: state.params['orderId']!,
               ),
             ),
           ],
@@ -458,6 +472,15 @@ final appRouter = GoRouter(
           ),
         );
       },
+    ),
+    GoRoute(
+      parentNavigatorKey: FCoordinator.navigatorKey,
+      name: Routes.review.name,
+      path: '/review',
+      pageBuilder: (context, state) => MaterialPage(
+        fullscreenDialog: true,
+        child: WriteReviewScreen(food: state.extra as FFood),
+      ),
     ),
   ],
 );

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../constants/constants.dart';
-import '../../cubit/orders_cubit.dart';
-import '../cubit/order_details_cubit.dart';
-import 'order_details_card.dart';
-import '../../../../repositories/food/food_model.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../constants/constants.dart';
+import '../../../../repositories/food/food_model.dart';
+import '../../cubit/orders_cubit.dart';
 import '../../model/order.dart';
+import '../cubit/order_details_cubit.dart';
+import 'order_details_card.dart';
 
 class OrderDetailsView extends StatelessWidget {
   const OrderDetailsView({
@@ -115,6 +115,7 @@ class OrderDetailsView extends StatelessWidget {
                 OrderDetailsCard(
                   quantity: order.cart.items[foods[index].id]!,
                   food: foods[index],
+                  status: order.status,
                 ),
                 gapH8,
                 const Divider(),

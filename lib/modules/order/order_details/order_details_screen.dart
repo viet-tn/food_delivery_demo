@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../config/routes/coordinator.dart';
-import '../../../constants/constants.dart';
-import '../../../gen/assets.gen.dart';
-import '../cubit/orders_cubit.dart';
-import '../../../repositories/users/coordinate.dart';
-import '../../../widgets/dialogs/dialog.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../config/routes/coordinator.dart';
+import '../../../constants/constants.dart';
+import '../../../gen/assets.gen.dart';
+import '../../../repositories/users/coordinate.dart';
 import '../../../utils/helpers/text_helpers.dart';
 import '../../../utils/ui/scaffold.dart';
 import '../../../widgets/app_bar.dart';
 import '../../../widgets/buttons/gradient_button.dart';
+import '../../../widgets/dialogs/dialog.dart';
+import '../cubit/orders_cubit.dart';
 import '../model/order.dart';
 import 'cubit/order_details_cubit.dart';
 import 'widgets/order_details_view.dart';
@@ -21,10 +21,10 @@ import 'widgets/order_details_view.dart';
 class OrderDetailsScreen extends StatefulWidget {
   const OrderDetailsScreen({
     super.key,
-    required this.order,
+    required this.orderId,
   });
 
-  final FOrder order;
+  final String orderId;
 
   @override
   State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
@@ -36,7 +36,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _cubit.init(widget.order);
+    _cubit.init(widget.orderId);
   }
 
   @override
@@ -52,71 +52,64 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           return FScaffold(
             bottomNavigationBar:
                 state.whenOrNull(loadSuccess: (order, _, restaurant) {
-              if (order.isRunning && order.status != OrderStatus.confirmed) {
+              if (order.status == OrderStatus.placed ||
+                  order.status == OrderStatus.onTheWay) {
                 return Container(
-                  height: 50.0,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 15.0,
                   ),
                   margin: const EdgeInsets.only(bottom: 15.0),
-                  child: Row(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      order.status == OrderStatus.placed
-                          ? Expanded(
-                              child: SizedBox.expand(
-                                child: OutlinedButton(
-                                  onPressed: () => showDialog(
-                                    context: context,
-                                    builder: (context) => FAlertDialog(
-                                      title:
-                                          'Are you sure you want to cancel this order?',
-                                      onYesPressed: () {
-                                        _cubit.cancelOrder(
-                                          onOrderUpdated: context
-                                              .read<OrdersCubit>()
-                                              .fetchNew,
-                                        );
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    side: const BorderSide(color: Colors.red),
-                                  ),
-                                  child: Text(
-                                    'Cancel Order',
-                                    style: FTextStyles.button.copyWith(
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                ),
+                      if (order.status == OrderStatus.placed)
+                        SizedBox(
+                          height: 50.0,
+                          width: double.infinity,
+                          child: OutlinedButton(
+                            onPressed: () => showDialog(
+                              context: context,
+                              builder: (context) => FAlertDialog(
+                                title:
+                                    'Are you sure you want to cancel this order?',
+                                onYesPressed: () {
+                                  _cubit.cancelOrder(
+                                    onOrderUpdated:
+                                        context.read<OrdersCubit>().fetchNew,
+                                  );
+                                  Navigator.pop(context);
+                                },
                               ),
-                            )
-                          : const SizedBox(),
-                      order.status == OrderStatus.onTheWay
-                          ? Expanded(
-                              child: SizedBox.expand(
-                                child: BlocProvider.value(
-                                  value: _cubit,
-                                  child: Builder(builder: (context) {
-                                    return GradientButton(
-                                      onPressed: () => context.pushNamed(
-                                        Routes.orderTracking.name,
-                                        extra: <Coordinate>[
-                                          restaurant.coordinate,
-                                          order.userPosition,
-                                        ],
-                                      ),
-                                      child: const Text(
-                                        'Track Order',
-                                        style: FTextStyles.button,
-                                      ),
-                                    );
-                                  }),
-                                ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.red),
+                            ),
+                            child: Text(
+                              'Cancel Order',
+                              style: FTextStyles.button.copyWith(
+                                color: Colors.red,
                               ),
-                            )
-                          : const SizedBox(),
+                            ),
+                          ),
+                        ),
+                      if (order.status == OrderStatus.onTheWay)
+                        SizedBox(
+                          height: 50.0,
+                          width: double.infinity,
+                          child: GradientButton(
+                            onPressed: () => context.pushNamed(
+                              Routes.orderTracking.name,
+                              extra: <Coordinate>[
+                                restaurant.coordinate,
+                                order.userPosition,
+                              ],
+                            ),
+                            child: const Text(
+                              'Track Order',
+                              style: FTextStyles.button,
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 );

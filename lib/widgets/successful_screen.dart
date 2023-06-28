@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'buttons/gradient_button.dart';
 
 import '../config/routes/coordinator.dart';
 import '../constants/ui/sizes.dart';
@@ -7,6 +6,7 @@ import '../constants/ui/text_style.dart';
 import '../constants/ui/ui_parameters.dart';
 import '../gen/assets.gen.dart';
 import '../utils/ui/scaffold.dart';
+import 'buttons/gradient_button.dart';
 
 class SuccessfulScreen extends StatelessWidget {
   const SuccessfulScreen({super.key});

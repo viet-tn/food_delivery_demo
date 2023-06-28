@@ -50,7 +50,7 @@ class _LoginFormState extends State<LoginForm> {
                 inputType: TextInputType.text,
                 obscureText: true,
                 onChanged: (value) =>
-                    context.read<LoginCubit>().onChangePaswword(value),
+                    context.read<LoginCubit>().onChangePassword(value),
                 validator: (value) => state.password.valid
                     ? null
                     : state.password.error!.toErrorText(),

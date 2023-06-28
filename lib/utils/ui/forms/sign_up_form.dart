@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/ui/sizes.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../gen/assets.gen.dart';
-import '../../../modules/signup/cubit/sign_up_cubit.dart';
-import '../../../modules/signup/models/sign_up_password_input.dart';
+import '../../../modules/sign_up/cubit/sign_up_cubit.dart';
+import '../../../modules/sign_up/models/sign_up_password_input.dart';
 import '../../../widgets/buttons/gradient_button.dart';
 import '../../../widgets/textfield/text_field.dart';
 
@@ -49,7 +49,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 prefixIcon: Image.asset(Assets.icons.lock.path),
                 obscureText: true,
                 onChanged: (value) =>
-                    context.read<SignUpCubit>().onChangePaswword(value),
+                    context.read<SignUpCubit>().onChangePassword(value),
                 validator: (value) => state.password.valid
                     ? null
                     : state.password.error!.toErrorText(),

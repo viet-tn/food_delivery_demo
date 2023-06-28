@@ -12,7 +12,7 @@ class Sizes {
   static const p48 = 48.0;
   static const p64 = 64.0;
 
-  /// Add space for screen not be covered by navigationbar
+  /// Add space for screen not be covered by navigation bar
   static const navBarGapH = SizedBox(height: 80);
   static const orderInforGapH = SizedBox(height: 180);
 

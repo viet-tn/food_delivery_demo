@@ -3,12 +3,14 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'modules/notification/cubit/notification_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,15 +30,24 @@ import 'modules/login/cubit/login_cubit.dart';
 import 'modules/order/cubit/orders_cubit.dart';
 import 'modules/order/data/order_repository.dart';
 import 'modules/order/order_details/cubit/order_details_cubit.dart';
+import 'modules/rating/cubit/rating_cubit.dart';
 import 'modules/restaurant/cubit/restaurant_cubit.dart';
 import 'modules/search/cubit/search_cubit.dart';
-import 'modules/signup/cubit/sign_up_cubit.dart';
-import 'modules/signup/screens/map_screen/cubit/map_screen_cubit.dart';
+import 'modules/sign_up/cubit/sign_up_cubit.dart';
+import 'modules/sign_up/screens/map_screen/cubit/map_screen_cubit.dart';
 import 'modules/tracking/cubit/order_tracking_cubit.dart';
 import 'repositories/domain_manager.dart';
-import 'repositories/payment/payment_repostiory.dart';
+import 'repositories/payment/payment_repository.dart';
 import 'repositories/users/coordinate.dart';
+import 'utils/services/notification_service.dart';
 import 'utils/services/shared_preferences.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await setupFlutterNotifications();
+  showFlutterNotification(message);
+  GetIt.I<FSharedPreferences>().setHasNotification(true);
+}
 
 Future<void> initializeApp() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -46,8 +57,10 @@ Future<void> initializeApp() async {
   usePathUrlStrategy();
 
   await Firebase.initializeApp();
+
   await Future.wait(
     [
+      FirebaseMessaging.instance.getInitialMessage(),
       FirebaseAppCheck.instance.activate(
         webRecaptchaSiteKey: 'recaptcha-v3-site-key',
       ),
@@ -62,6 +75,9 @@ Future<void> initializeApp() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   await FirebaseCrashlytics.instance
       .setCrashlyticsCollectionEnabled(!kDebugMode);
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await setupFlutterNotifications();
 
   // whenever your initialization is completed, remove the splash screen:
   FlutterNativeSplash.remove();
@@ -94,8 +110,7 @@ Future<void> _locator() async {
       userRepository: DomainManager().userRepository,
       cloudStorage: DomainManager().cloudStorage,
       authRepository: DomainManager().authRepository,
-      restaurantRepository: DomainManager().restaurantRepository,
-      placesSearchRepository: DomainManager().placesSearchRepository,
+      notificationRepository: DomainManager().notificationRepository,
     ),
   );
 
@@ -118,13 +133,17 @@ Future<void> _locator() async {
 
   GetIt.I.registerFactory<FoodCubit>(
     () => FoodCubit(
-      foodRepository: DomainManager().foodRepository,
+      DomainManager().ratingRepository,
+      DomainManager().starCountRepository,
+      DomainManager().restaurantRepository,
     ),
   );
 
   GetIt.I.registerFactory<RestaurantCubit>(
     () => RestaurantCubit(
-      foodRepository: DomainManager().foodRepository,
+      DomainManager().foodRepository,
+      DomainManager().starCountRepository,
+      DomainManager().ratingRepository,
     ),
   );
 
@@ -180,7 +199,7 @@ Future<void> _locator() async {
       uid: GetIt.I<AppCubit>().state.user!.id,
       favoriteListRepository: DomainManager().favoriteListRepository,
       foodRepository: DomainManager().foodRepository,
-    ),
+    )..fetchFavoriteList(),
   );
 
   GetIt.I.registerFactory<OrdersCubit>(
@@ -205,6 +224,14 @@ Future<void> _locator() async {
       source: source,
       destination: destination,
     )..init(),
+  );
+
+  GetIt.I.registerFactory<RatingCubit>(
+    () => RatingCubit(DomainManager().ratingRepository),
+  );
+
+  GetIt.I.registerFactory<NotificationCubit>(
+    () => NotificationCubit(DomainManager().notificationRepository),
   );
 
   // External services

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../config/routes/coordinator.dart';
 import '../../../constants/ui/colors.dart';
 import '../../../constants/ui/text_style.dart';
 import '../../../constants/ui/ui_parameters.dart';
 import '../../../repositories/food/food_model.dart';
+import '../../../utils/page_arguments/view_more_food_argument.dart';
 import '../../../utils/ui/loading/food_list_loading.dart';
 import '../../../widgets/food_list_view.dart';
+import '../screens/cubit/view_more_cubit.dart';
 
 class PopularFoodSection extends StatelessWidget {
   const PopularFoodSection({
@@ -33,7 +36,16 @@ class PopularFoodSection extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  FCoordinator.pushNamed(Routes.foods.name);
+                  final cubit = GetIt.I<ViewMoreCubit>();
+                  FCoordinator.pushNamed(
+                    Routes.foods.name,
+                    extra: ViewMoreFoodsArgument(
+                      cubit: cubit,
+                      title: 'Popular Menu',
+                      foods: foods,
+                      onFetchMoreItems: cubit.fetchNextPopularFoodBatch,
+                    ),
+                  );
                 },
                 child: Text(
                   'View More',

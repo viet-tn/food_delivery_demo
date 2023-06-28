@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../order/model/order.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../config/routes/coordinator.dart';
@@ -11,6 +11,7 @@ import '../../../repositories/users/user_model.dart';
 import '../../../utils/ui/card.dart';
 import '../../../utils/ui/network_image.dart';
 import '../../../widgets/buttons/icon_button.dart';
+import '../../order/model/order.dart';
 
 class CurrentOrderCard extends StatelessWidget {
   const CurrentOrderCard({
@@ -27,9 +28,9 @@ class CurrentOrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FCard(
-      onTap: () => FCoordinator.pushNamed(
+      onTap: () => context.pushNamed(
         Routes.orderDetails.name,
-        extra: order,
+        params: {'orderId': order.id!},
       ),
       child: Row(
         children: [
@@ -63,7 +64,7 @@ class CurrentOrderCard extends StatelessWidget {
           ),
           Row(
             children: [
-              FIconButton(
+              FIconRounded(
                 onPressed: () {
                   FCoordinator.pushNamed(
                     Routes.chat.name,
@@ -79,7 +80,7 @@ class CurrentOrderCard extends StatelessWidget {
                 ),
               ),
               gapW4,
-              FIconButton(
+              FIconRounded(
                 onPressed: () => launchUrlString('tel://${shipper.phone!}'),
                 icon: const Icon(
                   Icons.call_outlined,

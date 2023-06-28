@@ -13,8 +13,10 @@ import 'modules/home/cubit/home_cubit.dart';
 import 'modules/home/screens/cubit/view_more_cubit.dart';
 import 'modules/login/cubit/login_cubit.dart';
 import 'modules/order/cubit/orders_cubit.dart';
+import 'modules/order/data/order_repository.dart';
 import 'modules/search/cubit/search_cubit.dart';
-import 'modules/signup/cubit/sign_up_cubit.dart';
+import 'modules/sign_up/cubit/sign_up_cubit.dart';
+import 'repositories/payment/payment_repository.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -59,15 +61,35 @@ class MyApp extends StatelessWidget {
           create: (_) => GetIt.I<ViewMoreCubit>(),
         )
       ],
-      child: MaterialApp.router(
-        scaffoldMessengerKey: messengerKey,
-        debugShowCheckedModeBanner: false,
-        theme: appThemeData[AppTheme.light],
-        title: 'Food Delivery',
-        routerDelegate: appRouter.routerDelegate,
-        routeInformationParser: appRouter.routeInformationParser,
-        routeInformationProvider: appRouter.routeInformationProvider,
-        // routeInformationProvider: appRouter.routeInfoProvider(),
+      child: BlocListener<AppCubit, AppState>(
+        listenWhen: (_, current) => current.user != null,
+        listener: (context, state) {
+          if (GetIt.I.isRegistered<OrderRepository>()) {
+            GetIt.I.unregister<OrderRepository>();
+            GetIt.I.registerLazySingleton<OrderRepository>(
+              () => OrderRepository(state.user!.id),
+            );
+          }
+
+          if (GetIt.I.isRegistered<PaymentRepository>()) {
+            GetIt.I.unregister<PaymentRepository>();
+            GetIt.I.registerLazySingleton<PaymentRepository>(
+              () => PaymentRepository(state.user!.id),
+            );
+          }
+
+          context.read<OrdersCubit>().fetchNew();
+        },
+        child: MaterialApp.router(
+          scaffoldMessengerKey: messengerKey,
+          debugShowCheckedModeBanner: false,
+          theme: appThemeData[AppTheme.light],
+          title: 'Food Delivery',
+          routerDelegate: appRouter.routerDelegate,
+          routeInformationParser: appRouter.routeInformationParser,
+          routeInformationProvider: appRouter.routeInformationProvider,
+          // routeInformationProvider: appRouter.routeInfoProvider(),
+        ),
       ),
     );
   }
